@@ -1,0 +1,343 @@
+<html>
+<head>
+<title>Philips RC5 IR Decoder</title>
+<META name="description" content="IR Decoder">
+<META name="keywords" content="Decoder, IR, Philips, RC5, Remote,
+ control, DIY, LEDS">
+</head>
+
+<body bgcolor="#ffffff">
+<a name="RC5"></a>
+<center><h1>Philips RC5 IR Decoder</h1>
+<br><img src="irproto.jpg"></center><br>
+
+RC5 code (top picture) = address 5, command 53 - VCR/Play  '100101110101' start bits not shown
+<br>RC5 code (lower picture) = address 0, command 9 - TV digit '9'
+<p>
+
+<center><h3>Philips RC5 IR Decoder using a PIC16F628</center>
+</h3>
+
+
+<img src="rc5.gif"><br>
+<img src="rc5_w.gif"><br>
+
+<blockquote>
+
+<pre>
+
+The RC5 IR remote control code, originally developed by Philips consists
+of 14 bits separated by 1.778 mS, or 24.889 mS for a complete message.
+Each bit consists of two half bits where a logic '0' is represented
+by a 889uS high level followed by a 889uS low level. A logic '1'
+is represented by a 889uS low level followed by a 889uS high level.
+The code consists of two start bits followed by a toggle bit, followed
+by 5 address bits, followed by 6 command bits. The toggle bit changes
+state each time a key is pressed and is used to determine if a key
+is held down or repeatedly pressed. The 5 address bits are used to select
+a particular device such as a TV at address zero, or possibly a VCR at
+address 5. The remaining 6 bits are used to identify the particular key
+such as numbers 0-9, volume up/down, etc. A short list of addresses and
+commands is shown below. A typical RC5 waveform is shown above which
+represents a code of 11100001011100. This indicates address 1 (TV2) and
+command 28 (contrast +). The toggle bit is also set and will reset when
+the key is released and repressed. The RC5 code produces a series of
+time intervals that can be used to decode the message. A narrow time
+interval of 889uS where the bit ends indicates the bit will repeat whereas
+a wide interval of 1.778mS indicates the next bit will be inverted from
+the current. A QBasic program is listed below to illustrate the logic.
+Also the hex code needed for the PIC16F628 is listed at the bottom of page.
+RC5 code is sent twice or more with 114mS spacing and the PIC program takes
+advantage of this by comparing the 2 transmissions to detect errors or false
+triggering from the IR module. Many 'Universal' remotes will mimic the RC5
+protocol. If you have one of those, look in the booklet for Philips or
+Magnavox TV or VCR and try those codes to set up the controller.
+
+Address    Equipment                     Code    Key
+
+0          TV1                            0   -   0
+1          TV2                            1   -   1
+5          VCR1                           2   -   2
+6          VCR2                           3   -   3
+8          SAT1                           4   -   4
+10         SAT2                           5   -   5
+16         Audio Preamplifier             6   -   6
+17         Tuner                          7   -   7
+20         CD                             8   -   8
+26         Writable CD                    9   -   9
+                                         16   -   Volume up
+                                         17   -   Volume down
+                                         32   -   Channel up
+                                         33   -   Channel down
+                                         13   -   Mute
+                                         50   -   Rewind
+                                         12   -   Power/ standby
+                                         28   -   Contrast +
+                                         29   -   Contrast -
+
+
+
+
+
+------------------ QBasic Program for Win95, Win98, or MSDOS -------------------
+
+' IR RC5 decoder, simulator 12/11/12 - Bill Bowden
+
+'    1     1     1     0     0    0     0    1    0    1     1     1    0     0
+'    __    __    ____    __    __    __      ____      __    __    ____    __
+'   |  |  |  |  |    |  |  |  |  |  |  |    |    |    |  |  |  |  |    |  |  |
+' __|  |__|  |__|    |__|  |__|  |__|  |____|    |____|  |__|  |__|    |__|  |__
+
+'  P = Phase
+'  I = Invert
+' TI = Time interval, 890uS or 1.778mS, 0 or 1
+
+' Data array represents time intervals where "0" is 890uS and "1" is 1.778mS
+' This corresponds to waveform above where there are 4 short intervals,
+' followed by 1 longer interval, followed by 6 short intervals, followed by
+' 3 long intervals, followed by 4 shorts, one long, and 2 shorts. There are
+' 21 intervals total but this will vary depending on the code. The first
+' start bit is always '1' and is not decoded. The output will be
+' 1100001011100 where the MSB or second start bit is on the left. The last
+' entry in the data list is a '2' which denotes the end.
+
+'  P = Phase
+'  I = Invert
+' TI = Time interval, 890uS or 1.778mS, 0 or 1
+
+DATA 0,0,0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,0,2:  '11100001011100
+
+CLS
+
+READ TI
+
+  IF TI = 0 THEN P = 0: I = 0
+  IF TI = 1 THEN P = 1: I = 1' this condition occurs when the second start
+                            ' bit is 0
+
+WHILE TI < 2 AND INKEY$ = ""
+
+  READ TI
+
+  IF TI = 0 THEN
+
+         IF I = 0 AND P = 1 THEN PRINT "1";
+         IF I = 1 AND P = 1 THEN PRINT "0";
+         P = P + 1
+         IF P = 2 THEN P = 0
+
+  END IF
+
+  IF TI = 1 THEN
+
+         I = I + 1
+         IF I = 2 THEN I = 0
+         IF I = 0 THEN PRINT "0";
+         IF I = 1 THEN PRINT "1";
+
+  END IF
+
+WEND
+
+    IF P = 0 THEN END
+    IF I = 1 THEN PRINT "0" ELSE PRINT "1"
+
+END
+
+--------------------------------------------------------------------------
+
+<img src="ir_led.gif"><br>
+
+Generating specific codes using a PC and a QBasic program.
+
+In the schematic above, a 555 timer and IR LED are used to produce a 36KHz
+IR transmission controlled by the PC printer port which can be copied into
+a 'learning'remote control. The printer port connection can be any one of
+the 8 data lines to the port. The PC used was a HP Pavilion 6638 with a 533
+MHz processor running Windows 98. Later versions of Windows do not allow
+direct control of the printer port and will not work. Some version of MSDOS
+or Win95 could also be used. The example program transmits the code
+'11011101001111' which represents the toggle bit off, address 29, and data 15
+which is not a standard RC5 code since address 29 is unassigned to any device.
+The code was translated to a data list where 220 is the delay time needed
+to gate the 555 oscillator on for a period of about 1.8mS and 110 is the time
+for a approximate 890uS period. These values may need adjustment for faster
+or slower PCs. I measured the length of the entire 14 bit transmission with
+a scope and set the numbers for a 25mS total length. The example waveform to
+produce the code of '11011101001111' is entered in a data list which represents
+either a short interval of about 890uS or a longer interval of about 1.8mS.
+Each positive interval represents the time the 36KHz oscillator is running while
+the negative intervals represent the time the oscillator is off. Each narrow
+positive interval, transmits about 33 cycles of IR at a frequency of 36KHz.
+The program waits for a keypress and then transmits the code twice with a
+separation of about 100mS. The transmission can be copied into a 'learning'
+remote control held a couple inches away from the IR LED. The red LED in
+series with the IR LED gives a visual indication and should blink a couple
+times on each keypress.
+
+Note the address of the PC port is decimal 888 (LPT1) but could be 632 or
+956 on some machines. The data line pin numbers for the printer port on older
+machines are pins 2-9, so any one of those should work.
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+'QBasic program to transmit 14 bit RC5 IR commands.
+' Requires Win95, Win98, or MSDOS.
+
+'11011101001111 - Toggle off, address 29, command 15
+
+'  1     1    0    1     1     1    0    1    0     0    1     1     1     1
+'  __    ____      __    __    ____      ____    __      __    __    __    __
+' |  |  |    |    |  |  |  |  |    |    |    |  |  |    |  |  |  |  |  |  |  |
+'_|  |__|    |____|  |__|  |__|    |____|    |__|  |____|  |__|  |__|  |__|  |_
+'
+DATA 110,110,220,220,110,110,110,110,220,220,220
+DATA 110,110,220,110,110,110,110,110,110,110,110
+
+OUT 888, 255'  Set (D0 - D7) high
+
+CLS
+PRINT "Press any key to begin."
+
+Top:
+
+  k$ = INKEY$
+  IF k$ = "q" THEN END ' Press 'q' to quit
+  IF k$ = "" THEN GOTO Top  ' Wait for keypress
+
+  FOR p = 1 TO 2' Send message twice spaced 114 mS
+
+     RESTORE
+     FOR d = 1 TO 11 'each pass reads 2 numbers, 12 = 24 total
+
+        READ t
+        OUT 888, 0 ' Set output low - turn on oscillator
+        FOR w = 1 TO t ' loop for dealy time
+        NEXT w
+
+        READ t
+        OUT 888, 255 ' Set output high - turn off oscillator
+        FOR w = 1 TO t
+        NEXT w
+
+     NEXT d
+
+  FOR n = 1 TO 12000: NEXT n' delay 90mS before next transmission
+  NEXT p
+  PRINT "Done. Press any key to repeat or 'q' to quit"
+  GOTO Top
+  END
+
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+' Philips IR RC5 encoder, 12/19/12 - Bill Bowden
+
+' Requires Win95, Win98, or MSDOS.
+' In this example, the desired (14 bit) RC5 code is entered from the keyboard
+' and converted to the required time intervals for the transmitter. The
+' example below represents the code '11100001011100' and produces a
+' transmission code of '0000100000011100001000' representing 890uS or 1.8mS
+' time intervals for the transmitter. The transmitter is turned on during
+' each positive interval and off during the negatives.
+
+'    1     1     1     0     0    0     0    1    0    1     1     1    0     0
+'    __    __    ____    __    __    __      ____      __    __    ____    __
+'   |  |  |  |  |    |  |  |  |  |  |  |    |    |    |  |  |  |  |    |  |  |
+' __|  |__|  |__|    |__|  |__|  |__|  |____|    |____|  |__|  |__|    |__|  |__
+'    0   0  0  0  1   0  0  0  0  0  0   1    1    1   0  0  0  0    1  0  0  0
+
+CLS
+
+OUT 888, 255
+
+INPUT "Enter 14 bit binary word"; B$
+
+d$ = ""
+
+FOR n = 1 TO 14
+
+  IF MID$(B$, n, 2) = "11" THEN d$ = d$ + "00"
+  IF MID$(B$, n + 1, 2) = "10" THEN d$ = d$ + "1"
+  IF MID$(B$, n + 1, 2) = "01" THEN d$ = d$ + "1"
+  IF MID$(B$, n + 1, 2) = "00" THEN d$ = d$ + "00"
+
+NEXT n
+
+IF RIGHT$(B$, 1) = "0" THEN d$ = d$ + "0" ELSE d$ = d$ + "00"
+
+PRINT d$
+
+top:
+  FOR p = 1 TO 2
+  FOR n = 1 TO LEN(d$)
+  IF MID$(d$, n, 1) = "0" THEN t = 110 ELSE t = 220
+  IF I = 0 THEN OUT 888, 0 ELSE OUT 888, 255
+  I = I + 1: IF I = 2 THEN I = 0
+  FOR w = 1 TO t: NEXT w
+  NEXT n
+
+  FOR n = 1 TO 12000: NEXT n
+  NEXT p
+  PRINT "Done, press any key to repeat or 'q' to quit"
+100 :
+  k$ = INKEY$
+  IF k$ = "q" THEN END
+  IF k$ = "" THEN 100
+  GOTO top
+
+END
+
+-------------------------------------------------------------------------
+----------------------------- PIC16F628 Hex Code --------------------
+
+:10000000000000008A01831603139F010030860060
+:1000100020308500831203100311831007309F00E6
+:100020001B30A900A501A201860185014030840092
+:100030002030A00000308000840AA00B1B287B2009
+:100040008014840A8014A3202C1C28282D1C24141E
+:100050004E2022181628240886002E0885003E20EF
+:1000600085133E20851716280E30A300A30B3628D3
+:10007000A70AA71E3D28A80AA7010800FF30A30071
+:10008000A30B40280800FF30A3004928A30B4928F0
+:100090000800FF30A000A00B4B284628A001A201B9
+:1000A000840A801C221421082402031D221426081D
+:1000B0002E02031D2214FF3024020319A2142E184D
+:1000C000A00AAE18A00A2E19A00AAE19A00A20197B
+:1000D0002215A21C6D28221922140C302802031CA0
+:1000E0002214173028020318221422182408A10011
+:1000F0002E08A600080040308400A701A801851A38
+:100100007F28A201A5013420A50A851E832829087D
+:1001100025020318221603109C20A501A2013420F9
+:10012000A50AA51B0800851A8F282908250203188F
+:10013000221603109C208128221A00146430040621
+:10014000031D840A08000D30A000A401AE01AC011B
+:10015000AD0140308400001CAF28AC0AAD0A840A0F
+:100160000018BD282C1CB928A40DAE0DA00BB92871
+:1001700008002D1C2414AC0AAF28AD0AA40DAE0D46
+:10018000A00BC32808002D182414AF2882072034A0
+:10019000423449344C344C34203442344F34573494
+:0601A000443445344E34E6
+:02400E00103F61
+:00000001FF
+
+----------------------------End-------------------------------------
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='readout.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

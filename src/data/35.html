@@ -1,0 +1,97 @@
+<HTML>
+<BODY>
+<blockquote>
+
+<a name="buzz.gif">
+
+<center><h3>Ignition Coil Buzz Box</h3></center>
+
+Here's a circuit to create a buzzcoil using a standard automotive ignition
+coil. A 556 dual timer is used to establish the frequency and duty cycle of
+the coil current. One of the timers is used as an oscillator to generate
+the 200 Hz rectangular waveform needed to control the (IRF740 MOSFET) while
+the second timer switches the oscillator on and off as the breaker points
+open and close (closed = on). The result is a steady stream of sparks from the
+ignition coil spaced about 5 milliseconds apart while the breaker points
+are closed.
+<p>
+Operation:
+<p>
+Pin 8 and 12 are the threshold and trigger inputs of one timer which are driven
+by the breaker points and produce an inverted signal at the timer output
+(pin 9). When the points are closed to ground, pin 9 will be high and visa
+versa. The signal at pin 9 controls the reset line (pin 4) of the second timer
+and holds the output at pin 5 low while pin 4 is low and pins 8 and 12 are
+high (points open). The 15K and 4.7K resistors and 0.33uF capacitor are the
+timing components that establish the frequecy and duty cycle of the second
+timer which is about 4 milliseconds for the positive interval and 2
+milliseconds for the negative. During the positive time interval, the MOSFET
+gates are held high which causes the ignition coil current to rise to about
+4 amps. This equates to about 80 millijoules of energy in the coil which is
+released into the spark plug when the timer output (pin 5) moves to ground,
+turning off the MOSFET. A 12 volt zener diode is placed at the junction of
+the 10 and 27 ohm resistors to insure the MOSFET gate input never goes above
+12 volts or lower than -0.7 volts. A 200 volt/5 watt zener is used at the
+MOSFET drain to limit the voltage to +200 and lengthen the spark duration.
+The circuit should operate reliably with a shorted plug, however operating
+the circuit with no load connected (plug wires fallen off, etc.) may cause
+a failure due to most of the power being absorbed by the zener. You can
+also use a transient voltage suppressor (TVS) such as the 1.5KE200A or
+1.5KE300A in place of the zener. It's probably a better part, but hard to
+obtain.
+
+<p>
+<IMG src="buzz.gif">
+<center><a href="homepage.htm#menu">Menu</a></center>
+<HR>
+
+<a name="cdi.gif">
+<center><H3>Capacitor Discharge Ignition Circuit (CDI)</H3></a></center>
+<br>
+The CDI ignition circuit produces a spark from an ignition coil by
+discharging a capacitor across the primary of the coil. A 2uF capacitor is
+charged to about 340 volts and the discharge is controlled by an SCR.
+A Schmitt trigger oscillator (74C14) and MOSFET (IRF510) are used to drive
+the low voltage side of a small (120/12 volt) power transformer and a voltage
+doubler arrangement is used on the high voltage side to increase the capacitor
+voltage to about 340 volts. A similar Schmitt trigger oscillator is used to
+trigger the SCR about 4 times per second. The power supply is gated off during
+the discharge time so that the SCR will stop conducting and return to it's
+blocking state. The diode connected from the 3904 to pin 9 of the 74C14 causes
+the power supply oscillator to stop during discharge time. The circuit draws
+only about 200 milliamps from a 12 volt source and delivers almost twice the
+normal energy of a conventional ignition circuit. High voltage from the coil is
+about 10KV using a 3/8 inch spark gap at normal air temperature and pressure.
+Spark rate can be increased to possibly 10 Hertz without losing much spark
+intensity, but is limited by the low frequency power transformer and duty cycle
+of the oscillator. For faster spark rates, a higher frequency and lower
+impedance supply would be required. Note that the ignition coil is not grounded
+and presents a shock hazard on all of it's terminals. Use CAUTION when
+operating the circuit. An alternate method of connecting the coil is to ground
+the (-) terminal and relocate the capacitor between the cathode of the
+rectifier diode and the positive coil terminal. The SCR is then placed
+between ground and the +340 volt side of the capacitor. This reduces the
+shock hazard and is the usual configuration in automotive applications.
+<p>
+
+<IMG src="cdi.gif">
+<center><a href="homepage.htm#menu">Menu</a></center>
+<HR>
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='sparks.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

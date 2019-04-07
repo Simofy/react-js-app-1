@@ -1,3 +1,19 @@
+:root{
+  --icc: #ccc;
+  --occ: #fff;
+  --icmin: 5px;
+  --icmax: 6px;
+  --ocmin: 10px;
+  --ocmax: 11px;
+  --bc-size: 60px;
+  --header-size:36px;
+  --form-width:150px;
+}
+#root{
+  margin-top:var(--header-size);
+  min-height: calc(100vh - var(--header-size));
+  overflow: hidden;
+}
 body {
   margin: 0;
   padding: 0;
@@ -6,9 +22,37 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+/* body:after {
+  background-color: var(--icc);
+  background-image: 
+  radial-gradient(circle at center, var(--icc) var(--icmin), transparent var(--icmax)),
+  radial-gradient(circle at center, var(--occ) var(--ocmin), transparent var(--ocmax)),
+  radial-gradient(circle at top left, var(--icc) var(--icmin), transparent var(--icmax)),
+  radial-gradient(circle at top left, var(--occ) var(--ocmin), transparent var(--ocmax)),
+  radial-gradient(circle at top right, var(--icc) var(--icmin), transparent var(--icmax)),
+  radial-gradient(circle at top right, var(--occ) var(--ocmin), transparent var(--ocmax)),
+  radial-gradient(circle at bottom left, var(--icc) var(--icmin), transparent var(--icmax)),
+  radial-gradient(circle at bottom left, var(--occ) var(--ocmin), transparent var(--ocmax)),
+  radial-gradient(circle at bottom right, var(--icc) var(--icmin), transparent var(--icmax)),
+  radial-gradient(circle at bottom right, var(--occ) var(--ocmin), transparent var(--ocmax));
+  background-size: var(--bc-size) var(--bc-size);
+  background-position: 0 0;
+  content: "";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+}
+*/
+#root {
+  background: white;
+} 

@@ -1,0 +1,244 @@
+<HTML>
+<HEAD>
+<TITLE>555 Timer Calculator</TITLE>
+<!- Author - Bill Bowden - 10/25/99 ->
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<center>
+<h1>555 Timer - Frequency and Duty Cycle Calculator</h1>
+</center>
+<blockqoute><blockquote>
+Enter values for R1, R2, and C and press the calculate button to solve
+for positive time interval (T1) and negative time interval (T2).
+For example, a 10K resistor (R1) and 100K (R2) and 0.1 uF capacitor
+will produce output time intervals of 7.62 mS positive (T1) and 6.93 mS
+negative (T2). The frequency will be about 70 Hz. R1 should be greater
+than 1K and C should be greater than .0005 uF. Scroll down page for basic
+555 information (pinout and two basic circuits).
+<center><br><b>
+Positive Time Interval (T1) = 0.693 * (R1+R2) * C
+<br>
+Negative Time Interval (T2) = 0.693 * R2 * C
+<br>
+Frequency                   = 1.44 / ( (R1+R2+R2) * C)
+</b>
+</center>
+</blockquote></blockquote>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var R1, R2, C, T1, T2, F, RT;
+
+function Process(form)
+{
+  if(R1<1 || C<.0005) alert ("R1 should be > 1K and C > .005uF");
+  if(R1>.99 && R2>0 && C>.0005) {
+  RT = (R1*1)+(R2*1);
+  T1 = 0.693 * RT * C;
+  T1 = Math.round(T1*100000);
+  T1 = T1/100000;
+  T2 = 0.693 *R2 * C;
+  T2 = Math.round(T2*100000);
+  T2 = T2/100000;
+  F = 1.44/(C* (  (R1*1)+(R2*2)  ));
+  F = Math.round(F*10000000);
+  F = F/10000000;
+  form.T1.value = T1;
+  form.T2.value = T2;
+  form.F.value = F;
+  }
+}
+
+function SetR1(R)  { R1 = R.value;}
+function SetR2(R)  { R2 = R.value;}
+function SetC(CC)   { C = CC.value; }
+
+function ClearForm(form){
+
+  R1=0; R2=0; C=0; T1=0; T2=0; F=0;
+  form.R1.value = 0;  form.R2.value = 0;
+  form.C.value = 0;   form.T1.value=0;
+  form.T2.value=0;    form.F.value =0;
+}
+// -->
+</SCRIPT>
+<BODY>
+<center>
+<FORM METHOD="POST">
+<TABLE border=5 bgcolor = "aqua">
+<TR>
+<TD><div align=center><b>R1 (K Ohms)</b></div></TD>
+<TD><div align=center><b>R2 (K Ohms)</b></div></TD>
+<TD><div align=center><b>C (Microfarads)</b></div></TD>
+<TD><INPUT TYPE=BUTTON ONCLICK="Process(this.form)" VALUE="Calculate"></TD>
+</tr><tr>
+<TD><div align=center><INPUT TYPE=text  NAME=R1 SIZE="14"
+ONCHANGE="SetR1(this)"></div></TD>
+<TD><div align=center><INPUT TYPE=text  NAME=R2 SIZE="14"
+ONCHANGE="SetR2(this)"></div></TD>
+<TD><div align=center><INPUT TYPE=text NAME=C SIZE="14"
+ONCHANGE="SetC(this)"></div></TD>
+</tr><tr>
+<TD><div align=center><b>T1 (Milliseconds)</b></div></TD>
+<TD><div align=center><b>T2 (Milliseconds)</b></div></TD>
+<TD><div align=center><b>Frequency (Kilohertz)</b></div></TD>
+</TR>
+<TR>
+<TD><div align=center><INPUT TYPE=text NAME=T1 SIZE="14"
+</TD>
+<TD><div align=center><INPUT TYPE="text" NAME=T2 SIZE="14"
+</TD>
+<TD><div align=center><INPUT TYPE="text" NAME=F SIZE="14"
+</TD>
+<TD><div align=center><INPUT TYPE=BUTTON VALUE="   Reset    "
+onClick="ClearForm(this.form)"></div>
+</TR>
+</TABLE>
+</FORM>
+
+<h3>The 555 Timer</h3>
+</center>
+<pre>
+First introduced by the Signetics Corporation as the SE555/NE555 about 1971.
+
+Pin connections and functions: (See schematic below for basic circuits)
+
+Pin 1 (Ground)    - The ground (or common) pin is the most-negative supply potential
+                    of the device, which is normally connected to circuit common when
+                    operated from positive supply voltages.
+
+Pin 2 (Trigger)   - This pin is the input which causes the output to go high and begin
+                    the timing cycle. Triggering occurs when the trigger input moves
+                    from a voltage above 2/3 of the supply voltage to a voltage below
+                    1/3 of the supply. For example using a 12 volt supply, the trigger
+                    input voltage must start from above 8 volts and move down to a
+                    voltage below 4 volts to begin the timing cycle. The action is
+                    level sensitive and the trigger voltage may move very slowly. To
+                    avoid retriggering, the trigger voltage must return to a voltage
+                    above 1/3 of the supply before the end of the timing cycle in the
+                    monostable mode. Trigger input current is about 0.5 microamps.
+
+Pin 3 (Output)    - The output pin of the 555 moves to a high level of 1.7 volts less
+                    than the supply voltage when the timing cycle begins. The output
+                    returns to a low level near 0 at the end of the cycle. Maximum
+                    current from the output at either low or high levels is
+                    approximately 200 mA.
+
+Pin 4 (Reset):    - A low logic level on this pin resets the timer and returns the
+                    ouput to a low state. It is normally connected to the + supply
+                    line if not used.
+
+Pin 5 (Control)   - This pin allows changing the triggering and threshold voltages by
+                    applying an external voltage. When the timer is operating in the
+                    astable or oscillating mode, this input could be used to alter or
+                    frequency modulate the output. If not in use, it is recommended
+                    installing a small capacitor from pin 5 to ground to avoid
+                    possible false or erratic triggering from noise effects.
+
+Pin 6 (Threshold) - Pin 6 is used to reset the latch and cause the output to go low.
+                    Reset occurs when the voltage on this pin moves from a voltage
+                    below 1/3 of the supply to a voltage above 2/3 of the supply.
+                    The action is level sensitive and can move slowly similar to the
+                    trigger voltage.
+
+Pin 7 (Discharge) - This pin is an open collector output which is in phase with the
+                    main output on pin 3 and has similar current sinking capability.
+
+Pin 8 (V +)       - This is the positive supply voltage terminal of the 555 timer IC.
+                    Supply-voltage operating range  is +4.5 volts (minimum) to +16
+                    volts (maximum).
+
+
+The pin connections for the 556 which is a dual 555 timer (2 in one package) are
+shown in table below. For example, the two outputs for the two timers of the 556 are
+on pins 5 and 9 which correspond to the output pin 3 of the 555.
+
+                            555      556 timer #1        timer #2
+            -------------------------------------------------------
+              Ground         1                  7               7
+              Trigger        2                  6               8
+              Output         3                  5               9
+              Reset          4                  4               10
+              Control        5                  3               11
+              Threshold      6                  2               12
+              Discharge      7                  1               13
+              + Power Vcc    8                  14              14
+            -------------------------------------------------------
+
+The schematics below show the two basic circuits for the 555 timer.
+</pre>
+<IMG src="555exp.gif">
+<br>
+Below is a pictorial view of the 555 timer wired as a LED flasher and
+powered with a 9 volt battery. The LED will turn on during time T1 and
+off during time T2.
+<p>
+<IMG src="555led.gif">
+<br>
+
+The 555 circuit below is a flashing bicycle light powered with three C or D
+cells (4.5 volts). The two flashlight lamps will alternately flash at a
+approximate 1.5 second cycle rate. Using a 4.7K resistor for R1 and a 100K
+resistor for R2 and a 4.7uF capacitor, the time intervals for the two lamps
+are 341 milliseconds (T1, upper lamp) and 326 milliseconds (T2 lower lamp).
+The lamps are driven by transistors to provide additional current beyond the
+200 mA limit of the 555 timer. A 2N2905 PNP and a 2N3053 NPN could be used for
+lamps requiring 500 mA or less. For additional current, a TIP29 NPN and TIP30
+PNP could be used up to 1 amp. A PR3 is a 4.5 volt, 500 mA flashlight bulb.
+Two diodes are placed in series with the PNP transistor base so that
+the lower lamp turns off when the 555 output goes high during the T1 time
+interval. The high output level of the 555 timer is 1.7 volts less than the
+supply voltage. Adding the two diodes increases the forward voltage required
+for the PNP transistor to about  2.1 volts so that the 1.7 volt difference
+from supply to the output is not enough to turn on the transistor. You can
+also use an LED in place of the two diodes as shown in the lower schematic.
+
+<p>
+<IMG src="555light.gif">
+<br>
+
+<a name="555leds.gif"></a>
+
+<center><h3>40 LED Bicycle Light</h3></center>
+
+The 555 circuit below is a flashing bicycle light powered with four C,D or
+AA cells (6 volts). Two sets of 20 LEDs will alternately flash at approximately
+4.7 cycles per second using RC values shown (4.7K for R1, 150K for R2 and a 1uF
+capacitor). Time intervals for the two lamps are about 107 milliseconds (T1, upper
+LEDs) and 104 milliseconds (T2 lower LEDs). Two transistors are used to provide
+additional current beyond the 200 mA limit of the 555 timer. A single LED is
+placed in series with the base of the PNP transistor so that the lower 20 LEDs
+turn off when the 555 output goes high during the T1 time interval. The high
+output level of the 555 timer is 1.7 volts less than the supply voltage.
+Adding the LED increases the forward voltage required for the PNP transistor
+to about 2.7 volts so that the 1.7 volt difference from supply to the output
+is insufficient to turn on the transistor. Each LED is supplied with about 20 mA
+of current for a total of 220 mA. The circuit should work with additional
+LEDs up to about 40 for each group, or 81 total. The circuit will also work
+with fewer LEDs so it could be assembled and tested with just 5 LEDs
+(two groups of two plus one) before adding the others.
+
+<p>
+<IMG src="555leds.gif">
+<br>
+
+<p><center><a href="index.html#menu">Back to first page</a></center>
+<BR>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='555.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+

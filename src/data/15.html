@@ -1,0 +1,260 @@
+<HTML>
+<HEAD>
+<title>Fading Red Eyes</title>
+<meta name="keywords" content="LED, fader, circuit, eyes, electronics, hobby, PIC">
+</HEAD>
+
+<BODY>
+<blockquote>
+
+<center><H3>Fading Red Eyes</H3></center>
+<br><pre>
+Circuit description:
+
+This circuit is used to slowly illuminate and fade a pair of red
+LEDs (light emitting diodes). The fading LEDs could be installed
+as 'eyes' in a small pumpkin or skull as a Halloween attraction,
+or mounted in a Christmas tree ornament. Or, they might be used
+as a fancy power indicator for your computer, microwave oven,
+stereo system, TV, or other appliance.
+
+In operation, a linear 3 volt (peak to peak) ramping waveform is
+generated at pin 1 of the LM1458 IC and buffered with an emitter follower
+transistor stage. The 22uF capacitor and 47K resistor connected to
+pin 2 establish the frequency which is about 0.5 Hz. You can make the
+rate adjustable by using a 100K potentiometer in place of the 47K
+resistor at pin 2.
+
+The circuit consists of two operational amplifiers (opamps),
+one producing a slow rising and falling voltage from about 3 volts to
+6 volts, and the other (on the right) is used as a voltage comparator,
+the output of which supplies a alternating voltage switching between
+2 and 7 volts to charge and discharge the capacitor with a constant
+current.
+
+Each of the op-amps has one of the inputs (pins 3 and 6) tied to a
+fixed voltage established by two 47K resistors so that the reference
+is half the supply voltage or 4.5 volts. The left opamp is connected
+as an inverting amplifier with a capacitor placed between the output
+(pin 1) and the inverting input (pin 2). The right opamp is connected
+as a voltage comparator so that the output on pin 7 will be low when
+the input is below the reference and high when the input is higher
+than the reference. A 100K resistor is connected between the comparator
+output and input to provide positive feedback and pulls the input
+above or below the switching point when the threshold is reached.
+When the comparator output changes at pin 7, the direction of the
+current changes through the capacitor which in turn causes the inverting
+opamp to move in the opposite direction. This yields a linear ramping
+waveform or triangle waveform at pin 1 of the inverting opamp.
+It is always moving slowly up or down, so that the voltage on the
+non-inverting input stays constant at 4.5 volts.
+
+Adjustments to the point where the LEDs extinguish can be made
+by altering the resistor value at pin 3 and 6 to ground. I found
+a 56K in place of the 47k shown worked a little better with the
+particular LEDs used. You can experiment with this value to get
+the desired effect.
+
+
+Parts List:
+
+Description             Mfg Part#   Allied Part#    Quantity  Cost
+
+Operational Amplifier   LM1458       288-1090          1      .48
+47K Resistor                         296-2182          4      .42
+100K Resistor                        296-5610          1
+100 Ohm Resistor                     895-0465          1      .24
+Transistor              2N3904       568-8253          1      .1
+22uF Capacitor                       852-6516          1      .07
+Solderless Breadboard                237-0015          1     6.99
+Red Light Emitting Diode (LED)       670-1224          2     0.50
+
+Note: The LED listed has a narrow viewing angle of 30 degrees and
+appears brightest when looking directly at it. It's not a pure red
+color, and a little on the orange side, but should be brighter
+compared to other selections. For a wider viewing angle at reduced
+intensity, try part number 670-1257 which is viewable at 60 degrees
+and has a red diffused lens.
+
+Construction details:
+
+Layout of the solderless breadboard:
+
+Refer to the drawing below the schematic diagram and note the
+solderless breadboard is arranged in rows labeled A-J, and
+columns numbered 1 to 65. Each group of 5 holes in the same column
+are the same connection, so that holes A1,B1,C1,D1 and E1 are all
+connected together. Likewise holes F1,G1,H1,I1 and J1 are all
+the same connection. The outer rows along the length of the
+board are also connected together and are normally used for
+power supply connections. However, there is a break in the
+mid section of the outer rows, so a short jumper wire connecting
+the mid section of the outer rows should be installed to connect
+the entire outer row together. If you have a DMM, use the low
+ohms range and probe the various holes to get familiar with the
+board layout.
+
+Installing the components:
+
+Orientate the LM1458 so the nook or punch mark on one edge
+is near column 30 and the opposite edge is near column 33.
+Install the LM1458 on the breadboard so the pins straddle
+the center section of the board and pin 1 of the IC is occupying
+hole E30 and pin 8 is in hole F30. The pins are numbered counter
+clockwise, so pin 4 will be occupying F33 and pin 5 will be in E33.
+Possible connections for the LM1458, 9 volt battery, and a couple
+other parts is illustrated in the lower drawing of the solderless
+breadboard, but it is not complete with all parts.
+
+Refer to the schematic diagram, and install the various other
+components so they connect to the appropriate pins of the
+LM1458. Use whatever connection holes are convenient.
+For example, the 22uF capacitor connects between pins 1 and 2
+of the IC, which occupy holes (F30,F31) so it could be placed
+in the holes (H30, H31) or (J30,J31) or (I30,I31). But not all parts
+will conveniently fit, so you may have to use a short jumper
+wire (#22 preferred) to connect parts from one side of the chip
+to the other.
+
+The board I assembled was connected this way:
+
+LM1458                F30 to F33, and E30 to E33
+22uF capacitor        H30 to H31
+47K resistor          I30 to I35
+47K resistor          C27 to C31
+47K resistor          F25 to Positive battery row
+47K resistor          J25 to Negative Battery row
+100K resistor         B31 to B33
+2N3904 Transistor     G36, G37, G38 with emitter at G38
+100 Ohm resistor      D38 to F38
+LED                   B43 to B44 (Cathode at B44)
+LED                   I43 to I44 (Cathode at I43)
+Jumper                A30 to Positive battery row
+Jumper                F36 to Positive battery row
+Jumper                J33 to Negative battery row
+Jumper                J43 to Negative battery row
+Jumper                H25 to J32
+Jumper                J30 to J37
+Jumper                E27 to G31
+Jumper                D32 to G32
+Jumper                D33 to H35
+Jumper                C38 to C43
+Jumper                E44 to F44
+9 Volt Battery        Postive battery row to negative row.
+</pre>
+
+<IMG src="eyes.gif">
+<p>
+
+The circuit below illustrates two pairs of LEDs that operate out of
+phase so as one pair slowly illuminate, the other pair will fade.
+<p>
+<IMG src="eyes1.gif">
+<p>
+
+<a href="http://www.youtube.com/watch?v=dGDh79zi7Fs">Video Demonstration</a></center>
+<p>
+
+<a name="picled"></a>
+
+<center><H3>Digital Fading Eyes Circuit Using a PIC</H3></center>
+<p>
+
+
+Another version of the circuit was done using a PIC microcontroller
+and a pair of high power 1/2 watt orange LEDs. The software uses a
+non-linear scale to generate a more linear visual response. LEDs are
+more efficient at lower power and a nonlinear reduction in current
+seems to obtain a more linear visual effect. The controller produces a
+PWM output in 50 steps which is buffered with a medium power transistor
+to drive the LEDs. The LEDs are connected to a 12 volt supply so that
+most any colored or white LEDs can be used in the range of 1.6 to 3.3 forward
+voltage. The cycle rate is selected with 4 switches allowing 16 settings
+from 4 cycles per second to 1 cycle in 15 seconds. The switches are
+read on startup so changing rate requires the PIC to be restarted with
+the new switch settings. The peak LED current is determined by the
+transistor emitter resistor (18 ohms) and will be about 4.3/18 = 239 mA.
+A smaller resistor will increase the current.
+<p>
+
+<a href="scope.htm">Scope waveform video of PWM output. Requires
+Windows Media Player.</a>
+<p>
+
+The transistor may get a little warm, but since the ramp is non-linear,
+the average current is about 50mA, so the worst case dissipation using
+only one LED at 2 volts would be; 12 - 4.3 - 2 = 5.7 across the
+transistor at 50mA, or 5.7 * .05 = 280 mW.
+<p>
+The circuit includes a 78L05 (low power 5 volt regulator) not shown on
+the drawing, so only one 12 volt power supply is needed. The high
+power jumbo orange LEDs can be found on ebay for about $1 each, but you
+may have to buy 5 or 10. I can supply the programmed PIC, and other parts
+without the power supply. Email if interested.
+
+<p>
+<IMG src="pic_led.gif">
+<p>
+<IMG src="pic_led.jpg">
+<p>
+
+
+<pre>
+Fading Eyes PIC16F628 Hex Code Listing:
+
+:10000000831603130F3086002030850083120310FF
+:100010000311831007309F008601FA30AE00FF30D5
+:10002000AF00DD20A50B1528C52086010608B320EA
+:10003000AE002E08AC003130A0000130AD002D081C
+:100040007A20A800AA002F02A900AB008617AA0BED
+:1000500027288613AB0B2A282808AA002908AB00FA
+:10006000AC0B26282E08AC00AD0AA00B1F282E08CA
+:10007000A500861786136520A50B39282E08A50034
+:100080006520A50B40282E08A5008617861365203D
+:10009000A50B45283130A0002D087A20A800AA0021
+:1000A0002F02A900AB008617AA0B54288613AB0BAE
+:1000B00057282808AA002908AB00AC0B53282E08A3
+:1000C000AC00AD03A00B4C281928FF30A200A20BF6
+:1000D00067280800A3012E08A400FF30A200A20B8D
+:1000E0006F28A30AA31D772886178613A301240B64
+:1000F0006C2808008207FE34FE34E734D234BF3463
+:10010000AE349E349034833477346C346234593452
+:1001100051344A3443343D34383433342E342A3461
+:100120002634233420341D341A341834163414344D
+:10013000123410340F340E340D340C340B340A34B2
+:1001400009340834073406340534053404340434DF
+:1001500003340334023402340134013401340134F1
+:100160000134013408008207FF34BF348F346B340C
+:1001700050343C342D3422341A3414340F340B34BC
+:10018000083406340434033402340B30A000200851
+:10019000EA2083169A008312200883169B001C1500
+:1001A00055309D00AA309D009C1483128C1FD628C8
+:1001B0008C131C11A00BC7280800A5010130831661
+:1001C0009B001C141A088312A40042302406031D4D
+:1001D000A50A080082072034423449344C344C3498
+:0E01E000203442344F345734443445344E34C6
+:02400E00103F61
+:00000001FF
+
+</pre>
+<p>
+<center><a href="index.html#menu">Menu</a></center>
+
+<HR>
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='fade_led.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+

@@ -1,0 +1,323 @@
+<html>
+<head><title>CMOS Serial Receiver</title></head>
+<body bgcolor="#ffffff">
+<a name="spr"></a>
+<center><h1>PC Serial Port Receiver</h1></center>
+<br><img  src="serial3.gif">
+<p><pre>
+ This circuit was designed to control a 32 channel Christmas light
+ show from the PC serial port. Originally designed with TTL logic,
+ it has been simplified using CMOS circuits to reduce component
+ count. It is a fairly simple, reliable circuit that requires only
+ 4 common CMOS chips (for 8 outputs), an optical isolator, and a
+ few discrete components. The schematic diagram (SERIAL.GIF)
+ illustrates the circuit with 16 outputs which can be expanded with
+ additional 8 bit shift registers.
+
+ Disclaimer
+
+ This circuit requires physical connections be made to the
+ computer's serial port (COM1 or 2). To the best of my knowledge,
+ it is difficult to cause damage to yourself or your computer
+ by improper connections to this port, but there is no guarantee
+ that damage will not result. Use caution when making any external
+ electrical connections.
+ 
+ Basic RS232 serial transmission
+ 
+ Serial data is transmitted from the PC as a series of positive and
+ negative voltages on a single wire which occur at predetermined
+ times established by the baud rate. Both the transmitter and
+ receiver must be operating at the same baud rate so that the
+ receiver knows when to expect the next bit of information. For the
+ PC serial port, baud rate and bit rate are the same thing, but this
+ is not necessarily true with modems that can detect more than two
+ states of the line.
+ 
+ In the quiescent state, with no load on the line, the voltage on
+ the transmit line (pin 2 of the 25 pin connector) will be about
+ -12 relative to the signal ground (pin 7), which corresponds to a
+ logical &quot;1&quot;. The output impedance of the serial port is about 1K
+ ohm which yields about 6 milliamps at 6 volts. A typical data
+ transmission frame consists of a start bit, 8 data bits, and one
+ to three stop bits. The start bit which is always positive,
+ signals the beginning of the transmission and is used by the
+ receiver to synchronize the clock so that the data bits can be
+ sampled at the proper times. After the 9th time interval passes
+ (start bit plus 8 data bits) a dead time occurs which allows the
+ receiver time to get ready for the next character. This dead time
+ is referred to as a stop bit, which is always negative or the same
+ as the quiescent state. The circuit described here requires two
+ stop bits of dead time for reliable operation. More sophisticated
+ circuitry would require only one.
+ 
+ Transmitted character examples
+ 
+ The letter &quot;A&quot; has a ASCII decimal value of 65. The &quot;1&quot; and &quot;64&quot;
+ bits are transmitted as a negative voltage (logical &quot;1&quot;), and the
+ others are transmitted as a positive voltage (logical &quot;0&quot;).
+ 64 + 1 = 65 = &quot;A&quot;
+ 
+ +       _____       _____________________________       _____
+        |     |     |                             |     |     |
+        |     |     |                             |     |     |
+ -  -----      -----                               -----       ---------
+         Start  D0    D1    D2    D3    D4    D5    D6    D7   Stop Stop
+ 
+ Decimal value   1     2     4     8    16    32    64    128
+ 
+ Receiver's
+ Clock _______    __    __    __    __    __    __    __    ____________
+              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+              |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+               --    --    --    --    --    --    --    --
+ 
+ The letter &quot;B&quot; has a ASCII decimal value of 66. The &quot;2&quot; and &quot;64&quot;
+ bits are transmitted as a negative voltage (logical &quot;1&quot;), and the
+ others are transmitted as a positive voltage (logical &quot;0&quot;).
+ 64 + 2 = 66 = &quot;B&quot;
+ 
+ +       ___________       _______________________       _____
+        |           |     |                       |     |     |
+        |           |     |                       |     |     |
+ -  -----            -----                         -----       ---------
+         Start  D0    D1    D2    D3    D4    D5    D6    D7   Stop Stop
+ 
+ 
+ Circuit operation
+ 
+ The input terminals (pins 1 and 2) of the optical isolator are
+ connected through a 1K resistor to the transmit and signal ground
+ pins of the PC's serial port (pins 2 and 7 of the 25 pin connector).
+ A small signal diode is connected across the isolator input
+ terminals to protect the isolator from reverse voltage. In the
+ idle state, the isolator input voltage will be about -0.7 volts
+ and the isolator LED and transistor will be off. When a start bit
+ is received, about 5 milliamps will flow through the isolator LED
+ causing the isolator transistor to conduct at about 80 microamps
+ which in turn causes the external switching transistor (Q1) to
+ turn off. The rising voltage at the collector of Q1 is coupled
+ through a 510 pF capacitor to produce a narrow positive pulse
+ which sets the Q output of the first RS data latch (1/2 CD4013)
+ and enables the dual NAND gate clock oscillator.
+ 
+ The clock oscillator runs at a frequency equal to the baud rate
+ (9600 Hz) and must maintain a frequency accuracy of less than 5%
+ over the temperature range. High stability R and C components
+ are recommended.
+ 
+ The clock output is delayed by one cycle so that the start bit
+ will not be received as a valid data bit. This is accomplished
+ by the two remaining NAND gates (1/2 CD4093) and the second RS
+ data latch (1/2 CD4013). One of these gates is used to invert
+ the clock phase so that the first clock edge seen by the latch
+ (clock pin 11) will be going the wrong direction and so ignored.
+ The remaining gate, which is enabled by the second latch, opens on
+ the third clock edge, but also inverts the clock phase, and so
+ supplies a falling clock edge to the counter and shift registers
+ which is again the wrong direction, and is ignored. The fourth
+ clock edge will be rising and active and will occur near the
+ middle (about 52 microseconds) of the first data bit which will be
+ shifted into the registers. The remaining 7 bits are shifted into
+ the registers on each successive rising clock edge. Data is
+ inverted at the register outputs, a logical &quot;1&quot; will correspond to
+ zero volts, and a logical &quot;0&quot; will correspond to +6 volts.
+ Transmitting character (255) will set all outputs low, and
+ transmitting character (0) will set them all high.
+ 
+ The 4017 decade counter increments one count on each rising clock
+ edge and resets both data latches on the 8th edge. This in turn
+ stops the clock and resets the counter, and the circuit remains in
+ a waiting state until the next start bit arrives. Two stop bits of
+ dead time are required to allow the voltage at the input of the
+ NAND gate (pin 2) to reach a logic &quot;1&quot; before the next start bit
+ arrives. Erratic operation may occur when 2 or more characters are
+ transmitted as a string and only one stop bit is used.
+
+ The circuit may be modified to run at different baud rates by
+ adjusting the clock frequency. This can be accomplished by
+ temporally connecting pin 6 of the CD4013 to the positive supply
+ and then selecting R and C values for the desired frequency. You
+ may need to use a 1% resistor or a couple 5% resistors in series
+ or parallel to get the value close enough. Or use a variable
+ resistor in series of about 10% the total value.
+ 
+ At 9600 baud, data output at the shift registers will be unstable
+ for about a millisecond per word while the incoming data bits
+ are shifted into the registers and the existing bits are shifted
+ out (into bit heaven). Higher baud rates will reduce this time
+ proportionally and the original circuit operates at 57.6K baud
+ to eliminate a slight flickering of the lights which was noticed
+ at 9600.
+ 
+ The 74HCT164 shift register outputs will sink or source about
+ 4 milliamps at 6 volts which can be increased with medium power
+ transistors or FETs to drive relay coils, incandescent lights
+ and other electronic devices. If relays are used, a small signal
+ diode will need to be added across the relay coil to suppress
+ the inductive voltage.
+
+ Power supply
+ 
+ It is recommended that 0.1 uF capacitors be installed near the
+ power pins of each CMOS device and a well regulated/filtered power
+ supply be used. For test purposes, a 6 volt battery will work
+ but the clock frequency will change slightly with power supply 
+ voltage variations.
+ 
+ CD4011 Quad NAND gate
+ 
+                14 | Vdd
+           ________|_______
+          |                |
+          |      CD4011    |
+          |    |____       |
+  1  -----|----|     \     |
+          |    |      0 ---|----- 3
+  2  -----|----|____/      |
+          |    |           |
+          |                |
+          |    |____       |
+  5  -----|----|     \     |
+          |    |      0 ---|----- 4
+  6  -----|----|____/      |
+          |    |           |
+          |                |
+          |    |____       |
+  8  -----|----|     \     |
+          |    |      0 ---|----- 10
+  9  -----|----|____/      |
+          |    |           |
+          |                |
+          |    |____       |
+  12 -----|----|     \     |
+          |    |      0 ---|----- 11
+  13 -----|----|____/      |
+          |    |           |
+          |________________|
+                   |
+                 7 | Vss
+ 
+ CD4013 Dual 'D' Type Flip-Flop
+ 
+               14 | Vdd
+          ________|_______
+         |                |
+  6 -----|   Set 1     Q1 |-----1
+  5 -----|      D1        |
+  3 -----| Clock 1     _  |
+  4 -----| Reset 1     Q1 |-----2
+         |                |
+         |     CD4013     |
+         |                |
+  8 -----|   Set 2     Q2 |-----13
+  9 -----|      D2        |
+ 11 -----| Clock 2     _  |
+ 10 -----| Reset 2     Q2 |-----12
+         |________________|
+                  |
+                7 | Vss
+  
+  CD4017  Decade Counter/Divider
+  
+               16 | Vdd
+          ________|_______
+         |                |
+         |     CD4017     |
+         |                |
+         |            &quot;0&quot; |----- 3
+         |            &quot;1&quot; |----- 2
+         |            &quot;2&quot; |----- 4
+ 14 -----| Clock      &quot;3&quot; |----- 7
+         |            &quot;4&quot; |----- 10
+ 13 -----| Clock      &quot;5&quot; |----- 1
+         | Enable     &quot;6&quot; |----- 5
+         |            &quot;7&quot; |----- 6
+ 15 -----| Reset      &quot;8&quot; |----- 9
+         |            &quot;9&quot; |----- 11
+         |      Carry out |----- 12
+         |________________|
+                  |
+                8 | Vss
+  
+  74HCT164  8 Bit Serial-In / Parallel-Out Shift Register
+  
+               14 | Vdd
+          ________|_______
+         |                |
+         |    74HCT164    |
+         |                |
+  1 -----| AND Gated   Q0 |----- 3
+         | Serial      Q1 |----- 4
+  2 -----| Inputs      Q2 |----- 5
+         |             Q3 |----- 6
+         |             Q4 |----- 10
+  9 ----0| Reset       Q5 |----- 11
+         | Active      Q6 |----- 12
+         | Low         Q7 |----- 13
+         |                |
+  8 -----| Clock          |
+         |________________|
+                  |
+                7 | Vss
+  
+  Serial port male D-SUB connectors as seen from outside the PC.
+  
+   1                         13         1         5
+  _____________________________        _____________
+ (  . . . . . . . . . . . . .  )      (  . . . . .  )
+  \  . . . . . . . . . . . .  /        \  . . . .  /
+    -------------------------            ---------
+   14                       25           6       9
+ 
+ Name                Output/Input       25 pin  9 pin
+ ---------------------------------------------------------
+ Transmit Data            O               2      3
+ Receive Data             I               3      2
+ Request To Send          O               4      7
+ Clear To Send            I               5      8
+ Data Terminal Ready      O              20      4
+ Data Set Ready           I               6      6
+ Ring Indicator           I              22      9
+ Data Carrier Detect      I               8      1
+ Signal ground            -               7      5
+ Power line ground        -               1      -
+ 
+ QBasic test program for 8 bit receiver
+ 
+ CLS
+ DEFINT A-Z
+ PRINT &quot;Test sequence in progress, press any key to quit.&quot;
+ OPEN &quot;COM1:9600,n,8,2,CD0,CS0,DS0,OP0,RS,TB2048&quot; FOR OUTPUT AS #1
+ Sequence:
+   FOR Bit = 0 TO 7
+   PRINT #1, CHR$(255 - (2 ^ Bit)); ' Set one of 8 outputs high.
+   SLEEP 1                          ' Wait 1 sec between characters.
+   IF INKEY$ &lt;&gt; &quot;&quot; THEN CLOSE : SYSTEM
+   NEXT Bit
+ GOTO Sequence
+ END
+
+</pre>
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+<a name="32bit_receiver"></a>
+<center><h4>PC Serial Receiver (57.6K Baud / TTL &amp; CMOS)</h4></center>
+
+<br><img  src="lights1.gif"  height=300 width=624>
+<center><a href="index.html#menu">Menu</a></center>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page3.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

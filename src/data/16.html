@@ -1,0 +1,74 @@
+
+<HTML>
+<HEAD>
+<title>Discrete LED Fading Circuit Using 5 Transistors</title>
+<META name="description" content="LED fading circuit using 5 transistors">
+<meta name="keywords" content="LED, fade, circuit, red, eyes, transistor, electronics, hobby">
+<meta name "author" content ="Bill Bowden">
+</HEAD>
+<BODY>
+<blockquote>
+
+<center><H3>Discrete LED Fading Circuit Using 5 Transistors</H3>
+<br>
+<img src="desfade.jpg"><p></center>
+<p>
+
+Circuit Description:
+<p>
+
+This idea uses only descrete parts and no ICs to fade a pair of red LEDs.
+The circuit employs 5 transistors, 8 resistors, 2 red LEDs and one capacitor.
+The ramp output is not as linear as the circuit using the 1458 opamp, but the
+visual effect is fairly close. See the scope picture below that illustrates
+linearity. It's about the same as you would get using a 555 timer. The circuit
+is basically the same as the Schmitt Trigger Oscillator in the misc section,
+with the addition of two NPN transistors in a darlington arrangement to buffer
+the ramp output at the top of the capacitor. The transistors can be almost any
+general purpose NPN, PNP types such as 2N3904, 2N3906. Ramp time (up or down)
+is approximately 3/4 RC so that a 100uF cap and 20K resistor yields about
+1.5 seconds.
+
+The LED peak current is about 20mA. This is worked out from the peak ramp
+voltage of 6 volts minus the 600mV E/B drop on each of the transistors
+(Q1 and Q2) and also minus the LED voltage of 1.5. This leaves
+6 - 0.6 - 0.6 - 1.5 = 3.3 across the resistor in series with the lower LED.
+The resistor value will be R = 3.3 / 0.02 = 165 ohms, or 150 standard value.
+Since the collector current of Q1 is very close to the emitter current, the
+second LED can be placed in series with the collector of Q1 without any
+additional resistor.
+
+Adjustments to points where the LEDs just extinquish and reach maximum
+brightness can be made with the 20K resistor at the collector of Q5. Lowering
+the 20K will increase the ramp amplitude and cause the LEDs to extinguish
+earlier for a longer period. It will also increase the peak LED current at the
+top of the ramp which can be readjusted with the 150 ohm resistor so the peak
+LED current remains at approx 20mA.
+
+<p>
+
+<center>Scope display of the triangle waveform as seen on the capacitor<p>
+
+<img src="twf.jpg"><p>
+
+
+<a href="index.html#menu">Back to home page</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='desfade.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

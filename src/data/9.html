@@ -1,0 +1,762 @@
+<HTML>
+<HEAD>
+ <TITLE>PIC Digital Clock Timer</TITLE>
+ <!- author - Bill Bowden - 12/01/06 ->
+ <meta name="keywords" content="PIC, Microcontroller, clock, schematic, timer">
+</HEAD>
+<BODY BGCOLOR=white onLoad="setTime()">
+<H3><center>PIC Digital Clock Timer </center></H3>
+<blockquote>
+
+Note:
+
+There is a bug in this program that prevents the alarm from
+working if the minutes are set to zero. So, an alarm setting
+of 8:59 or 6:01 will work but 6:00 will not. The bug can be fixed
+by adding a program line to call the alarm routine after the
+hours are incremented.
+<pre>
+Current listing in the interrupt section is:
+
+           call        Alarm
+           movlw       d'60'
+           xorwf       MINUTES,0
+           btfss       STATUS,2        ; Check for 60 minutes
+           goto        Done            ; Jump out if not 60
+           clrf        MINUTES
+           incf        HOURS,f
+
+
+New listing should be:
+
+           call        Alarm
+           movlw       d'60'
+           xorwf       MINUTES,0
+           btfss       STATUS,2        ; Check for 60 minutes
+           goto        Done            ; Jump out if not 60
+           clrf        MINUTES
+           incf        HOURS,f
+           call        Alarm           ; New line added here
+</pre>
+This clock timer uses a PIC16F628 microcontroller to display 3 and 1/2
+digit time and control an external load. The clock includes a calendar
+with leap year and optional daylight savings adjustments. The timer
+output can be set from 1 to 59 minutes and manually switched on and off.
+The clock also has a correction feature that allows an additional second
+to be added every so many hours to compensate for a slightly slow
+running oscillator. The oscillator uses a common 32.768 KHz watch
+crystal and the frequency can be adjusted slightly with the 24pF
+capacitor on the right side of the crystal.
+<p>
+On bootup, the display should read 2:56 AM and other data can
+be displayed by toggling the advance switch (D). Each time the
+(D) switch is closed and opened, the display will advance to the
+next data. The order of displayed data and bootup values is as
+follows:
+<pre>
+Time       --------------------------------------------- (2:56)
+Alarm      --------------------------------------------- (6:30)
+Calendar   --------------------------------------------- (3:07)
+Weekday (Sunday=1), Seconds ---------------------------- (1:Seconds)
+AM/PM (Alarm)  (AM=0/PM=1), Timer Duration ------------- (0:45)
+AM/PM (Time)   (AM=0/PM=1), Daylight Savings Disabled -- (0:00)
+Year  (1 to 4)            , Error Correction  ---------- (2:18)
+<p>
+
+There are 7 displays that advance each time the 'D' switch is toggled.
+To make adjustments, set the RA5 switch to the "B" position and then
+toggle the E and F switches to advance the data in the hours or minutes
+digits. Then toggle the "D" switch to move to the next data. After the
+7th display, it will go back to the top and display the current time.
+Or, just press the time switch 'C' to get to the top at anytime.
+When done setting everything up, set the RA5 switch to the "A"
+position so the data cannot be accendentally changed. You can still view
+everything with the "D" advance key, but the E an F switches will just
+turn on or off the alarm at RB7. I use it with an external transistor to
+switch on and off a radio.
+
+The 'Daylight savings' setting (in the 6th display in the minutes digits)
+is used to enable daylight savings time adjustments, one hour ahead on the
+2nd sunday in March, and one hour behind on the first sunday in November.
+The entry will be either 0, 1, or 3.
+
+0 = Daylight savings time disabled (default).
+1 = Savings time enabled and current time is standard time.
+3 = Savings time enabled and current time is daylight savings time.
+
+The last 2 entries on the list (Year and Correction) is for the
+current year (1 to 4) (4 = Leapyear) so today's setting (2006) will
+be 2 since leapyear will be on year 4 which is 2 years from now.
+The correction setting will add a second every so many hours
+for fine adjustment to the oscillator frequency. My setting
+is 18 which adds a second every 18 hours. It's pretty accurate
+and only loses 3 seconds a month. You probably want to run it
+for a couple weeks to figure out what correction is needed for
+the crystal you have.
+
+Switch functions:
+
+RA0         (C switch)         =  Display Time
+RA1         (D switch)         =  Advance to next data (alarm, calendar, etc)
+RA2, RA3    (E and F switch)   =  Advance hours and minutes (in setup mode).
+RA2, RA3    (E and F switch)   =  Toggle alarm output on/off (in run mode)
+RA5 in the 'B' position (open) =  Setup Mode
+
+<p><img src="pic_clk.gif">
+<p>
+
+ ;------------Program Listing, Clock.asm - REV 1 - 11/08/06 ---------
+
+ LIST P=16F628   ; Device number (PIC16F628)
+
+ ERRORLEVEL -224 ; suppress annoying message because of tris
+ ERRORLEVEL -302 ; suppress message because of page change
+
+;--------------------- Configuration ---------------------------------
+
+_BODEN_OFF             equ     H'3FBF' ; Brown out detection off
+_CP_OFF                equ     H'3FFF' ; Code protection off
+_PWRTE_ON              equ     H'3FF7' ; Power-on reset enabled
+_WDT_OFF               equ     H'3FFB' ; Watch dog timer off
+_LVP_OFF               equ     H'3F7F' ; Low Voltage programming off
+_INTRC_OSC_NOCLKOUT    equ     H'3FFC' ; Use Internal RC Oscillator
+_MCLRE_OFF             equ     H'3FDF' ; Use RA5 as functional input
+
+  __CONFIG _CP_OFF & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _PWRTE_ON & _LVP_OFF & _BODEN_OFF & _MCLRE_OFF
+
+
+;--------------------- Define Variables -------------------------------
+
+INDF                   equ     00h
+FSR                    equ     04h
+CMCON                  equ     1Fh     ; Comparator Control Address
+INTCON                 equ     0Bh     ; Interrupt control register
+OPTION_REG             equ     81h     ; Option register
+STATUS                 equ     03h     ; Status register
+TRISA                  equ     85h     ; I/O control for port A
+TRISB                  equ     86h     ; I/O control for port B
+PORTB                  equ     06h     ; Address of port B
+PORTA                  equ     05h     ; Address of port A
+PC                     equ     02h     ; Program counter
+COUNTER                equ     20h     ; Addresses 20H-7FH = general RAM
+
+HOURS                  equ     21h     ; These 20 addresses for display
+MINUTES                equ     22h
+HOURS_A                equ     23h
+MINUTES_A              equ     24h
+MONTH                  equ     25h
+DAYS                   equ     26h
+WEEKDAY                equ     27h
+SECONDS                equ     28h
+AMPM_A                 equ     29h
+TIMER_LIMIT            equ     2ah
+AMPM                   equ     2bh
+DAYLIGHT               equ     2ch
+YEAR                   equ     2dh
+CORRECTION             equ     2eh
+
+
+TEMP                   equ     35h     ; Value passed to Digits routine
+TENS                   equ     36h     ; Value returned from Digits routine
+TEMPW                  equ     37h     ; Used in interrupt to save w
+SWITCH                 equ     38h     ; Value returned from switches
+
+STATUS_SAVE            equ     39h     ; Interrupt (save status)
+TEMP1                  equ     3ah     ; Part of delay routine
+ALARM                  equ     3bh     ; Alarm on/off (bit 7 set =on)
+; BLANK                equ     3ch     ; Not used
+LIMIT                  equ     3dh     ; Increments every hour to (correction)
+TEMP_SAVE              equ     3eh     ; Saves a copy of TEMP
+TIMER                  equ     3fh
+AMPM_LED               equ     40h
+
+
+
+;--------------------- Program Starts here --------------------------
+
+           goto        INIT
+
+;--------------------- Interrupt routine to update time -------------
+
+           org         0x04
+           movwf       TEMPW           ; Save w
+           swapf       STATUS,0        ; Get status register into w
+           movwf       STATUS_SAVE     ; Save status register
+           bcf         STATUS,5        ; Go to bank 0 (00)
+           incf        SECONDS,f       ; Advance seconds
+
+           movlw       d'60'
+           xorwf       SECONDS,0
+           btfss       STATUS,2        ; Check for 60 seconds
+           goto        Done            ; Jump out if not 60
+           clrf        SECONDS
+           incf        MINUTES,f
+
+           call        Alarm
+           movlw       d'60'
+           xorwf       MINUTES,0
+           btfss       STATUS,2        ; Check for 60 minutes
+           goto        Done            ; Jump out if not 60
+           clrf        MINUTES
+           incf        HOURS,f
+
+           call        Daylight
+           call        Add_Second      ; Compensate for slow oscillator
+
+           movlw       d'13'
+           xorwf       HOURS,0
+           btfss       STATUS,2        ; Check for 13 hours
+           goto        Noon            ; Jump out if not 13
+           clrf        HOURS
+           incf        HOURS,f         ; Set hours to 1:00
+
+Noon
+           movlw       d'12'
+           xorwf       HOURS,0
+           btfss       STATUS,2        ; Check for 12 hours
+           goto        Done            ; Jump out if not 12
+
+           incf        AMPM,f
+           bcf         AMPM,1          ; Clear Bit 1 to stop overflow
+           btfsc       AMPM,0          ; AM = Bit 0 clear
+           Goto        Done
+
+           incf        DAYS,f
+           movfw       MONTH
+           call        Table
+           xorwf       DAYS,0          ; Check for Days = Limit
+           btfss       STATUS,2
+           goto        WeekDay
+
+           clrf        DAYS
+           incf        DAYS,f
+           incf        MONTH,f
+           movlw       d'13'
+           xorwf       MONTH,0
+           btfss       STATUS,2        ; Check for new year
+           goto        WeekDay
+           clrf        MONTH
+           incf        MONTH,f
+           incf        YEAR,f
+           movlw       d'5'
+           xorwf       YEAR,0
+           btfss       STATUS,2
+           goto        WeekDay
+           clrf        YEAR
+           incf        YEAR,f
+WeekDay
+           incf        WEEKDAY,f
+           movlw       d'8'
+           xorwf       WEEKDAY,0
+           btfss       STATUS,2        ; Check for new week
+           goto        Leap
+           clrf        WEEKDAY
+           incf        WEEKDAY,f       ; Set weekday to 1 = Sunday
+Leap
+           movlw       d'2'
+           xorwf       MONTH,0
+           btfss       STATUS,2
+           goto        Done
+           movlw       d'29'
+           xorwf       DAYS,0
+           btfss       STATUS,2
+           goto        Done
+           movlw       d'4'
+           xorwf       YEAR,0
+           btfsc       STATUS,2
+           goto        Done
+           movlw       d'3'
+           movwf       MONTH
+           clrf        DAYS
+           incf        DAYS,f
+Done
+           bcf         INTCON,2
+           swapf       STATUS_SAVE,0
+           movwf       STATUS
+           swapf       TEMPW,f
+           swapf       TEMPW,0
+           retfie
+
+;--------------------- End Interrupt Procedure ----------------------
+
+
+INIT ;     Initialize variables
+
+           bsf         STATUS,5       ; Select memory bank 1 (01)
+           bcf         STATUS,6       ; Select memory bank 1 (01)
+           movlw       b'00000000'
+           movwf       TRISB          ; Set port B as output
+           movlw       b'01110000'    ;
+           movwf       TRISA          ; Set port A as output, RA4,5,6=Input
+           bsf         OPTION_REG,5   ; Select Timer0 (TOCS=1)
+           bcf         OPTION_REG,3   ; Assign prescaler to timer0
+           bcf         OPTION_REG,0   ; Set prescaler to 128
+           bcf         STATUS,5       ; Reset to bank 0
+           bcf         STATUS,0       ; Clear carry bit
+           bcf         STATUS,2       ; Clear zero flag
+           bcf         STATUS,1       ;
+           bsf         INTCON,5       ; Enable timer0 interrupt
+           bcf         INTCON,2       ; Clear interrupt flag
+           bsf         INTCON,7       ; Enable global interrupt
+           movlw       07h
+           movwf       CMCON          ; Comparators off
+
+           movlw       d'2'
+           movwf       HOURS          ; Initialize hours to 2
+           movlw       d'56'
+           movwf       MINUTES        ; Inititlize minutes to 56
+
+           movlw       d'6'
+           movwf       HOURS_A        ; Initialize alarm hours to 6
+           movlw       d'30'
+           movwf       MINUTES_A
+
+           movlw       d'3'
+           movwf       MONTH          ; Initialize Month to March, 7
+           movlw       d'7'
+           movwf       DAYS
+
+           movlw       d'1'
+           movwf       WEEKDAY        ; Initialize weekday to Sunday (1)
+           clrf        SECONDS
+
+           clrf        AMPM           ; Initialize AMPM to AM
+           movlw       d'45'
+           movwf       TIMER_LIMIT    ; Initialize alarm timer to 45
+           clrf        AMPM_A
+           clrf        DAYLIGHT       ; Turn off daylight savings time
+
+           movlw       d'2'
+           movwf       YEAR           ; Set year to 2 (Leap year=4)
+           movlw       d'18'
+           movwf       CORRECTION     ; Add 1 second every 18 hours
+
+           clrf        ALARM          ; Turn off alarm
+           clrf        TIMER
+           clrf        LIMIT
+           clrf        AMPM_LED
+
+           movlw       h'21'
+           movwf       FSR            ; Address pointer points to Hours
+           movlw       d'15'
+           movwf       SWITCH
+ 
+           goto        Main
+
+Array                               ; Data for 7 segment digits
+           addwf       PC,1
+           retlw       b'01000000'  ; "0" 
+           retlw       b'01111001'  ; "1"
+           retlw       b'00100100'  ; "2"
+           retlw       b'00110000'  ; "3"  
+           retlw       b'00011001'  ; "4"
+           retlw       b'00010010'  ; "5"
+           retlw       b'00000010'  ; "6"
+           retlw       b'01111000'  ; "7"
+           retlw       b'00000000'  ; "8"
+           retlw       b'00010000'  ; "9"
+
+Table                               ; Days per month plus 1
+           addwf       PC,1
+           retlw       d'00'  ; Unused line
+           retlw       d'32'  ; Jan
+           retlw       d'30'
+           retlw       d'32'
+           retlw       d'31' 
+           retlw       d'32'  ; May
+           retlw       d'31'
+           retlw       d'32' 
+           retlw       d'32'
+           retlw       d'31'
+           retlw       d'32'
+           retlw       d'31'
+           retlw       d'32'  ; December
+
+
+Main    ; ------------ Main Loop ----------------------
+
+           call        Display      ; Display data
+           call        Read_Port    ; Check for switch closed
+
+
+           movlw       d'14'        ; Check for time switch closed
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Set_Time
+           movlw       h'21'
+           movwf       FSR
+
+Set_Time
+           movlw       d'46'        ; Check for time switch and RA5 closed
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Increment_Display
+           movlw       h'21'
+           movwf       FSR
+
+Increment_Display
+
+           movlw       d'13'
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Function        ; Function key not hit (13)
+           call        Wait            ; Wait for switch to open
+           call        Increment_Pointer
+
+Function
+           movlw       d'45'
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Increment_100s  ; Function key not hit (13)
+           call        Wait            ; Wait for switch to open
+           call        Increment_Pointer
+
+Increment_100s   ;     On plus RA5 = 32 + 11 = 43
+
+           movlw       d'43'
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Increment_10s
+           call        Wait
+
+           incf        INDF,f
+           movlw       d'13'          ; Rollover at 12
+           xorwf       INDF,0
+           btfsc       STATUS,2
+           clrf        INDF
+
+Increment_10s                         ; RA5 + alarm off = 39
+
+           movlw       d'39'
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Alarm_Toggle
+           call        Wait
+           incf        FSR,f
+           incf        INDF,f
+           movlw       d'60'           ; Rollover at 60
+           xorwf       INDF,0
+           btfsc       STATUS,2
+           clrf        INDF
+
+           movlw       h'28'           ; Check for Seconds display
+           xorwf       FSR,0
+           btfsc       STATUS,2
+           clrf        SECONDS         ; Zero seconds
+           decf        FSR,f
+
+Alarm_Toggle
+
+           movlw       d'7'            ; Alarm Off
+           xorwf       SWITCH,0
+           btfsc       STATUS,2
+           bcf         ALARM,7
+           movlw       d'11'           ; Alarm On
+           xorwf       SWITCH,0
+           btfss       STATUS,2
+           goto        Main
+           bsf         ALARM,7
+           clrf        TIMER
+           goto        Main
+
+;--------------------- End of Main Loop ------------------------------
+
+Output                                 ; Write data to port B
+           call        Array
+           iorwf       ALARM,0
+           movwf       PORTB
+           return
+
+
+Delay   ;------------------------ Delay ---- about 600 uS ------------
+
+           movlw       d'25'
+Delay_0
+           movwf       TEMP1
+Delay_1    movwf       COUNTER
+Delay_2    decfsz      COUNTER,f
+           goto        Delay_2
+           decfsz      TEMP1,f
+           goto        Delay_1
+           return
+
+Digits ; Converts value in TEMP to 2 single digits  - TENS and TEMP
+
+           clrf        TENS
+           movlw       d'10'
+Loop
+           incf        TENS,f
+           subwf       TEMP,f
+           btfss       STATUS,0
+           goto        Ones
+           goto        Loop
+Ones
+           decf        TENS,f
+           addwf       TEMP,f
+           return
+Read_Port                             ; Look to see if switch is closed
+           movlw       d'127'
+           movwf       PORTA
+           iorwf       ALARM,0        ; add alarm bit
+           movwf       PORTB          ; Set port B to high level
+           bsf         STATUS,5       ; Select bank 1 (01)
+           movlw       b'01111111'
+           movwf       TRISA          ; Set port A as input, RA7=output
+           movlw       b'00111111'
+           movwf       TRISA          ; Set RA6 to output
+           bcf         STATUS,5       ; Return to bank 0 (00)
+           bcf         PORTA,6        ; Low level on RA6
+           movlw       d'10'
+           call        Delay_0        ; Wait
+           movfw       PORTA          ; Read the pins
+           movwf       SWITCH
+           bsf         STATUS,5       ; Select Bank 1
+           movlw       b'01111111'
+           movwf       TRISA          ; Set port A to input
+           movlw       b'01110000'
+           movwf       TRISA          ; Set porta,0,1,2,3 to output
+           bcf         STATUS,5       ; Return to Bank 0
+           movlw       b'00101111'    ; RA5 is normally 0
+           andwf       SWITCH,f       ; Switch returns value 0 to 47
+
+           return
+Alarm
+           incf        TIMER,f
+           movfw       TIMER_LIMIT    ; Default is 45 minutes
+           xorwf       TIMER,0
+           btfsc       STATUS,2
+           bcf         ALARM,7
+           movfw       HOURS
+           xorwf       HOURS_A,0
+           btfss       STATUS,2
+           return
+           movfw       MINUTES
+           xorwf       MINUTES_A,0
+           btfss       STATUS,2
+           return
+           movfw       AMPM
+           xorwf       AMPM_A,0
+           btfss       STATUS,2
+           return
+           bsf         ALARM,7
+           clrf        TIMER
+           return
+
+Add_Second
+           incf        LIMIT,f
+           movfw       CORRECTION
+           xorwf       LIMIT,0
+           btfss       STATUS,2
+           return
+           incf        SECONDS,f
+           clrf        LIMIT
+           return
+
+Daylight  ;----------------------- Daylight savings adjustment
+
+           btfss       DAYLIGHT,0  ; Bit 0 set = Daylight enabled
+           return
+
+           movlw       d'1'        ; Check for Sunday
+           xorwf       WEEKDAY,0
+           btfss       STATUS,2
+           return
+
+           movlw       d'3'        ; Adjust daylight at 3AM
+           xorwf       HOURS,0
+           btfss       STATUS,2
+           return
+
+           btfsc       AMPM,0      ; Adjust daylight if AM
+           return
+
+           movlw       d'3'
+           xorwf       MONTH,0
+           btfss       STATUS,2
+           goto        MinusHour
+           btfss       DAYS,3      ; Bit 3 must be set for 2nd Sunday
+           return
+           btfsc       DAYLIGHT,1  ; Bit 1 set = Correction done (March)
+           return
+           incf        HOURS,f
+           bsf         DAYLIGHT,1  ; Correction done
+           return
+
+MinusHour  ;---------- Subtract 1 hour on 1st Sunday in November
+
+           movlw       d'11'
+           xorwf       MONTH,0
+           btfss       STATUS,2
+           return
+           btfss       DAYLIGHT,1  ; Bit 1 set = Do Correction
+           return
+           decf        HOURS,f
+           bcf         DAYLIGHT,1  ; Bit 1 clear = Correction done
+           return
+
+Display   ; -------------------- Display Data -----------------------
+
+           clrf        AMPM_LED     ; AMPM off
+           movlw       h'21'
+           xorwf       FSR,0
+           btfss       STATUS,2
+           goto        $ +3
+           btfsc       AMPM,0
+           bsf         AMPM_LED,7   ; Add AMPM light (time)
+
+           movlw       h'23'
+           xorwf       FSR,0
+           btfss       STATUS,2
+           goto        $ +3
+           btfsc       AMPM_A,0
+           bsf         AMPM_LED,7   ; Add AMPM light (alarm)
+
+
+           movfw       INDF         ; Get 100s data
+           movwf       TEMP
+           call        Digits
+
+           btfss       TENS,0
+           goto        Ones_Hours
+
+           movfw       TENS         ; Light 10s Hours LED
+           call        Output
+           movlw       d'14'
+           iorwf       AMPM_LED,0   ; Add AMPM light if time or alarm
+           movwf       PORTA
+           call        Delay
+Ones_Hours
+           movfw       TEMP
+           call        Output
+           movlw       d'13'
+           iorwf       AMPM_LED,0   ; Add AMPM light if time or alarm
+           movwf       PORTA
+           call        Delay
+
+           incf        FSR,f
+           movfw       INDF
+           movwf       TEMP
+           call        Digits
+
+           movfw       TENS
+           call        Output
+           movlw       d'11'
+           iorwf       AMPM_LED,0   ; Add AMPM light if time or alarm
+           movwf       PORTA
+           call        Delay
+
+           movfw       TEMP
+           call        Output
+           movlw       d'7'
+           iorwf       AMPM_LED,0   ; Add AMPM light if time or alarm
+           movwf       PORTA
+           call        Delay
+           decf        FSR,f
+
+           return
+
+Wait                                ; Wait until switches are open
+
+           call        Display
+           call        Read_Port
+           movlw       d'15'        ; Switches open in run mode
+           xorwf       SWITCH,0
+           btfsc       STATUS,2
+           return
+           movlw       d'47'        ; Switches open in program mode
+           xorwf       SWITCH,0
+           btfsc       STATUS,2
+           return
+           goto        Wait
+
+Increment_Pointer
+
+           incf        FSR,f           ; Increment Pointer 2 steps
+           incf        FSR,f
+           movlw       h'2f'
+           xorwf       FSR,0
+           btfss       STATUS,2
+           return
+           movlw       h'21'
+           movwf       FSR             ; Set Pointer to Time display
+           return
+
+           end
+
+-------------------------Compiled HEX code --------------------------
+
+:0200000059287D
+:08000800B700030EB9008312DA
+:10001000A80A3C302806031D5328A801A20A122171
+:100020003C302206031D5328A201A10A2E212621BD
+:100030000D302106031D1E28A101A10A0C30210646
+:10004000031D5328AB0AAB102B185328A60A25080A
+:1000500097202606031D3C28A601A60AA50A0D30F6
+:100060002506031D3C28A501A50AAD0A05302D066D
+:10007000031D3C28AD01AD0AA70A08302706031D61
+:100080004328A701A70A02302506031D53281D3067
+:100090002606031D532804302D0603195328033068
+:1000A000A500A601A60A0B11390E8300B70E370E64
+:1000B0000900831603130030860070308500811616
+:1000C0008111011083120310031183108B160B1181
+:1000D0008B1707309F000230A1003830A200063095
+:1000E000A3001E30A4000330A5000730A600013095
+:1000F000A700A801AB012D30AA00A901AC01023074
+:10010000AD001230AE00BB01BF01BD01C001213006
+:1001100084000F30B800A528820740347934243495
+:1001200030341934123402347834003410348207F5
+:10013000003420341E3420341F3420341F34203443
+:1001400020341F3420341F3420344E21FA200E3046
+:100150003806031DAD28213084002E303806031DDB
+:10016000B328213084000D303806031DB9287E21C4
+:1001700089212D303806031DBF287E2189212B308F
+:100180003806031DC9287E21800A0D300006031998
+:10019000800127303806031DD9287E21840A800A71
+:1001A0003C30000603198001283004060319A80119
+:1001B0008403073038060319BB130B303806031DC0
+:1001C000A528BB17BF01A5288C203B04860008008A
+:1001D0001930BA00A000A00BEB28BA0BEA280800DF
+:1001E000B6010A30B60AB502031CF728F228B60396
+:1001F000B50708007F3085003B04860083167F30FA
+:1002000085003F308500831205130A30E920050878
+:10021000B80083167F3085007030850083122F3040
+:10022000B8050800BF0A2A083F060319BB132108B6
+:100230002306031D080022082406031D08002B08BE
+:100240002906031D0800BB17BF010800BD0A2E08C0
+:100250003D06031D0800A80ABD0108002C1C08006B
+:1002600001302706031D080003302106031D080086
+:100270002B18080003302506031D4529A61D08007C
+:10028000AC180800A10AAC1408000B302506031DA9
+:100290000800AC1C0800A103AC100800C00121300C
+:1002A0000406031D55292B18C01723300406031D0F
+:1002B0005B292918C0170008B500F020361C6629F4
+:1002C0003608E4200E3040048500E8203508E4209C
+:1002D0000D3040048500E820840A0008B500F020B5
+:1002E0003608E4200B3040048500E8203508E4207F
+:1002F000073040048500E820840308004E21FA20DE
+:100300000F303806031908002F303806031908008B
+:100310007E29840A840A2F300406031D0800213038
+:04032000840008004D
+:02400E00103F61
+:00000001FF
+
+</pre>
+
+<center><a href="index.html#menu">Menu</a></center>
+<hr size=1>
+
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='pic_ck.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

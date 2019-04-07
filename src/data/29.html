@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>Buck Converter.</title>
+<META name="description" content="Buck Converter LED Driver">
+<META name="keywords" content="Buck, Converter, LED, Driver,
+ schematic, DIY, battery, charger">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+ <a name="buck.jpg"></a>
+ <center><h1>Buck Converter (1 Watt White LED Driver)</h1>
+ <br><img src="buck.gif"></center><p>
+ <pre>
+
+ This is an example of efficiently driving a 1 watt white LED from a 12 volt
+ battery using a buck converter. The LED could simply be connected with a
+ series resistor to get the desired current, but the efficiency would be
+ only 25% since the resistor would drop 9 volts while the LED only requires
+ 3. The buck converter provides about 90% efficiency.
+
+ The idea is to establish a circulating current through the inductor, diode
+ and load, while the switch replenishes the lost load energy on each cycle.
+ The duty cycle of the switch will be the output voltage divided by the input
+ voltage, or about 3/12  (25%) in this case. It's actually a little greater
+ since there is a small (2.2 ohm) resistor in series with the LED that drops
+ about 0.5 volt, so the total load is about 3.7 volts and the duty cycle is
+ around 31%. The circuit could also be used to charge AA batteries from a
+ 12 volt source with adjustment to the duty cycle.
+
+ The driver section uses a CMOS hex inverter (CD4069) where two of the
+ inverters form an oscillator with 31% duty cycle at about 11.5 Khz,
+ or 66us off time, and 21uS on time for the MOSFET switch. The remaining 4
+ inverters are used in parallel to provide additional drive current to
+ the gate of the MOSFET. The duty cycle can be adjusted with either the
+ 15K or 20K resistors.
+
+ The minimum inductor value was worked out from E = L * di/dt and a LED
+ current of 250mA. The minimum value is where the current falls to 0 during
+ the switch off time, or 66uS. The peak inductor current would then be twice
+ the average or 500mA and the inductor will charge from 0 to 500mA in 21uS.
+ So, di/dt is 0.5 /.000021 = 23810 amps per second. The inductor voltage
+ (E) will be 12 minus the load voltage 3.7 or 8.3 volts and the minimum
+ inductor value L will be 8.3 / 23810 = 0.35 mH. The actual value used should
+ be somewhat higher to avoid the current falling to zero and to avoid large
+ peak currents and possible saturation. The example here uses a approximate
+ 2 mH inductor so the change in current is about 100mA and the peak current
+ is lower at about 300mA. The current waveform is shown in the LTspice
+ picture below. Notice the current ramps from about 50mA below the average
+ current to about 50mA above the average or about 100mA total change. The
+ 15 ohm resistor in the LTspice picture represents the LED plus a 2.2 ohm
+ resistor. The MOSFET is represented by the SW (switch) component, and the
+ drive circuit by the V3 symbol.
+
+ </pre>
+ <img src="current.jpg"><p>
+ <pre>
+
+ The inductor (pictured below) should be rated for saturation current of more
+ than the peak current, or maybe 300mA in this case. The toroid inductor
+ used is fairly large for the task measuring about 1.5 inches diameter with
+ 20 turns of #18 wire. The core is conductive so it probably should be taped
+ in case the wire insulation fails. The picture shows the naked core for
+ illustration. A smaller core with an air gap could be used to avoid
+ saturation, but would require more wire which would add to the losses due
+ to the wire resistance. Another approach is to use a higher frequency so
+ smaller inductors can be used. But this will add to losses since there would
+ be more switching transitions per unit of time, which adds to the loss.
+ The diode is a VSK330 schottky 3 amp variety for low loss, but most any
+ 1 amp rectifier could be used with somewhat less efficiency. The IRFZ44
+ MOSFET is also an overkill rated at 50 amps max but very low on-resistance
+ of only 28 milliohms. A much smaller device could be used, but I don't have
+ the numbers.
+
+ Note the circuit has no regulation, so the 12 volt input should be stable.
+ If the battery voltage varies, the duty cycle and LED current should be set
+ using the highest expected supply voltage.
+
+ </pre>
+ <img src="core.jpg"><p>
+ </blockquote>
+ <!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='buck.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+ </html>
+
+

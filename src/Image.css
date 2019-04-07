@@ -1,0 +1,71 @@
+
+:root{
+    --image-margin: 16px;
+    --image-margin-double: calc(var(--image-margin) * 2);
+}
+
+.box-default {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 250px;
+    position: relative;
+    
+    border: 1px solid #333;
+
+
+
+    margin : 16px;
+}
+.box-default::after{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left:0;
+    content: "";
+    z-index: 1;
+    transition: box-shadow 0.33s;
+}
+.box-default:hover::after {
+    box-shadow: inset 0 0 18px #c6c6c6;
+}
+
+.image-default {
+    height: 110%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.box-full {
+    width: calc(100% - var(--image-margin-double));
+}
+
+.box-ratio-3 {
+    width: calc(100% * 0.3 - var(--image-margin-double));
+}
+
+.box-ratio-4 {
+    width: calc(100% * 0.4 - var(--image-margin-double));
+}
+
+.box-ratio-5 {
+    width: calc(100% * 0.5 - var(--image-margin-double));
+}
+
+.box-ratio-6 {
+    width: calc(100% * 0.6 - var(--image-margin-double));
+}
+
+.box-ratio-7 {
+    width: calc(100% * 0.7 - var(--image-margin-double));
+}
+@media (max-width: 570px){
+    .box-full, .box-ratio-3,.box-ratio-4,.box-ratio-5,.box-ratio-6,.box-ratio-7{
+        width: 100%;
+        margin: 0;
+        margin-top: var(--image-margin);
+        margin-bottom: var(--image-margin);
+    }
+}

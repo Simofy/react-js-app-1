@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>Perpetual Swinging Pendulum
+</title>
+<META name="description" content="Perpetual Swinging Pendulum">
+<META name="keywords" content="pendulum, circuit, swinging,
+ schematic, perpetual, magnet, neodymium, novelty, hobby">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<center><h2> Perpetual Swinging Pendulum </h3>
+<br><img  src="swinger.jpg"><p>
+<a href="swinger.wmv">Video Demo in WMV format. </a>
+
+</center><h4>
+
+<a href="http://nutsvolts.texterity.com/nutsvolts/201208/?folio=32#pg32">
+Original document and schmatic can be viewed here</a>
+
+<pre>
+
+This project originally appeared in "Nuts and Volts" magazine August 2012
+by David Williams. It was titled "Build The Mystery Solar Powered Pendulum"
+and can be viewed at the link above. It has been adapted here to operate
+from a couple AA cells. The circuit board, magnetic coil, and battery are
+contained in a wooden cigar box, with balsa wood supports for the pendulum.
+A neodymium magnet is placed at the base of the pendulum and held in place
+by the attraction of a small flathead screw at the bottom of the pendulum.
+The magnet can be removed by just pulling it off. The magnet measures 1 inch
+diameter by 1/8 thick and has a clearance of 1/8 inch from the top of the box.
+Smaller neodymium magnets can be used. The coil measures about 1.5 inch diameter
+by 5/8 wide and was wound with 150 feet of #33 wire (approximately 900 turns)
+and is located inside the box in the center of the top. The coil measures about
+3.5 millihenries with 30 ohms of resistance. The height of the balsa wood
+supports is about 10 inches spaced 8 inches apart which yields a pendulum
+period of about 1 second. The video shows the pendulum starting up and gaining
+amplitude. It should start from a stand-still, or you can give it a little
+nudge to getting it going. Two modifications were made to allow the circuit
+to operate on a 3 volt battery. R2 was lowered to 56K and a 330 ohm resistor
+was added in series with the battery to simulate the higher impedance of
+the original solar cell.
+
+----------- An alternate circuit for the Swinging Pendulum --------------
+
+<br><img  src="swinger.gif"><p>
+
+Above is another approach to the Swinging Pendulum circuit using a dual
+op-amp and a few more parts. It operates on three 'C' cells (4.5 volts) at
+about 2 milliamps for a running time of about 5 months. The coil was wound
+with about 3000 turns of #34 copper wire for a total resistance of around
+150 ohms. The pulse width generated as the magnet passes over the coil is
+about 25mS. The pendulum period is about 1 second so the duty cycle is about
+5% The coil current is 4.5/150 or maybe 30 milliamps so the average coil
+current would be 30 * .05 = 1.5 milliamps. The LM358 draws about 1/2  millamp
+so the total circuit current is about 2 milliamps. The alkaline C cell
+batteries are rated at 7000 maH, so the running time would be 3500 hours or
+maybe 145 days, but I haven't measured it yet.
+
+In operation, as the magnet swings past the coil (L1), a single cycle
+(20 Hz) sine wave of about 600mV peak is generated at the collector of the
+transistor (2N3904). The op-amp responds to the negative half cycle and
+causes the output at pin 1 to move positive about 1 volt above the 2.2 volt
+reference at pin 6. This causes the output at pin 7 to move positive and turn
+on the transistor and supply a short (23mS) pulse to the coil and give the
+magnet a slight push to keep it going. The pulse duration is about R*C, or
+470K * 0.05uF = 23 milliseconds.
+
+Notes:
+
+The magnet used is a neodymium type measuring 1/2 inch diameter by 1/8 thick.
+Larger magnets could be used.
+
+The gain of the first op-amp stage (pins 1,2,3) is the ratio of the feedback
+resistor (470K) to the capacitive reactance of the 0.05uF capacitor at 20 Hz
+or about 470/160 = 2.9. Other values of R and C could be used, but the ratio
+should be the same to maintain the same pulse width. The second op-amp
+(pins 5,6,7) is used as a comparator where the output switches high when the
+input at pin 5 is more positive than the (2.3) reference at pin 6.
+
+The reference voltage at pin 3 of the first op-amp is worked out from the
+supply voltage (4.5) divided by the total divider resistance
+(56K + 20K + 39K) times the 39K resistor. This would be (4.5/ 115K) * 39K
+= 1.526 volts. The reference voltage at pin 6 would be the same divider
+current (4.5/115K) = 39 microamps times the sum of the 2 resistors (39K ,20K)
+or about .000039* 59000 = 2.3 volts. This gives us a fairly good margin
+where the static state is 1.5 volts, and the reference to the next stage
+is 2.3, so the output at pin 1 must move about 800 millivolts to switch
+the second stage (pin 7) and turn on the transistor. Since the gain of the
+first stage is about 3, the minimum input voltage from the coil is about
+800/3 = 267 millivolts. This is about the amplitude you can get by starting
+the pendulum about 3 inches or more from the coil. As it gets going, the
+pendulum will swing about 11 inches from the coil.
+
+A capacitor (.05uF) is used between pins 5 and 7 of the second op-amp to
+supress oscillations and provide positive feedback as the output switches on.
+The picture below illustrates the pulse waveform at pin 1 in red compared to
+the signal at pin 5 in green. The 2 waveforms are offset slightly for
+illustration, but are actually the same voltage level. Notice the oscillations
+at pin 1 are filtered out and do not appear at pin 5 of the second op-amp.
+
+<br><img  src="swing.jpg"><p>
+
+The picture below illustrates the RC waveform at pin 2 (green) compared to the
+output signal at pin 7 (red). The output at the collector of the transistor
+is the inversion of pin 7 and so provides a ground to the coil for about 25
+milliseconds which pushes the magnet away from the coil for about 25mS and
+keeps the pendulum swinging.
+
+<br><img  src="swing1.jpg"><p>
+
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='swinger.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

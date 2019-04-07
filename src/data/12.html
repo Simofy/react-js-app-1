@@ -1,0 +1,95 @@
+<html>
+<head><title>Digital Clock With Timer And Solar Panel Regulator</title></head>
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="dclock.gif"></a>
+<center><h3>Digital Clock with Timer and Solar Panel Regulator</h3></center>
+
+
+This is a combination digital clock timer and solar panel charge
+controller used to maintain a deep cycle battery from a solar panel.
+The timer output is used to control a 12 volt load for a 32 minute
+time interval each day. Start time is set using 9 dip switches
+and ends 32 minutes later. The 32 minute duration is set by selecting
+the 5th bit (2^5 = 32) of a 4040 binary counter (pin 2). The timer
+also has a manual toggle switch so the load can be manually switched
+on or off and automatically shuts off after 32 minutes. The time
+duration can be longer or shorter (8,16,32,64,128,256 minutes etc.) by
+selecting the appropriate bit of the counter. The timer circuit is
+shown in the lower schematic just above the regulator.
+<p>
+The basic clock circuit (top schematic below) is similar to the binary
+clock (on another page) and uses 7 ICs to produce the 20 digital bits
+for 12 hour time, plus AM and PM. A standard watch crystal oscillator
+(32,768) is used as the time base and is divided down to 1/2 half second
+by the 4020 binary counter. One half of a 4013 data latch is used to divide
+the 1/2 second signal by 2 and produce a one second pulse that drives the
+seconds counter (74HC390 colored purple). The minutes are advanced by
+decoding 60 seconds (40 + 20) and then resetting the seconds counter to 0
+and at the same time advancing the minutes counter. The same procedure is
+used to advance the hours. The second half of the 4013 latch is used to
+indicate AM or PM and is toggled by decoding 13 hours and resetting the
+hours to 0 and then advancing the hours to "one".
+<p>
+The clock display circuit is shown in the second drawing below and uses 6
+more ICs to decode the binary data and drive four seven segment LED
+displays. The 10s of hours digit is driven with a single 3904 transistor.
+Two multiplexer circuits (4053) are used to manually select either
+minutes or seconds for the right two display digits. The two switches
+shown between the 4053s and below the left 4053 are both part of one
+DPDT switch which selects either seconds or minutes for the 1X and 10X
+digits. This switch is shown in the seconds position and the hours digits
+are blanked with a low signal on pin 4 of the 4511. The display can also
+be toggled on and off (totally blank) using a set/reset latch made from
+a couple 74HC00 NAND gates. A momentary DPDT switch is used to control
+the latch and toggle the display on or off. The second pole of this switch
+is used on the upper drawing (connected to the run/stop switch) to set the
+hours and minutes. Thus this same switch performs both functions of blanking
+the display and setting the time. The run/stop switch is shown in the normal
+running mode and supplies a low signal to a NAND gate which prevents accidental
+setting the time while the clock is running. The run/stop switch also
+turns on the display (through the diode D2) when in the stop position. The
+procedure for setting the clock would be to set the (run/stop) switch the
+stop position and the (seconds/minutes) switch to the minutes position. Then
+toggle the momentary switch to set minutes and hours of the current time plus
+one minute. The clock can then be started with the run/stop switch at
+precisely the right time (+/- 0.5 seconds).
+<p>
+The voltage regulator in the lower drawing maintains the battery at
+13.6 volts and also supplies the clock and timer circuits with 4.3 volts.
+The charge LED indicator only comes on when the regulator is supplying
+max charge to the battery. When the battery voltage reaches 13.6 the
+regulator reduces the current to whatever is necessary to maintain the
+voltage and the charge indicator will turn off. The unit I built also
+included a battery condition indicator (voltmeter using 4 LEDs) to indicate
+the battery condition so that a failure of the regulator would be indicated
+by the charge indicator LED turned off and less than 4 LEDs lit on the
+voltmeter. The 4 LED battery condition indicator is shown on another page.
+<P>
+
+<h3><center>Basic Clock Circuit
+<p><img src="dclock1.gif">
+Clock Display Circuit
+<p><img src="dclock2.gif">
+Clock Timer Circuit
+<p><img src="dclock3.gif">
+Voltage Regulator (13.6 volts)
+<p><img src="ps-i05.gif">
+
+<a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='dclock.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>

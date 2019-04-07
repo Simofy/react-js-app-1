@@ -1,0 +1,144 @@
+
+<HTML>
+<HEAD>
+<title>IR Remote Control Key Test Circuit</title>
+<META name="description" content="IR Remote Control Test Circuit">
+<meta name="keywords" content="IR, Infra-red, circuit, LED, circuit, transistor, electronics, hobby">
+<meta name "author" content ="Bill Bowden">
+</HEAD>
+<BODY>
+<blockquote>
+
+<center><H2>IR Remote Control Test Circuit</H3>
+<br>
+<img src="ir_prob.jpg"><p>
+<p>
+<img src="ir_test.jpg"><p>
+<p>
+<img src="plot.jpg"><p></center>
+<p>
+
+Circuit Description:
+<p>
+
+The IR detector circuit is an example of a narrow band tuned radio frequency
+receiver (TRF) and can be used to test the keys of a common IR remote control.
+In operation, the suspect remote control is pointed toward the IR LED which
+receives the IR signal and then lights a white LED. It doesn't decode the IR
+message and only indicates that an IR signal at 36KHz is present. The circuit
+has a limited range of about 2 feet.
+<br><br>
+The circuit consists of broad band first stage, followed by a tuned narrow
+band second stage, followed by a diode rectifier and final output stage
+that lights the white LED. The overall gain of the circuit is about 60dB
+so that just a couple millivolts from the IR LED is needed to dimly
+light the white LED. The IR LED will produce about 60 millivolts when the
+remote control is very close within a couple inches.
+<br><br>
+There is another IR remote control test circuit in the LED section which is
+much simplier, but it employs a IR receiver module which does most of the
+work and has a long range. The circuit here was designed to use a common
+IR LED and then amplify the tiny signal to drive an indicator. The range
+could be extended with subsequent tuned stages but the construction is
+tricky since high gain circuits tend to oscillate if things aren't laid out
+just right. I found I could build this circuit on a plug-in board without
+regard to the placement of the parts. Be even so, it will oscillate with a
+long wire connected to the input, or if you touch the base of the first
+transistor.
+<br><br>
+The first stage was chosen to operate at about 1 milliamp with a collector
+voltage about half of the supply voltage. So, the collector resistor will
+be 4.5/.001 = 4500 ohms. I rounded that off to 3900 since I had one laying
+around. The gain of the transistor was assumed to be around 100 so the
+base current will be about 10 microamps. The voltage from collector to
+base is about 4 volts so the base resistor is about 4/.00001 = 400K. I
+rounded that off to 330K since I had one of those laying around. The actual
+collector voltage measured 4.6.
+<br><br>
+
+The second stage is a narrow band tuned stage using a parallel LC circuit
+tuned to 36KHz and operates at about 3mA. The resonant frequency can be found
+with formula Fo = 2*pi*sqrt (LC), The actual resonant frequency of the LC
+parts (6.8mH and 2700pF) works out to 37144. The capacitor could be a little
+higher at 2874pF to move the frequency to 36K but I had a 2700pF laying around
+and used that. I did add another 200pF in parallel but it didn't have much
+effect. Other values of inductance and capacitane could be used but the rule
+of thumb is for the reactance to be about 1K to 2K. Inductive reactance is
+2*pi*F*L or in this case 6.28 * 36000 * .0068 = 1537 ohms.
+<br><br>
+
+Most IR remotes operate at 36KHz where each bit is transmitted with maybe 30
+cycles of the 36KHz carrier followed by some off time to separate the bits.
+Using a tuned LC circuit allowes the receiver to reject most of the
+noise and only respond to the desired data within a narrow band. The bandwidth
+is the range of frequencies that the LC circuit will respond while
+maintaining at least 70% of the max amplitude. So, if the tuned center
+frequency is 36KHz and the amplitude falls off to 70% at 34KHz and 38KHz,
+the bandwidth will be 38-34= 4KHz. The quality factor or Q is the center
+frequency divided by the bandwidth or Q = 36 / 4 = 9.
+<br><br>
+There is a compromise between the Q of the circuit and the response time. The
+LC circuit needs about the same number of cycles as the Q to charge to full
+amplitude, so if the Q were 100 and the transmitter only sent 30 cycles, the
+circuit would not work since it needs more than 100 cycles to charge up to
+full amplitude. Since we only have about 30 cycles to work with, the Q should
+be quite a bit less than 30.
+<br><br>
+The unloaded Q of the LC circuit itself, when not connected to anything can
+be found from the ratio of inductive reactance to the resistance of the
+inductor wire, or  Q = XL /R  = 1538/60 = 25.6. The actual Q will be less
+when the circuit is loaded and is fairly complicated to figure out. It
+depends on the transistor parameters, bias current and other things. I found
+a Q calculator that works out the Q based on LC values, inductor resistance
+and generator resistance. The actual Q worked out to about 9 with the assembled
+circuit. Using the calculator, the Q will be 9 when the generator resistance
+is about 22K. One methode of working out the transistor output impedance
+is to measure a change in collector current for a change in CE voltage and
+then divide the voltage change by the current change to get the output
+impedance. For example, if the collector current changes by 42uA when the CE
+voltage changes by 1 volt, Zo will be 1 / .000042 = 23.8K.
+<br><br>
+The plot at the top of the page illustrates the bandwidth between the two
+1/2 power points. The left side shows the attenuation in dB where -3dB is the
+70% amplitude point, or 1/2 power point. The 2 verticle white lines mark the
+lower and higher frequencies. The center frequency is shown at 37Khz since I
+used a 2700pF cap which was slightly low. Adding another 200pF in parallel will
+bring the center frequency closer to 36Khz.
+
+<br><br>
+<a href="http://www.pronine.ca/qbw.htm">Q Calculator for Parallel LC Circuits</a></center>
+<br><br>
+
+The third stage is just a switch to drive the white LED when there is
+a charge on the 2.2uF cap. The negative half cycles at the collector of the
+tuned stage are rectified by the diode which charges the 2.2uF cap to
+the negative peak of the sine wave. The 100K resistor sets the base current
+at about 50 microamps when the cap is charged to 6 volts. This results in
+about 5 milliamps of LED current assuming the transistor gain is 100. The
+RC time of the cap and resistor is .000022 X 100K = 220 milliseconds which
+maintains the light for a couple RC times or maybe half a second after the
+signal ends. I didn't see any need for a series resistor with the indicator
+LED since the hFE gain of the PNP transistor would have to be about 250
+to get 20 milliamps into the LED. But you can add a resistor if you like.
+<p>
+
+<a href="index.html#menu">Back to home page</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='irtest.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

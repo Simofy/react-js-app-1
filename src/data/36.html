@@ -1,0 +1,201 @@
+
+<HTML>
+<title>IR Receiver Toggle Switch</title>
+<META name="keywords" content="hobby, electronics, PIC,
+ schematic, IR, Receiver, Relay, Toggle, Switch ">
+<center> <h1> IR Receiver Toggle Switch <p>
+
+<image src="irswitch.gif">
+<p>IR Receiver Timing Diagram
+<p><image src="irtiming.gif">
+<p>
+</h1></center><pre>
+
+ The IR receiver circuit featured here is basically a simple
+ toggle switch that responds to IR signals from common hand
+ held remote controls. It provides a means of controlling power
+ to electrical appliances not equipped for remote operation,
+ without needing an additional controller.
+
+ The heart of the circuit is a 38Khz IR receiver module that
+ converts the IR signals to 5 volt digital data, representing
+ the particular command sent. This circuit responds to any of
+ the commands and performs a toggling action to control power
+ to external loads. To avoid interference, the receiver should
+ be located where it will not respond to unwanted signals. It
+ may be necessary to add some sort of shielding to the IR
+ lens to narrow the coverage angle.
+ </pre>
+<h2>
+<a href="video.htm">Video Demonstration in WMV format (1.1 Meg)
+</a>
+ </h2>
+ <pre>
+
+ Operation:
+
+ Along with the IR receiver module, the circuit employs a
+ CMOS dual D flip flop (CD4013) with one section wired as a
+ monostable flip flop, and the second section used as a
+ bi-stable, or toggle flip flop.
+
+ In the idle state, the 470nF capacitor will be charged,
+ producing a logic "1" to the data input of the first stage
+ on pin 5, and the output of the IR module will be high,
+ producing a low level from the transistor to the clock
+ input at pin 3.
+
+ When an IR signal is received, the IR module output moves
+ to a low level, supplying a rising clock signal to pin 3 and
+ loads a logic "1" into the first FF stage and begins the
+ monostable output at pin 1. This also provides a rising
+ edge to the clock input at pin 11 of the second stage,
+ and causes a toggling action at pin 13.
+
+ As the incoming IR data train continues, the 470nF capacitor
+ discharges through the 10K resistor and diode until the
+ level is low enough to clock a "0" into the first stage,
+ ending the cycle at pin 1. When the incoming data stream ends,
+ the capacitor begins charging to a high level through the
+ 1 Meg resistor for maybe a second, and the circuit is ready
+ for the next toggling action. The circuit will not re-toggle
+ without some recovery time of around 1 second.
+
+ There seems to be several different IR remote control protocols
+ which all appear to use some sort of pulse width modulation
+ (PWM) to define the difference between data "1" and data "0".
+ Transmission usually begins with a long start pulse used
+ to adjust the receiver AGC, followed by possibly 32 data bits
+ of about 2mS each for a total transmission time of about 60mS.
+ This may vary somewhat depending on the complement of ones and
+ zeros, since they are not of equal time. The timing diagram
+ illustrates a typical IR transmission from a hand held remote
+ control, and relationship to the toggle circuit activity.
+
+ Parts List                         Allied Part Number
+
+ CD4013   Dual D Flip Flop                735-1325
+ 2N3904   Transistor  (2)                 568-0292
+ 2N2219A  Transistor                      248-2077
+ 1N914    Diode       (2)                 431-0618
+ 78L05    5 Volt Regulator                288-0630
+ Relay    12 volt SPST                    788-1268
+ 0.1uF    Capacitor                       613-0619
+ 0.47uF   Capacitor                       852-0212
+ 10uF     Capacitor                       852-7023
+ 1 Meg    Resistor                        895-0889
+ 100K     Resistor                        895-0775
+ 10K      Resistor    (2)                 895-0633
+ 1K       Resistor                        840-0399
+ 240 Ohm  Resistor                        840-0082
+
+ Additional Parts:
+
+ 38KHz IR Receiver Module          (Radio Shack 276-640)
+ 12 Volt DC Power Supply
+
+  <a name="pic629.gif"></a>
+  </pre><center>
+  <p><h1> 4 Decoded Toggle Switches <br>
+          From Hand Held IR Remote Controls <br>
+          Using the PIC12F629 </h1></center>
+  <p>
+  <image src="pic629.gif">
+  <p>
+  <pre>
+
+  The circuit above illustrates using the IR receiver module along
+  with a PIC12F629 microcontroller to decode 5 individual IR remote
+  control keys so the circuit will only toggle one of the 4 outputs
+  when a particular key is pressed. The 5th key is assigned to the
+  master clear function that toggles off the 4 outputs. Works with
+  most hand held IR remote controls that send a single data stream.
+  However, some remotes send multiple groups of data and only the
+  first set of 40 bits or less will be recognized. This may result
+  in the circuit responding to more than one key, or a single key
+  may control more than one toggle switch. In most cases this problem
+  can be resolved by selecting an alternate function on the remote
+  such as (TV, DVD, SAT, AUX, Etc.). Circuit power supply is not
+  critical and should operate on any voltage from 2 to 5 volts DC.
+  I use a single 3.6 volt recharageable lithium battery such as
+  found in cell phones.
+
+  Setup instructions to program the controller and record the desired keys.
+
+  Step 1 -  Remove power and install a jumper wire from the input
+            (pin 4) to ground.
+
+  Step 2 -  Turn on 5 volt power to the circuit and the activity
+            LED will flash 3 times and remain on.
+
+  Step 3 - Remove the jumper from pin 4 and the activity LED should
+           flash three more times and remain on.
+
+  Step 4 - Press the desired keys in sequence to record the keys.
+           The first key must be pressed twice to allow the program
+           to establish the timing on the first press. So to program
+           keys 1 to 5 you would press 1,1,2,3,4,5. At each keypress,
+           the indicator should flash 3 times and remain on.
+
+  Step 5 - At this point, the indicator light should be out and
+           you can test each key to verify it toggles the correct
+           output. The data is stored in no-volitile EEPROM so
+           when the circuit is re-booted without the jumper it
+           should be ready to use with the existing programed data.
+           For test purposes, you may want to install LEDs and resistors
+           on the 4 outputs to verify correct operation.
+
+
+----------------------- PIC12F629 HEX File ----------------------
+
+:10000000000000008A0107309900850183169F01D6
+:10001000C83085008312A501A901A701A201A70A82
+:10002000FA30AA00453084001A30A000A30123084A
+:1000300083169B001C141A0883128000840AA30AEA
+:10004000A00B17281821851956285D308400193017
+:10005000A00080018403A00B2928851D2D281821CC
+:1000600085193028851D322885193428B401851D4D
+:100070003728A50185194C282508031034020318D8
+:1000800044282508B4003728250803102A02031C39
+:100090004B282508AA004328A50A0821A51B51289A
+:1000A0003A282A08B407340CDE00A915C001C101A2
+:1000B000C201C301C401A9191821A91D05112210EB
+:1000C0008519602805154030A91D7528A70DA718AA
+:1000D000453027194A30A7194F30271A5430A71A2C
+:1000E0005930271F7528A701A70AB40184000830DA
+:1000F000A600851D792885197B28A501851D7E28E8
+:10010000851D882808210311A50A03199A2880282B
+:100110002830340603197D28B40A0310800D5E08C8
+:100120002502031800140310A60B9928840A08302E
+:10013000A6007D280311A919E228B001A10105300C
+:10014000A0000530B0074030B10022103108AE00E9
+:100150003007AF00D720B10AA00BA6282108B7208E
+:100160000630A1071E302106031D9F28E228221811
+:10017000080082078518BE288514BF28851008004E
+:10018000051AC4280516C52805120800851ACA28AC
+:100190008516CB28851208000518D0280514D1280B
+:1001A00005100800851205128510051008002E089C
+:1001B00084000008B2002F08840000083206031DE6
+:1001C000221408000D210D21A91D5628A71E56280E
+:1001D0001930A000A300A30A5E3084000008831633
+:1001E0009A008312200883169B001C1555309D0031
+:1001F000AA309D009C1483128C1FFC288C131C11A8
+:100200008403A003A30BEE28A701A70AA90156287F
+:100210000F30A300A30B0A290800FF30A300132905
+:10022000A30B13290800FF30A000A00B15291029EB
+:1002300005110D2105150D2105110D2105150D21A6
+:0A02400005110D2105150D21080020
+:02400E00043F6D
+:00000001FF
+
+ </pre>
+ <p><center>
+ <a href="index.html#menu">Back to Homepage </a></center>
+ <p>
+ </html>
+
+
+
+
+
+

@@ -1,0 +1,304 @@
+<html>
+<head>
+<title>Game Show, Chaser, Charger, Derby, Neons</title></head>
+<body bgcolor="#ffffff">
+
+<a name="trigger.gif"></a>
+<center><h3>Light Activated Relay</h3></center>
+<br>
+<blockquote>
+This is same circuit as above with the addition of a photo resistor to
+trigger the flip flop instead of a push button. The bias resistor in series
+with photo resistor was chosen so that sufficient voltage is present at
+the base of the 2N3904 to supply current to the circuit in ambient lighting conditions. The circuit should  toggle when the photo
+resistor is hit by a flashlight beam or other fast changing light source.
+Slow changes in light intensity will have no effect unless the light gets
+too bright to maintain sufficient bias for the 2N3904.
+
+<br><img  src="trigger.gif"  height=316 width=582>
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="neon.gif"></a>
+<center><h3>Flashing Neons (NE-2 / NE-51)</h3></center>
+<br>
+In this circuit, one, two or three neon indicator bulbs can be made to
+flash in sequence at rates determined by the R and C values. In the single
+stage circuit, using one lamp, the capacitor charges through the resistor
+until the ionization potential of the neon is reached (about 70 volts) and
+then discharges quickly through the lamp until the voltage falls below what
+is needed to sustain the lamp which is approximately 45 volts. The cycle
+then repeats at a rate of about 3 Hz for values shown. Smaller R or C values
+increase frequency, larger values decrease frequency. All capacitors should
+be the non-polarized variety with a 100 volt or more rating. For more than
+3 stages, the lamps may need to be matched for similar turn-on voltages.
+
+<br><img  src="neon.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="neons.gif"></a>
+<center><h3>12 Stage Neon Sequencer (NE-2 / NE-51)</h3></center>
+<br>
+
+This circuit is similar to the LED clock using 12 neon indicator lamps
+instead of LEDs. It operates from 2 high capacity ni-cad cells (2.5 volts)
+which keep it going for a couple weeks. High voltage (70 volts) for the neon
+lamps is obtained from a small switching power supply using a 74HC14 Schmitt
+trigger squarewave oscillator, high voltage switching transistor, and 10 mH
+high Q inductor. Most any small PNP transistors can be used that have a C/E
+voltage rating of 80 or more. The inverter stage (pins 5,6) is not needed
+and is just an extra stage. An adjustable low frequency oscillator made from
+two of the inverter stages generates the clock signal for the 74HCT393 binary
+counter. In this circuit, the timing capacitor should be non-polarized since
+the capacitor will charge in both directions, so two 6.8 uF tantalum caps were
+used back to back which yields about 3.3 uF. The 75K resistor in series with
+pin 1 limits the current through the input protection diodes when the
+capacitor voltage exceeds the supply voltage. This resistor may not be
+necessary with small capacitors at low voltage but was added as a precaution.
+The binary counts are decoded into 1 of 12 outputs by the 74HCT138 decoders
+and operates the same way as in the 28 LED clock circuit. The sequence can
+be extended to 16 by omitting the reset circuit and tying pins 2 and 13 of
+the counter to ground.
+
+<br><img  src="neons.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="charge.gif"></a>
+<center><h3>Constant Current Battery Charger</h3></center>
+<br>
+A simple method of charging a battery from a higher voltage battery
+is shown in the circuit below to the left. Only one resistor is needed
+to set the desired charging current and is calculated by dividing
+the difference in battery voltages by the charge current. So, for example
+if 4 high capacity (4000 mA hour) ni-cads are to be charged at 300 mA from a
+12 volt battery, the resistor needed would be 12-(4*1.25)/0.3 = 23.3
+ohms, or 22 ohms which is the nearest standard value. The power rating
+for the resistor is figured from the square of the current times the
+resistance or (0.3)^2 * 22 = 2 watts which is a standard value but
+close to the limit, so a 5 watt or greater value is recommended.<p>
+
+The circuit below (right) illustrates a constant current source used to
+charge a group of 1 to 10 ni-cad batteries. A 5K pot and 3.3K resistor are
+used to set the voltage at the emitter of the TIP 32 which establishes the
+current through the output and 10 ohm resistor. The emitter voltage will be
+about 1.5 volts above the voltage at the wiper of the pot, or about
+1/2 the supply voltage when the wiper is in the downward most position.
+In the fully upward position the transistors will be turned off and
+the current will be close to zero. This yields a current range of
+0 to (0.5*input)/10 or 0 to 850 milliamps using a 17 volt input.
+This produces about 7 watts of heat dissipation at maximum current
+for the 10 ohm resistor, so a 10 watt or greater rating is needed.
+The TIP 32 transistor will also dissipate about 7 watts if the output
+is shorted and needs to be mounted on a heat sink. If more than 4
+cells are connected, the maximum current available will decrease and
+limits the current setting to about 100 milliamps for 10 cells.
+The usual charge rate for high capacity (4AH) 'D' cells is 300 to 400
+milliamps for 14 hours and 100 milliamps for (1.2AH) 'C' or 'D' cells.
+For small 9 volt batteries the charge rate is 7 milliamps for 14 hours
+which would be difficult to set and probably unstable, so you could
+reduce the range to 0-20 mA by using a 750 ohm resistor in place of the
+10. The charge current can be set by connecting a milliamp meter across the
+output (with the batteries disconnected) and then adjusting the control to
+the desired current, or by monitoring the voltage across the 10 ohm resistor
+(1 volt = 100 mA) or (1 volt = 1.33 mA using a 750 ohm resistor). The
+current control should be set to minimum (wiper in uppermost position)
+before power is applied, and then adjusted to the desired current.
+<p>
+The circuit (lower right) illustrates using a LM317 variable voltage
+regulator as a constant current source. The voltage between the adjustment
+terminal and the output terminal is always 1.25 volts, so by connecting
+the adjustment terminal to the load and placing a resistor (R) between the
+load and the output terminal, a constant current of 1.25/R is established.
+Thus we need a 12 ohm resistor (R) to get 100mA of charge current and a
+1.2 ohm, 2 watt resistor for 1 amp of current. A diode is used in series
+with the input to prevent the batteries from applying a reverse voltage
+to the regulator if the power is turned off while the batteries are still
+connected. It's probably a good idea to remove the batteries before
+turning off the power.
+
+<p><img  src="charge.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="aclamps.gif"></a>
+<center><h3>120VAC Lamp Chaser</h3></center>
+<br>
+
+This circuit is basically the same as the 10 channel LED sequencer with
+the addition of solid state relays to control the AC lamps. The relay
+shown in the diagram is a Radio Shack 3 amp unit (part no. 275-310) that
+requires 1.2 volts DC to activate. No current spec was given but I assume
+it needs just a few milliamps to light the internal LED. A 360 ohm resistor
+is shown which would limit the current to 17 mA using a 9 volt supply.
+I tested the circuit using a solid state relay (of unknown type) which
+required only 1.5 mA at 3 volts but operates up to 30 volts DC and a much
+higher current. The chaser circuit can be expanded up to 10 channels with
+additional relays and driver transistors. The 4017 decade counter reset line
+(pin 15) is connected to the fifth count (pin 10) so that the lamps sequence
+from 1 to 4 and then repeat. For additional stages the reset pin would be
+connected to a higher count.
+
+<br><img  src="aclamps.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="game1.gif"></a>
+<center><h3>Game Show Indicator Lights (Who's First)</h3></center>
+<br>
+The circuit below turns on a light corresponding to the first of several
+buttons pressed in a "Who's First" game. Three stages are shown but the
+circuit can be extended to include any number of buttons and lamps.
+<p>
+
+Three SCRs (silicon controlled rectifiers) are connected with a common
+cathode resistor (50 ohm) so that when any SCR conducts, the voltage
+on the cathodes will rise about 7 volts above the voltage at the junction
+of the 51K and 1K ohm resistors and prevent triggering of a second
+SCR. When all lamps are off, and a button is pressed, the corresponding
+SCR is triggered due to the voltage at the divider junction being
+higher than the cathode. Once triggered, the SCR will remain conducting
+until current is interrupted by the reset switch. Or, you can just turn
+the power off and back on.
+<p>
+
+A 50 ohm, 5 watt resistor was selected to produce a 10 volt drop at 200 mA
+when a single 25 watt lamp comes on. Higher wattage lamps would require
+a lower value resistor, and visa versa. For example to use 60 watt lamps
+and maintain the 10 volt drop, the peak current would be 60/160 = 375 mA
+and the resistance would be E/I = 10/.375 or about 27 ohms at 3.75 watts.
+The SCRs are "Sensitive Gate' types which trigger on about 200 uA and
+the gate current is around 1.5 mA when the first button is pressed. The
+1N914 diodes in series with the buttons gates are used to prevent a
+reverse voltage on the gate when a button is pressed after an SCR is
+conducting. The two 51 ohm resistors will be fairly large in physical
+size (compared to a 1/4 watt size) and should be rated for 5 watts of power
+or more. Use caution and do not touch any components while the circuit is
+connected to the AC line.
+<p>
+Adding a Buzzer:
+<p>
+The relay shown in parallel with the 50 ohm cathode resistor can be used to
+momentarily power a buzzer with an external circuit through the contacts.
+The 1000 uF capacitor causes the relay to energize for about one second,
+longer times can be obtained with a larger capacitor.
+
+<p>
+<pre>
+Parts List:
+
+Quantity       Description                   Radio Shack Part Number
+
+1         4 Amp/400 Volt Bridge Rectifier            276-1173
+3         Silicon Controlled Rectifier (SCR)         NTE5457
+3         120 VAC/ 25 Watt incandescent lamp
+1         50-100 microfarad/ 200 volt capacitor
+1         1000 microfarad / 35 volt capacitor        272-1032
+1         50 ohm resistor/ 5 or 10 Watt              271-133
+3         Push Button Switch (normally open)
+1         Push Button Switch (normally closed)
+3         2K resistor, 1/4 watt                      271-1325
+4         1N914 Diode
+1         51K resistor, 1 watt
+1         2 Amp Fuse                                 270-1064
+1         Relay (SPDT) 9 Volt DC, 500 ohm coil       275-005
+
+</pre>
+
+<br><img  src="game1.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="derby.gif"></a>
+<center><h3>Pinewood Derby Finish Line Lamps</h3></center>
+<br>
+The finish line circuit below detects the first of three cars to cross the
+line and illuminates a 25 watt 120 VAC lamp indicating the winning lane.
+Three photo transistors are used which can be embedded into the track with
+a light shining down onto the finish line so that as the car crosses over
+the sensor, the light is blocked, activating the relay and lighting the
+lamp for the appropriate track. The light source should be an incandescent
+type, florescent lights may not work due to low infra-red content. The
+circuit was tested using a 100 watt incandescent light fixture about 3 feet
+above the photo transistors.
+<p>
+The photo transistors are connected so that a logic low (0 volts) normally
+appears at the input to a NAND gate and as a car crosses the line blocking
+light to the transistor the logic level will move high (+6 volts).
+The resulting logic low level from the output of the gate (3 input NAND) is
+fed to a SET/RESET latch made from two dual input NAND gates (1/2 of a 74HC00)
+the (logic high) output of which controls the MPS2222A buffer transistor and
+solid state relay. The inverted output of the latch (logic low) is connected
+back to the remaining two (3 input NAND gate) inputs locking them out. Two
+extra 74HC00 gates are not used and should have their inputs (pins 9,10,12,13)
+connected to ground to avoid possible oscillation. The circuit is reset with
+a momentary push button connected to the reset side of each latch. The reset
+button may need to be pressed after power is first applied. Components for
+the circuit may be obtained from Radio Shack, however the RSU numbers may
+need to be special ordered or obtained from another source. The 74HC00 and
+74HC10 are CMOS parts and should be handled carefully to avoid possible damage
+from static electricity. You may want to use IC sockets so the wiring can be
+completed before the ICs are inserted into the sockets. You can briefly touch
+a grounded surface (computer chassis or other metal ground surface) just
+before handling CMOS circuits to reduce the possibility of damage from static
+electricity.
+<p>
+
+Notes:
+<p>
+All ground symbols are connected to the negative side of the battery. <br>
+All +6 points are connected to the positive side of the battery.      <br>
+Transistors and relays for #2 and #3 lights are not shown but are
+connected the same as shown for #1.                                    <br>
+A small LED may be substituted for the solid state relay (pins 3,4)
+for testing the circuit before the relays are installed.               <br>
+Pins 8,6 and 12 of the 74HC10 should read +6 volts after reset is
+pressed and light is shining on the photo transistors.                 <br>
+Pins 1,9 of the top 74HC00 and pin 1 of the lower 74HC00 should read
++6 volts with the reset button released. The same pins should
+read 0 volts with the button pressed.                                  <br>
+Pins 2,6,10,11 of upper 74HC00 and 2,6 of lower should read 0 volts
+after reset button is released and photo transistors are illuminated.  <br>
+Pins 3,4,8,12 of upper 74HC00 and pins 3,4 of lower should read +6
+after reset button is released.                                        <br>
+Pins 9,10,12,13 of lower 74HC00 should be grounded
+<p>
+
+ Parts List:
+ <p>
+
+ Two - 74HC00 Quad, 2 input NAND gates    - RSU 10880045 - $0.89 ea. <br>
+ One - 74HC10 Triple 3 input NAND gate    - RSU 10880540 -  .89 ea.  <br>
+ Three - IR photo transistors             - 276-145      -  .99 ea.  <br>
+ Three - MPS2222A NPN transistors         - 276-2030     -  .99 ea.  <br>
+ Three - 1/4 watt 150 ohm resistors       - 271-1312     -  .49/5    <br>
+ Three - Solid state relays, 3 Amp/120VAC - 275-310      - 6.99 ea.  <br>
+ Four - 1/4 watt 3.3K resistors           - 271-1328     -  .49/5    <br>
+ One - 470 uF/16 volt capacitor           - 272-957      -  .99 ea.  <br>
+ One - 0.1uF capacitor                    - 272-135      -  .69 ea.  <br>
+ One - Momentary (normally open) push button - 275-1556 or 275-1571  <br>
+ One - 6 volt lantern battery or regulated power supply.        <br>
+ Three - 25 to 60 watt 120VAC lamps and sockets.
+
+ </blockquote>
+
+<br><img  src="derby.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page7.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

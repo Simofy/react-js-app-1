@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Window Comparator"
+</title>
+<META name="description" content="Window Comparator">
+<META name="keywords" content="Window Comparator, LM339, project, light,
+ temperature, circuit">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="window_t.gif"></a>
+<center><h3>Temperature Range Indicator Using a Window Comparator</h3>
+<p></center>
+
+<pre>
+
+A window comparator usually employs 2 comparators with one output indicating
+the input is somewhere between two limits. In these examples, a third
+comparator is added to display all three conditions where the input is in
+the center range, or higher, or lower.
+
+The first example uses a thermistor to indicate the temperature is near
+68 degrees within about +/- 5 degree tollerance. The thermistor measures
+33K at around 68 degrees and varies about 3570 ohms over a range of 10 degrees.
+Using a 12 volt supply, the thermistor voltage will be 6 volts in the center
+of the range. As the temperature increases 10 degrees, the total resistance
+falls 3750 ohms, the current will be 12/ (66K -3750) =193uA and the thermistor
+voltage will be 193u * (33k -3750) = 5.65 volts. This represents a voltage
+change of (6 - 5.65) = 350 millivolts for a 10 degree change. The center resistor
+of the window voltage divider must then drop 350 millivolts. Using 20K resistors
+on the top and bottom of the window voltage divider produces a current of
+(6 - (.350/2)) / 20K = 291uA, and the center resistor is .350/291u = 1.2K
+
+When the temperature is in the center of the window range, the voltage at
+pins 5 and 6 will be 1/2 the supply voltage, or 6 volts in this case.
+The voltage divider (20K, 1.2K, 20K) produces a voltage of around 5.8 at
+pin 4 and 6.2 at pin 7. Since the voltage at pin 5 (6 volts) is more positive
+than the voltage at pin 4 (5.8 volts), the output at pin 2 will be a high
+level. At the same time, the voltage at pin 7 (+ input) is higher than
+pin 6 (- input) causing pin 1 to also be a high level. This condition
+produces a high (12 volt) level at pin 10 (- input) which produces a low
+level at pin 13, lighting the window LED indicating the temperature is in
+the window range. As the thermistor voltage moves above the upper 6.2 limit,
+pin 1 will switch low, extinguishing the window LED and illuminating the
+(Low Temp) LED. Similar action happens as the thermistor voltage moves below
+the lower 5.8 limit causing pin 2 to switch low (Over Temp LED) while the
+other two LEDs remain off.
+
+</pre>
+<p>
+
+<img src="window_t.gif"></center> <p>
+<p>
+<a name="window.gif"></a>
+<center><h3>Light Level Indicator Using a Window Comparator</h3>
+</center>
+<pre>
+The second example below uses a LDR (light dependent resistor) to indicate
+some desired light level. The LDR has a large dynimic range and varies in
+resistance from less than 100 ohms on a cloudy day to over a megohm in total
+darkness. A 2K pot was used to adjust the window range for usual room light
+conditions. This setup might also be used to indicate sunrise/sunset conditions.
+
+</pre>
+<p>
+<img src="window.gif"></center> <p>
+<p>
+<pre>
+
+The proto board picture below shows the circuit wired to measure light
+level using a LDR and 2K potentiometer. The green (window) LED is lit
+indicating the light level is about right to take the picture.
+
+</pre>
+<p>
+<img src="window.jpg">
+<p>
+
+More information on voltage comparator details can be found here:
+
+<a href="http://home.cogeco.ca/~rpaisley4/Comparators.html">Voltage Comparators</a>
+
+<p>
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='window.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

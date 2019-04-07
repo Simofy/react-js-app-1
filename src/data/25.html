@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>3 Transistor Op-Amp
+</title>
+<!- Author - Bill Bowden - 08/05/14 ->
+<META name="description" content="3 Transistor Op-Amp">
+<META name="keywords" content="OpAmp, circuit, Op-Amp,
+ schematic, transistor, headphone, electronic">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<center><h2> 3 Transistor Op-Amp </h3>
+<br><img  src="3topamp.gif"><p>
+</center>
+
+<pre>
+
+
+  The 3 transistor op-amp shown was designed for use as a 20 milliwatt
+  headphone amplifier (40 ohm headphone). The circuit requires 10 parts
+  but lacks efficiency since the output is single ended and draws around
+  60mA from AA batteries, or 120mA for a stereo application.
+
+  Parts Selection:
+
+  For a power output of 20mW (RMS), the peak output power will be 40mW
+  and the peak output current will be I^2*R =.04 and I(peak) = 32 mA.
+  The negative peak of the output signal occurs when transistor Q3 is
+  completely turned off, so the output voltage is just the result of
+  a voltage divider 40 ohms and R4. If the peak current is 32 mA, then
+  the peak output voltage will be E=IR = .032*40 = 1.28 volts. Since the
+  negative supply voltage is 3 and the peak load voltage is 1.28, there
+  will be 3-1.28 = 1.72 volts across R4. So, we need a resistor that drops
+  1.72 at 32 mA or R4 = E/I = 1.72/.032 = 54 ohms, or 56 standard value.
+
+  Next consideration was the base and collector currents for Q3. Since the
+  output voltage swing is symmetrical, the peak voltage across R4 will be
+  3 + 1.28 or 4.28 and the current in R4 will be I= E/R = 4.28/56 = 76mA.
+  The peak collector current of Q3 will then be 76mA plus 32 milliamps in
+  the load or, 108mA total. This seems a little high for a 2N3906, maybe
+  some other transistor would be better.
+
+  Next consideration was the steady state DC current for the differential
+  pair of transistors (Q1,Q2). The DC currents of Q1,Q2 should be somewhat
+  balanced (with no signal) so that both transistors carry near equal DC
+  currents. And this current should be somewhat greater than what is needed
+  by Q3. The measured hFE gain of the 2N3906 at 100mA was about 100, so the
+  peak base current of Q3 should be around 1 mA. The DC current for Q1,Q2
+  was then chosen to be about 3 times greater, or 3mA for each transistor
+  (6 mA total). It could be larger, but would increase battery drain.
+
+  Next step was to work out the common emitter resistor R3. Since the base
+  of Q2 is at ground, the emitters will be about -700mV and the voltage
+  across R3 will be 3-0.7 = 2.3, and the value of R3 will be
+  E/I = 2.3/0.006 = 390 ohms. The total current in R3 will then be 6mA,
+  or 3mA for each transistor Q1 and Q2.
+
+  Next step was to assign a value to the Q3 e/b resistor (R2). In the
+  balanced (no signal) condition, Q3's base current will be about 0.5mA and
+  the remaining current for R2 will be 3mA - 0.5mA = 2.5mA, so the resistor
+  value would be R2=Vbe/.0015 = 0.7/.0025 = 280 ohms (270 standard value).
+  Resistor R1 will have the same value and is used to measure the DC current
+  in Q1 which should be about 3mA, so the voltage across R1 should read
+  around 810mV if things are working right.
+
+  The amplifier gain was selected to be ten or (20dB) which defines the ratio
+  of R5 to R6, or 1K and 10K. This makes the input impedance about 1K since
+  the inverting configuration is used. For a higher input resistance, larger
+  resistor values could be used (10K 100K) etc. Or you could ground the 1K
+  imput resistor R6 and use the non-inverting input point (base of Q2) as a
+  high impedance input.
+
+  Notes:
+
+  A small 1000pF cap was added to limit the bandwidth to around 100kHz and
+  suppress oscillations. The value was found by experiment.
+
+  The circuit seems fairly linear (low distortion) as indicated in the
+  scope picture below. The top waveform is the ramp input from a function
+  generator, and the lower waveform is the inverted output of the op-amp
+  with a 40 ohm load. So, it's actually a plot of the rising input ramp
+  and falling output ramp (2.25v p-p). Notice there is a slight bend in
+  the output line indicating some non-linearity (distortion) but hard
+  to see.
+
+  The DC offset at the output will move negative as the battery voltage falls.
+  It measured about +50mV at full supply voltage and drifted negative to
+  -150mV with the supply at +/- 2.5 volts. This can be corrected with a
+  small adjustment to R3. Lowering R3 will increase the current in Q1/Q2
+  and move the DC offset positive, and visa versa. Another approach is to
+  replace R3 with a constant current source (one extra transistor) which
+  should maintain the DC offset near zero as the supply voltage falls.
+  But then it wouldn't be a 3 transistor opamp anymore. It would be a
+  4 transistor opamp.
+  </pre>
+  <center><img  src="opamp1.jpg">
+<p>
+<a href="index.html#menu">Back to Homepage</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='3topamp.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

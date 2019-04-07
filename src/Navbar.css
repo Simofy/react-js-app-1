@@ -1,0 +1,10 @@
+.Navbar-default{
+    width: 100%;
+    height: var(--header-size);
+    background: white;
+    border-bottom: 1px solid #333;
+    position: fixed;
+    top: 0;
+    left:0;
+    z-index: 100;
+}

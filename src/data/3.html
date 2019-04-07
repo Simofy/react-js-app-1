@@ -1,0 +1,421 @@
+<html>
+<HEAD>
+<title>descrete audio amp, function generator, AC line current detector
+</title>
+<meta name="keywords" content="wien bridge, audio, telephone, circuits, sinewave,
+oscillator, current, detector, triangle, squarewave, decibel, meter">
+</HEAD>
+
+<body>
+<blockquote>
+<a name="amp.gif"></a>
+<center><h3>3 Transistor Audio Amp (50 milliwatt)</h3></center>
+
+Here is a little audio amplifier similar to what you might find in a
+small transistor radio. The input stage is biased so that the supply
+voltage is divided equally across the two complimentary output transistors
+which are slightly biased in conduction by the diodes between the bases.
+A 3.3 ohm resistor is used in series with the emitters of the output
+transistors to stabilize the bias current so it doesn't change much with
+temperature or with different transistors and diodes. As the bias current
+increases, the voltage between the emitter and base decreases, thus
+reducing the conduction. Input impedance is about 500 ohms and voltage
+gain is about 5 with an 8 ohm speaker attached. The voltage swing on the
+speaker is about 2 volts without distorting and power output is in the
+50 milliwatt range. A higher supply voltage and the addition of heat sinks
+to the output transistors would provide more power. Circuit draws about
+30 milliamps from a 9 volt supply.
+
+<p><img src="amp.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="amp1.gif"></a>
+<center><h3>Improved 3 Transistor Audio Amp (80 milliwatt)</h3></center>
+
+This circuit is similar to the one above but uses positive feedback to
+get a little more amplitude to the speaker. I copied it from a small
+5 transistor radio that uses a 25 ohm speaker. In the circuit above,
+the load resistor for the driver transistor is tied directly to the
++ supply. This has a disadvantage in that as the output moves positive,
+the drop across the 470 ohm resistor decreases which reduces the
+base current to the top NPN transistor. Thus the output cannot
+move all the way to the + supply because there wouldn't be any
+voltage across the 470 resistor and no base current to the NPN transistor.
+<p>
+This circuit corrects the problem somewhat and allows a larger
+voltage swing and probably more output power, but I don't know
+how much without doing a lot of testing. The output still won't
+move more than a couple volts using small transistors since the
+peak current won't be more than 100mA or so into a 25 ohm load.
+But it's an improvement over the other circuit above.
+
+<p>
+In this circuit, the 1K load resistor is tied to the speaker so
+that as the output moves negative, the voltage on the 1K
+resistor is reduced, which aids in turning off the top NPN transistor.
+When the output moves positive, the charge on the 470uF capacitor
+aids in turning on the top NPN transistor.
+<p>
+The original circuit in the radio used a 300 ohm resistor where
+the 2 diodes are shown but I changed the resistor to 2 diodes so
+the amp would operate on lower voltages with less distortion.
+The transistors shown 2n3053 and 2n2905 are just parts I used
+for the other circuit above and could be smaller types.
+Most any small transistors can be used, but they should be
+capable of 100mA or more current. A 2N3904 or 2N3906 are probably
+a little small, but would work at low volume.
+
+<p>
+The 2 diodes generate a fairly constant bias voltage as the battery
+drains and reduces crossover distortion. But you should take care
+to insure the idle current is around 10 to 20 milliamps with
+no signal and the output transistors do not get hot under load.
+<p>
+The circuit should work with a regular 8 ohm speaker, but the
+output power may be somewhat less.
+To optimize the operation, select a resistor where the 100K is shown
+to set the output voltage at 1/2 the supply voltage (4.5 volts).
+This resistor might be anything from 50K to 700K depending on
+the gain of the transistor used where the 3904 is shown.
+
+<p><img src="amp1.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="phone.gif"></a>
+<center><h3>Telephone Audio Interface</h3></center>
+
+Audio from a telephone line can be obtained using a transformer and capacitor
+to isolate the line from external equipment. A non-polarized capacitor is
+placed in series with the transformer line connection to prevent DC current
+from flowing in the transformer winding which may prevent the line from
+returning to the on-hook state. The capacitor should have a voltage rating
+above the peak ring voltage of 90 volts plus the on-hook voltage of 48 volts,
+or 138 volts total. This was measured locally and may vary with location,
+a 400 volt or more rating is recommended. Audio level from the transformer is
+about 100 millivolts which can be connected to a high impedance amplifier or
+tape recorder input. The 3 transistor amplifier shown above can also be used.
+For overvoltage protection, two diodes are connected across the transformer
+secondary to limit the audio signal to 700 millivolts peak during the ringing
+signal. The diodes can be most any silicon type (1N400X / 1N4148 / 1N914
+or other). The 620 ohm resistor serves to reduce loading of the line if the
+output is connected to a very low impedance.
+
+<p><img src="phone.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="light.gif"></a>
+<center><h3>LED Photo Sensor.</h3></center>
+
+     Here's a circuit that takes advantage of the photo-voltaic voltage of an ordinary
+     LED. The LED voltage is buffered by a junction FET transistor and then applied
+     to the inverting input of an op-amp with a gain of about 20. This produces a
+     change of about 5 volts at the output from darkness to bright light. The 100K
+     potentiometer can be set so that the output is around 7 volts in darkness and
+     falls to about 2 volts in bright light.
+
+<p><img  src="light.gif"  height=164 width=549>
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+<a name="func.gif"></a>
+<center><h3>Triangle and Squarewave Generator</h3></center>
+
+Here is a simple triangle/squarewave generator using a common 1458 dual
+op-amp that can be used from very low frequencies to about 10 Khz. The
+time interval for one half cycle is about R*C and the outputs will
+supply about 10 milliamps of current. Triangle amplitude can be altered
+by adjusting the 47K resistor, and waveform offset can be removed by
+adding a capacitor in series with the output.
+
+<p><img  src="funct.gif"  height=230 width=603>
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="phase.gif"></a>
+<center><h3>Low Frequency Sinewave Generators</h3></center>
+
+The two circuits below illustrate generating low frequency sinewaves
+by shifting the phase of the signal through an RC network so that
+oscillation occurs where the total phase shift is 360 degrees. The transistor
+circuit on the right produces a reasonable sinewave at the collector
+of the 3904 which is buffered by the JFET to yield a low impedance
+output. The circuit gain is critical for low distortion and you may need
+to adjust the 500 ohm resistor to achieve a stable waveform with minimum
+distortion. The transistor circuit is not recommended for practical
+applications due to the critical adjustments needed.
+<p>
+The op-amp based phase shift oscillator is much more stable than the
+single transistor version since the gain can be set higher than
+needed to sustain oscillation and the output is taken from the
+RC network which filters out most of the harmonic distortion.
+The sinewave output from the RC network is buffered and the amplitude
+restored by the second (top) op-amp which has gain of around 28dB. Frequency
+is around 600 Hz for RC values shown (7.5K and 0.1uF) and can
+be reduced by proportionally increasing the network resistors (7.5K).
+The 7.5K value at pin 2 of the op-amp controls the oscillator circuit gain
+and is selected so that the output at pin 1 is slightly clipped at the
+positive and negative peaks. The sinewave output at pin 7 is about 5 volts
+p-p using a 12 volt supply and appears very clean on a scope since the
+RC network filters out most all distortion occurring at pin 1.
+
+<p>
+
+<br><img  src="phase.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="wien"></a>
+<center><h3>Low Frequency Wien Bridge RC Sinewave Oscillators</h3></center>
+
+Three examples of Wien Bridge oscillators are shown below. The first uses
+three bipolar transistors. The second uses a bipolar and JFET, and the
+third is the more popular type using an op-amp for minimal parts.
+
+The idea is to generate a 360 degree phase shift at some particular
+frequency using 2 resistors and
+caps of equal value. One cap and resistor are in series, while another
+cap and resistor are in parallel. The signal loss through the network is
+about 66 percent so the amplifier gain needs to be around 3 for a loop
+gain of 1. The gain of the amplifier is critical since too much gain will
+produce a clipped (distorted) waveform and not enough gain will not
+sustain oscillation. This is almost impossible to achieve without some
+automatic gain control (AGC) to regulate the gain and produce stable
+operation. The usual AGC is accomplished with a small light bulb where
+resistance increases as the signal level rises and reduces the gain.
+The lamp used here is a 1819 (28 volt 40mA) variety found at Radio Shack,
+part number 272-1119. Another lamp that might be useful is the GE394,
+12 volt 40mA, but a little harder to find.
+<p>
+In the first example, the lamp is placed in series with a 1000uF cap
+and connected across the emitter resistor of the 2N2219A so as the
+signal level rises, the total resistance increases reducing the gain.
+The gain of the 2N2219A stage is approximately the collector resistor
+(100) divided by the emitter resistor (51 in parallel with the lamp 75)
+or maybe 100/30 = 3.3, The first stage (2N3904 on the left) provides
+a high impedance to the RC network so it doesn't load down the input
+much. The second stage (2N3904) in the middle, provides a 180 degree phase
+inversion and not much voltage gain. So, the overall phase shift is 360
+degrees, 180 from the middle stage and another 180 from the 2N2219A stage.
+The overall gain can be adjusted with the 750 ohm resistor at the collector
+of the center stage. The example shows 2 (20K) variable resistors which are
+ganged together for frequency adjustment of about 10KHz to 400 Khz. Lower
+frequencies can be obtained using larger capacitors. The frequency of
+oscillation is f = 1/(2 * Pi * R * C). The circuit was built sucessfully
+and also simulated using LTSpice version IV. A copy of LTSpice can be
+downloaded from the following link.
+<p>
+
+<a href="http://www.linear.com/designtools/software/ltspice.jsp">
+Download LTSpice from Linear Technology</a>
+
+<p>
+
+The second example using a JFET and bipolar requires fewer components since
+the FET provides a high impedance input and operates on self bias. The gate
+to source voltage (vgs) where the FET starts to conduct is around
+2.5 volts, so the voltage at the source is about +2.5 when the gate is
+grounded by the RC network. Overall gain is the same around 3.3 and
+adjusted with the 560 ohm resistor on the drain terminal. Adjust the
+560 ohm resistor a little larger or smaller for best sinewave.
+<p>
+
+The third example is the more popular type using an op-amp and minimal parts.
+Two 100 ohm resistors are used to establish a 6 volt mid-point from a
+12 volt supply so the circuit will operate on a single 12 volt supply.
+A transistor buffer (2N2219A) is used to supply a low impedance output
+and also drive the feedback path with the lamp using about 8 mA. A higher
+power op-amp could be used to eliminate the transistor, but I don't have
+the numbers. You can also use the LM324 quad op-amp and just use one
+section. The 180 ohm resistor can be adjusted a little higher or lower
+for best sinewave. The lamp doesn't light with only 8 mA, but provides
+reasonable AGC as the resistance increases from 67 ohms cold to about
+90 ohms when running.
+
+<p>
+
+<br><img  src="wien7.gif">
+<br><img  src="wien_fet.gif">
+<br><img  src="wien_op.gif">
+
+
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+
+
+
+
+
+
+
+<a name="touch.gif"></a>
+<center><h3>Touch Activated Light</h3></center>
+
+The circuits below light a 20 watt lamp when the contacts are
+touched and the skin resistance is about 2 Megs or less.
+The circuit on the left uses a power MOSFET which turns
+on when the voltage between the source and gate is around
+6 volts. The gate of the MOSFET draws no current so the
+voltage on the gate will be half the supply voltage or
+6 volts when the resistance across the touch contacts is
+equal to the fixed resistance (2 Megs) between the source and gate.
+<p>
+The circuit on the right uses three bipolar transistors to
+accomplish the same result with the touch contact referenced
+to the negative or ground end of the supply. Since the base
+of a bipolar transistor draws current and the current gain is
+usually less than 200, three transistors are needed to raise
+the microamp current level through the touch contacts to a couple
+amps needed by the light. For additional current, the lamp could be
+replaced with a 12 volt relay and diode across the coil.
+<p>
+<img  src="touch.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="aclatch.gif"></a>
+<center><h3>AC Line Current Detector</h3></center>
+
+This circuit will detect AC line currents of about 250 mA or more without
+making any electrical connections to the line. Current is detected by passing
+one of the AC lines through an inductive pickup (L1) made with a 1 inch
+diameter U-bolt wound with 800 turns of #30 - #35 magnet wire. The pickup
+could be made from other iron type rings or transformer cores that allows
+enough space to pass one of the AC lines through the center. Only one of the
+current carrying lines, either the line or the neutral should be put through
+the center of the pickup to avoid the fields cancelling. I tested the circuit
+using a 2 wire extension cord which I had separated the twin wires a small
+distance with an exacto knife to allow the U-bolt to encircle only one wire.
+<p>
+The magnetic pickup (U-bolt) produces about 4 millivolts peak for a AC line
+current of 250 mA, or AC load of around 30 watts. The signal from the pickup
+is raised about 200 times at the output of the op-amp pin 1 which is then
+peak detected by the capacitor and diode connected to pin 1. The second
+op-amp is used as a comparator which detects a voltage rise greater than the
+diode drop. The minimum signal needed to cause the comparator stage output
+to switch positive is around 800 mV peak which corresponds to about a 30 watt
+load on the AC line. The output 1458 op-amp will only swing within a couple
+volts of ground so a voltage divider (1K/470) is used to reduce the no-signal
+voltage to about 0.7 volts. An additional diode is added in series with the
+transistor base to ensure it turns off when the op-amp voltage is 2 volts.
+You may get a little bit of relay chatter if the AC load is close to the
+switching point so a larger load of 50 watts or more is recommended. The
+sensitivity could be increased by adding more turns to the pickup.
+
+<p>
+<img  src="aclatch.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="lock.gif"></a>
+<center><h3>Digital Electronic Lock</h3></center>
+
+The digital lock shown below uses 4 common logic ICs to allow controlling
+a relay by entering a 4 digit number on a keypad. The first 4 outputs from
+the CD4017 decade counter (pins 3,2,4,7) are gated together with 4 digits
+from a keypad so that as the keys are depressed in the correct order, the
+counter will advance. As each correct key is pressed, a low level appears
+at the output of the dual NAND gate producing a high level at the output
+of the 8 input NAND at pin 13. The momentary high level from pin 13
+activates a one shot circuit which applies an approximate 80 millisecond
+positive going pulse to the clock line (pin 14) of the decade counter
+which advances it one count on the rising edge. A second monostable,
+one shot circuit is used to generate an approximate 40 millisecond positive
+going pulse which is applied to the common point of the keypad so that
+the appropriate NAND gate will see two logic high levels when the correct
+key is pressed (one from the counter and the other from the key). The
+inverted clock pulse (negative going) at pin 12 of the 74C14 and the
+positive going keypad pulse at pin 6 are gated together using two diodes
+as an AND gate (shown in lower right corner). The output at the junction of
+the diodes will be positive in the event a wrong key is pressed and will
+reset the counter.
+
+When a correct key is pressed, outputs will be present from both
+monostable circuits (clock and keypad) causing the reset line to remain
+low and allowing the counter to advance. However, since the keypad pulse
+begins slightly before the clock, a 0.1uF capacitor is connected
+to the reset line to delay the reset until the inverted clock arrives.
+The values are not critical and various other timing schemes could be used
+but the clock signal should be slightly longer than the keypad pulse so that
+the clock signal can mask out the keypad and avoid resetting the
+counter in the event the clock pulse ends before the keypad pulse. The
+fifth output of the counter is on pin 10, so that after four correct
+key entries have been made, pin 10 will move to a high level and can
+be used to activate a relay, illuminate an LED, ect. At this point,
+the lock can be reset simply by pressing any key. The circuit can be
+extended with additional gates (one more CD4011) to accept up to a 8
+digit code. The 4017 counting order is 3 2 4 7 10 1 5 6 9 11 so that
+the first 8 outputs are connected to the NAND gates and pin 9 would
+be used to drive the relay or light. The 4 additional NAND gate outputs
+would connect to the 4 remaining inputs of the CD4068 (pins 9,10,11,12).
+The circuit will operate from 3 to 12 volts on 4000 series CMOS but only
+6 volts or less if 74HC parts are used. The circuit draws very little
+current (about 165 microamps) so it could be powered for several months
+on 4 AA batteries assuming only intermittent use of the relay.
+<P>
+<img  src="lock.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="db.gif"></a>
+<center><h3>Decibel Meter</h3></center>
+
+The circuit below responds to sound pressure levels from about 60 to 70 dB.
+The sound is picked up by an 8 ohm speaker, amplified by a transistor stage
+and one LM324 op-amp section. You can also use a dynamic microphone but I
+found the speaker was more sensitive. The remaining 3 sections of the LM324
+quad op-amp are used as voltage comparators and drive 3 indicator LEDs or
+incandescents which are spaced about 3dB apart. An additional transistor is
+needed for incandescent lights as shown with the lower lamp. I used 12
+volt, 50mA lamps. Each light represents about a 3dB change in sound level
+so that when all 3 lights are on, the sound level is about 4 times greater
+than the level needed to light one lamp. The sensitivity can be adjusted
+with the 500K pot so that one lamp comes on with a reference sound level.
+The other two lamps will then indicate about a 2X and 4X increase in volume.
+<p>
+
+In operation, with no input, the DC voltage at pins 1,2 and 3 of the op-amp
+will be about 4 volts, and the voltage on the (+) inputs to the 3 comparators
+(pins 5,10,12) will be about a half volt less due to the 1N914 diode drop.
+The voltage on the (-) comparator inputs will be around 5.1 and 6.5 which
+is set by the 560 and 750 ohm resistors.
+<p>
+
+When an audio signal is present, the 10uF capacitor connected to the diode
+will charge toward the peak audio level at the op-amp output at pin 1.
+As the volume increases, the DC voltage on the capacitor and also (+)
+comparator inputs will increase and the lamp will turn on when the (+)
+input goes above the (-) input. As the volume decreases, the capacitor
+discharges through the parallel 100K resistor and the lamps go out.
+You can change the response time with a larger or smaller capacitor.
+<p>
+This circuit requires a well filtered power source, it will respond
+to very small changes in supply voltage, so you probably will need
+a large filter capacitor connected directly to the 330 ohm resistor.
+I managed to get it to work with an unregulated wall transformer
+power source, but I had to use 4700uF. It worked well on a regulated
+supply with only 1000uF.
+
+<p>
+<img src="db.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page8.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

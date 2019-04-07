@@ -1,0 +1,302 @@
+<HTML>
+<META name="keywords" content="telephone, hobby, electronics, projects,
+ schematic, security, PIC, assembly, cell">
+<pre>
+
+Do-it-yourself phone dialer security system calls your cell phone, office etc.
+whenever a door or window is opened, or panic button is pressed. Great Home Alarm.
+</pre>
+<image src="autocall.gif">
+<pre>
+
+The circuit consists of a small PIC microcontroller, assembly program,
+and a few other parts to detect a switch closure from an open door, window,
+or manual push button and then dial the cell phone number, and transmit a
+steady tone to indicate the source of the call. The circuit uses the pulse
+dialing system to interrupt the line connection a number of times to
+indicate each digit. Pulse dialing (the oldest form of dialing) works by
+actually disconnecting or "hanging up" the phone line a number of times
+to indicate each digit. For example, the digit "5" would be dialed by
+disconnecting and reconnecting the line 5 times in short intervals of
+about 100mS. There is about a 1 second pause (with the line connected)
+between each digit. The timing is not critical and I was able to dial
+411 and connect to the local information service just using a momentary
+push button switch in series with the phone line.
+
+Circuit Operation:
+
+In operation, the switch closure is detected on pin 7 of the processor
+which activates the reed relay and takes the line off-hook for 3 seconds
+to establish the dial tone. The processor then dials the number by opening
+and closing the relay a number of times for each digit. When dialing is
+complete, the processor waits 3 seconds and then transmits a steady tone
+of about 300Hz for 30 seconds through the modem transformer. The call is
+then terminated and the processor waits for the switch to open before resetting.
+
+Design Considerations:
+
+The PIC16F628 (18 pin) processor was selected because I had a few on hand
+and my homemade hardware programmer only accepts 18 pin devices.
+A smaller 8 pin device could have been used since only three I/O lines
+are needed, but the difference in cost is only about $1.50. One of the
+I/O lines (RA5) is used for programming and is always an input, but can
+used as a functional input so the switch closure could be detected on this
+line thus eliminating the need for one pullup resistor. But I elected to
+use 3 consecutive I/O pins (7,8,9) of the 8 bit port B and leave RA5 pulled
+up with a extra 10K resistor. The output pins (8,9) that drive the relay
+and transformer are limited to 25mA of current each, so an extra transistor
+(2N2222A) was needed to supply additional current to the relay coil.
+The transformer resistance is around 100 ohms, so an additional 330 ohm
+resistor was added in series with pin 9 to limit the transformer current
+to around 10mA. An LED indicator and 330 ohm resistor were used on pin 8
+to observe the dialing activity and indicate the line status.
+Several of the parts (relay, transformer and blocking capacitor) were
+obtained from an old 56K modem card. The schematic shows a 47uF / 50 volt
+non-polarized capacitor used to block DC current to the transformer, however
+a regular polarized 50uF cap could be used if correct phone line polarity
+is observed. The modem was probably designed to work with unknown
+polarities at different locations, so a non-polarized cap was used.
+It's possible the cap and 470 ohm resistor can be replaced with a single
+resistor in series with the line to set the "off hook" line current to
+around 20mA. This may cause partial saturation of the transformer and
+reduced audio level, but might work well enough. The power supply voltage
+is not critical and a 4.5 volt supply from three AA batteries should work.
+Or a switching type regulated 5 volt wall transformer can be used. The
+problem is insuring the relay gets enough voltage to operate. The rest
+of the circuit should run on reduced voltage. I used a 4.2 volt cell phone
+charger that worked well.
+
+Software:
+
+The program (listed at bottom of page) is written in PIC assembly language
+which can be edited and compiled using Microchip's development software
+(MPLAB) available from www.microchip.com. The development software will
+generate a compiled HEX file to be loaded into the processor. Also needed
+is a hardware programmer to download the HEX file into the PIC processor.
+I used a homemade programmer and DOS software by David Tait available from
+http://www.nomad.ee/PIC/. Filename (PIC84V05.ZIP). The only program changes
+needed are the entries for the phone number and the total digits to use.
+The assembly code phone number table looks like this which represents a
+dummy number of 656-7459. Note the digits are in reverse order (top to bottom).
+
+Phone ; Phone Number Table, in reverse order
+
+      addwf       PC,1
+      nop               ; No operation
+      retlw       d'9'  ; Last digit
+      retlw       d'5'
+      retlw       d'4'
+      retlw       d'7'
+      retlw       d'6'
+      retlw       d'5'
+      retlw       d'6'  ; First digit
+
+The total digits used (7 in this case) are stated in the Dial section.
+To use a 3 digit area code, a 7 digit number, and a "1" to begin,
+the entry would change to  ( movlw   d'11' ).
+
+Dial ;------- Change this value to indicate total digits -----
+
+      movlw       d'7'         ; Use 7 digit phone number
+      movwf       COUNTER
+
+The call duration is assigned on the line (movlw  d'100 ; 30 second tone timer)
+just above the "Timeout" section. Increase the "100" value for longer durations
+(i.e. 200 = 2 minutes).
+
+Parts List:
+
+PIC 16F628 microcontroller   -  Allied  383-0398
+5 Volt Reed relay            -  Allied  681-0156
+Modem transformer            -  Mouser  838-TTC-5023
+5 Volt wall transformer      -  Jameco  320303PS
+470 Ohm Resistor    (1)      -  Allied  296-4682
+680 Ohm Resistor    (1)      -  Allied  895-3150
+330 Ohm Resistor    (2)      -  Allied  895-3145
+10K Resistors       (2)      -  Allied  895-0633
+Small Signal Diode  (1)      -  Allied  431-0618
+Red LED             (1)      -  Allied  670-1224
+2N2222A transistor  (1)      -  Allied  248-1005
+
+
+;********************* AutoCall.asm  12/25/07  **********************
+;********************************************************************
+
+ LIST P=16F628   ; Device number (PIC16F628)
+
+ ERRORLEVEL -224 ; suppress annoying message because of tris
+ ERRORLEVEL -302 ; suppress message because of page change
+
+;--------------------- Configuration ---------------------------------
+
+_BODEN_OFF             equ     H'3FBF' ; Brown out detection off
+_CP_OFF                equ     H'3FFF' ; Code protection off
+_PWRTE_ON              equ     H'3FF7' ; Power-on reset enabled
+_WDT_OFF               equ     H'3FFB' ; Watch dog timer off
+_LVP_OFF               equ     H'3F7F' ; Low Voltage programming off
+_INTRC_OSC_NOCLKOUT    equ     H'3FFC' ; Use Internal RC Oscillator
+_MCLRE_OFF             equ     H'3FDF' ; Use RA5 as functional input
+
+  __CONFIG _CP_OFF & _WDT_OFF & _INTRC_OSC_NOCLKOUT & _PWRTE_ON & _LVP_OFF & _BODEN_OFF & _MCLRE_OFF
+
+
+;--------------------- Define Variables -----------------------------
+
+INDF                   equ     00h     ; Indirect file
+FSR                    equ     04h     ; File select register
+CMCON                  equ     1Fh     ; Comparator Control Address
+INTCON                 equ     0Bh     ; Interrupt control register
+OPTION_REG             equ     81h     ; Option register
+STATUS                 equ     03h     ; Status register
+TRISA                  equ     85h     ; I/O control for port A
+TRISB                  equ     86h     ; I/O control for port B
+PORTB                  equ     06h     ; Address of port B
+PORTA                  equ     05h     ; Address of port A
+PC                     equ     02h     ; Program counter
+COUNTER                equ     20h     ; General purpose Counters
+COUNTER1               equ     21h
+COUNTER2               equ     22h
+COUNTER3               equ     23h
+COUNTER4               equ     24h
+TEMP                   equ     25h     ; Temporary register
+
+      bsf         STATUS,5       ; Select memory bank 1 (01)
+      bcf         STATUS,6       ; Select memory bank 1 (01)
+      movlw       b'00000010'
+      movwf       TRISB          ; Set port B as output, RB1 = Input
+      movlw       b'00100000'    ;
+      movwf       TRISA          ; Set port A as output, RA5 = Input
+      bcf         STATUS,5       ; Reset to bank 0
+      bcf         STATUS,0       ; Clear carry bit
+      bcf         STATUS,2       ; Clear zero flag
+      bcf         STATUS,1       ;
+      movlw       07h
+      movwf       CMCON          ; Comparators off
+      clrf        PORTB
+      goto        Loop           ; Main loop
+
+Phone ; Phone Number Table, in reverse order  (656-7459)
+
+      addwf       PC,1
+      nop               ; No operation
+      retlw       d'9'  ; Last digit
+      retlw       d'5'
+      retlw       d'4'
+      retlw       d'7'
+      retlw       d'6'
+      retlw       d'5'
+      retlw       d'6'  ; First digit
+
+Loop ;------------------- Main Loop -----------------
+
+      movfw       PORTB
+      btfsc       PORTB,1   ; Read pin 7, skip if clear
+      goto        Loop
+      bsf         PORTB,2   ; Close relay
+      movlw       d'3'      ; 3 sec Delay
+      movwf       COUNTER4
+
+Off_Hook_Delay              ; 3 sec delay
+
+      call        Digit_Delay
+      decfsz      COUNTER4,f
+      goto        Off_Hook_Delay
+
+Dial ;------- Change this value to indicate total digits -----
+
+      movlw       d'7'         ; Use 7 digit phone number
+      movwf       COUNTER
+Next
+      movfw       COUNTER
+      call        Phone        ; Get Digit from table
+      call        Output       ; Dial the digit
+      call        Digit_Delay  ; Wait 1 second
+      decfsz      COUNTER,f
+      goto        Next         ; Do next (1 of 7 digits)
+      call        Digit_Delay  ; Wait 1 second
+
+      movlw       d'100'       ; 30 second tone timer
+      movwf       COUNTER
+      movwf       COUNTER1
+      movwf       COUNTER2
+
+Timeout                        ; Generate tone for 30 seconds
+
+      movfw       COUNTER
+      movwf       COUNTER1
+
+Tone
+      bsf         PORTB,3      ; Set pin 9 high
+      call        Tone_Delay   ; Wait 1.5mS
+      bcf         PORTB,3      ; Set pin 9 low
+      call        Tone_Delay   ; Wait 1.5mS
+      decfsz      COUNTER1,f
+      goto        Tone
+      decfsz      COUNTER2,f
+      goto        Timeout      ; Repeat until COUNTER2=0
+      bcf         PORTB,2      ; End call, On Hook, Done
+
+Switch_Open ;------------------ Wait for switch open
+
+      movfw       PORTB
+      btfss       PORTB,1      ; Look at pin 7
+      goto        Switch_Open  ; Loop until pin 7 is high
+      call        Digit_Delay  ; Wait 1 second
+      goto        Loop         ; Restart
+
+;------------------ End sequence, restart from top ------
+
+Tone_Delay                     ; 300 Hz Tone
+
+      movlw       d'255'
+      movwf       TEMP
+
+Loop_4
+      nop
+      nop
+      nop
+      decfsz      TEMP,f
+      goto        Loop_4
+      return
+
+;-------------------------------------------------------------
+
+Output                       ; Open relay for each pulse
+
+      movwf       COUNTER1   ; Number of pulses
+
+Next_Pulse
+
+      bcf         PORTB,2    ; Set Pin 8 low
+      call        Pulse_Delay
+      bsf         PORTB,2    ; Set pin 8 high
+      call        Pulse_Delay
+      decfsz      COUNTER1,f
+      goto        Next_Pulse ; Repeat until COUNTER1=0
+      return
+
+Pulse_Delay
+
+      movlw       d'150'   ; 60 mS Delay
+      movwf       TEMP
+Loop_1
+      movwf       COUNTER2
+Loop_2
+      decfsz      COUNTER2,f
+      goto        Loop_2
+      decfsz      TEMP,f
+      goto        Loop_1
+      return
+
+Digit_Delay
+
+      movlw       d'16'      ; 1 sec Delay
+      movwf       COUNTER3
+Loop_3
+      call        Pulse_Delay
+      decfsz      COUNTER3,f
+      goto        Loop_3
+      return
+
+      end
+

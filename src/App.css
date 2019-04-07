@@ -1,7 +1,15 @@
 .App {
   text-align: center;
 }
-
+#background{
+  position: fixed;
+  top:0;
+  left:0;
+  margin: 0;
+  padding: 0;
+  z-index: -1; 
+  overflow: hidden;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -22,11 +30,251 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.left-beauty {
+  position: absolute;
+  left: 0;
+  top:0;
+  width: 15px;
+  height: 100%;
+  border-right: 1px solid #333;
+  overflow: hidden;
+}
+
+.right-beauty {
+  position: absolute;
+  right: 0;
+  top:0;
+  width: 15px;
+  height: 100%;
+  border-left: 1px solid #333;
+  overflow: hidden;
+}
+.locator-form{
+  width: auto;
+  margin: 15px;
+  position: relative;
+  min-height: 96px;
+}
+.locator-select, .locator-value{
+  max-width: var(--form-width);
+  padding: 2px;
+}
+.locator-input{
+  width: 100%;
+  height: 30px;
+}
+.locator-form-submit{
+  height: 100% !important;
+  background: white;
+  color:white;
+}
+.locator-form-submit-btn{
+  padding: unset;
+  margin: unset;
+}
+#test0{
+  width: 60% !important;
+}
+#test1{
+  width: 40% !important;
+}
+
+.search-box{
+  width: 100%;
+  padding: 0 15px;
+}
+.search-box h3{
+  padding: 3px 8px !important;
+}
+.search-box .col-md-6{
+  padding: 0 !important;
+}
+.list-object{
+  width: 100%;
+  height: 28px;
+  border-top: 1px solid black;
+
+}
+.list-object-last{
+  border-bottom: 1px solid black;
+}
+.list-object > select{
+  width: 82px;
+  height: 100%;
+}
+
+label {
+  display: inline-block;
+  text-align: right;
+  padding-right: 7px !important;
+}
+.list-object > *{
+  margin: 0 ;
+  padding: 0 ;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+input,
+select,
+textarea,
+button {
+    border: none;
+    background: #f6f6f6;
+}
+
+
+
+.button_new:hover, .button_new:focus {
+  -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  top: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+.animated {
+  -webkit-transition: all .1s ease;
+  -moz-transition: all .1s ease;
+  -ms-transition: all .1s ease;
+  -o-transition: all .1s ease;
+  transition: all .1s ease;
+}
+
+.animated:active {
+  -webkit-transition: all 0s ease;
+  -moz-transition: all 0s ease;
+  -ms-transition: all 0s ease;
+  -o-transition: all 0s ease;
+  transition: all 0s ease;
+}
+
+.animated-option {
+  transition: all .4s ease;
+}
+.button_new {
+  background-color: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-left: 0px;
+  -moz-box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5);
+  display: block;
+  position: relative;
+  top: 6px;
+  text-decoration: none;
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+#menu_bar .button_new::after {
+  position: absolute;
+  height: calc(100% + 6px);
+  width: calc(100% + 2px);
+  left: -1px;
+  top: -1px;
+  content: '';
+  box-shadow: 0 0 0 5px #f8f9fa;
+  /* #f8f9fa; */
+}
+
+.button_new:hover,
+.button_new:focus {
+  -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.5);
+  top: 10px;
+}
+
+.button_new:active {
+  -moz-box-shadow: inset 0 2px 0px 1px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 2px 0px 1px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 0px 1px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(0, 0, 0, 0.1);
+  top: 10px;
+}
+.not-jumpy:before {
+  content: '';
+  background-color: transparent;
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  height: 0;
+  width: 100%;
+}
+
+.not-jumpy:hover:before,
+.not-jumpy:focus:before,
+.not-jumpy:active:before {
+  border: 1px solid transparent;
+  left: -1px;
+}
+
+.not-jumpy:hover:before,
+.not-jumpy:focus:before {
+  height: 5px;
+}
+
+.not-jumpy:active:before {
+  height: 5px;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.tgl {
+  display: none;
+}
+.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+.tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+  background: none;
+}
+.tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.tgl + .tgl-btn:after {
+  left: 0;
+}
+.tgl + .tgl-btn:before {
+  display: none;
+}
+.tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+.tgl-light + .tgl-btn {
+  background: #f0f0f0;
+  padding: 2px;
+  transition: all 0.4s ease;
+}
+.tgl-light + .tgl-btn:after {
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.tgl-light:checked + .tgl-btn {
+  background: rgba(0, 0, 0, 0.5);
 }

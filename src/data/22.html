@@ -1,0 +1,289 @@
+<html>
+<head>
+<title>AM Radio Receiver Using the NE602 Balanced Mixer"
+</title>
+<META name="description" content="AM Radio Receiver">
+<META name="keywords" content="NE602, Radio, AM, project, superhetrodyne,
+ schematic, education, engineering">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="radio.jpg"></a>
+<center><h3>AM Radio Receiver Using the NE602 Balanced Mixer</h3>
+<br><img  src="radio.jpg"></center><br>
+<img src="radio.gif"><br>
+<pre>
+
+Pictured above is a little AM superhetrodyne receiver that covers the
+broadcast band from 550 Khz to 1650 Khz. The  circuit employs the 8 pin
+Signetics balanced mixer IC (NE602) which converts the incoming RF signal
+to the standard 455 Khz IF signal and provides about 13dB gain. The IF
+signal is amplified by a single transistor stage and audio is recovered
+using a biased shotkey diode (5082) and JFET buffer transistor. The LM386
+audio amp is used to drive a small 2.5 inch speaker at about 200 milliwatts.
+
+The circuit contains four LC tuned circuits, all of which need to be fine
+tuned to obtain good results. An oscilloscope and RF signal generator are
+useful, but the circuit can also be setup using local radio stations
+and an additional portable AM radio.
+
+For test purposes, the circuit can be assembled on a solderless breadboard
+so changes can easily be made. Try to use short connections for the RF
+section with the antenna loop a couple inches away from the board.
+
+Assemble the NE602, ferrite antenna loopstick, tuning cap, oscillator coil
+and associated other parts on the breadboard.
+
+Next, connect the battery through a DMM and verify 3 or 4 milliamps of
+current flow.
+
+Next, adjust the tuning cap for maximum capacitance (550KHz) and connect
+a scope to pin 6 of the NE602 and verify a approx 1 volt p-p sine waveform.
+Adjust the red slug of the T1 oscillator coil for a frequency of about
+1 MHz. Then adjust the capacitor to minimum capacitance and verify the
+frequency increases to around 2Mhz.
+
+To adjust the oscillator without a scope, use a portable AM radio to
+verify the oscillator is working and the frequency is right. To do this,
+place the portable radio close to the antenna coil and tune it to a AM
+station around 1000 on the band. Set the circuit tuning dial to the station
+frequency minus 455KHz. For example, if the portable radio is set to 1100,
+the circuit tuning dial should point to (1100-455 = 645KHz). This doesn't
+have to be exact, but set things as close as you can. Next, adjust the red
+oscillator coil slug until a beat frequency is heard on the portable radio.
+You should hear a squeal and then a null as the oscillator frequency gets
+near the station point on the band. This will verify the oscillator is
+running at about 455 Khz above the dial setting.
+
+If the oscillator doesn't run, the problem may be the connections to the
+(red) oscillator coil. The red oscillator coil will have 5 connections,
+3 on one side for the tapped primary, and 2 on the other for the secondary.
+The circuit requires only the single, tapped primary side, but unfortunately
+the primary tap is too close to one end for the circuit to operate. To
+overcome this problem, the secondary is added in series with the primary
+which effectively moves the tap closer to the center and provides more
+feedback to sustain oscillations. The phasing of the secondary connections
+is also important. If the oscillator fails to work, try reversing the
+connections to the secondary of the coil. When the oscillator is setup,
+the remainder of the receiver can be assembled and calibrated.
+
+If you have a signal generator, set it for 600KHz, 30% audio modulation
+and 1 volt output. Connect the generator through a 1K resistor and a couple
+turns of wire around the antenna loopstick. Adjust the yellow and black coil
+slugs and also the position of the antenna coil on the loopstick for
+strongest response. Reduce the generator output as the signal improves so
+you can find a peak for all three coils. You can also make small adjustments
+to the oscillator coil to get the tuning dial to point directly at 600.
+This will calibrate the low end of the band. To calibrate the high end,
+set the generator for some frequency near the high end, maybe 1500 on the
+dial. Tune the receiver so it receives the signal and then adjust the two
+trimmer capacitors located on the back of the tuning capacitor for best
+response. You may find at this point the trimmer caps are all the way
+closed or open and a peak cannot be found. To fix this problem, note which
+way the caps are set and slightly adjust the main tuning dial to compensate.
+For example, if the caps are all the way closed, move the tuning dial to a
+lower setting (more capacitance) and then repeak the trimmers. Continue this
+until you can find a peak where the trimmers caps are not fully closed or
+open. At this point, repeat the adjustments at the low and high end until
+both are optimum.
+
+This same procedure can be done without the generator using a couple local
+radio stations at opposite ends of the band. The first thing to do is
+identify a station that can be heard somewhere on the band. Try to do this
+without adding an external antenna, but if no stations are heard, add a short
+2 foot wire antenna to the antenna input at the gate of the JFET. Find the
+strongest station and slide the antenna coil along the loopstick for best
+response and also adjust the yellow and black IF coils. Here is a step by
+step procudure I found works reasonably well. My test station was located
+at 790 on the band.
+
+1. If no stations are heard, connect a short 2 foot wire antenna to the
+   junction of the antenna loopstick and gate of the JFET.
+
+2. Adjust the tuning capacitor and slide the antenna coil for best response
+   of some local station.
+
+3. Adjust the yellow and black slugs of T2 and T3 for loudest response.
+
+4. Reduce the length of the wire antenna and readjust the position of the
+   antenna coil for best response.
+
+5. Move the tuning dial slightly toward the correct point without losing the
+   station. (i.e.) If the station is located at 700 and your tuning dial is
+   pointing higher at 750, slightly move it down toward the correct 700 point
+   (more capacitance).
+
+6. Readjust T2,T3 and antenna coil for best response.
+
+7. Repeat steps 4, 5 and 6 until the station is heard loud and clear and
+   no further improvement can be made.
+
+8. Remove the wire antenna and readjust the antenna coil, T2 and T3 for best
+   response. Note the antenna coil should not end up at the center of the
+   loopstick. This will indicate not enough inductance and a few more turns
+   of wire may be needed on the antenna coil. The optimum position for the
+   coil is near the center, slightly offset toward one end. If it ends up very
+   near one end of the stick, you may want to remove a few turns which will
+   allow the coil to be closer to the center.
+
+9. At this point, several stations should be heard loud and clear but
+   minor adjustments may be needed to optimize the entire band. Select
+   a station near the bottom of the band (600KHz) and adjust the
+   antenna coil and oscillator coil for best response. Note that only
+   very small adjustments to the red oscillator coil may be needed.
+   Then select a station near the top of the band (1500Khz) and adjust
+   the 2 trimmer caps on the back of the main tuning capacitor for best
+   response. Repeat this process until both ends are optimized. Be sure
+   the 2 trimmer caps do not end up fully open or closed. If they do,
+   note the position and slightly adjust the main capacitor to compensate.
+   For example, if the trimmers are fully closed, adjust the main capacitor
+   slightly lower (more capacitance) and then readjust the trimmers
+   so the peak occurs somewhere between min and max.
+</pre>
+
+<center><h3>AM Radio Receiver With Additional IF Stage</h3>
+<img src="radio1.gif"><p>
+<img src="radio4.jpg"><br>
+</center>
+<pre>
+
+Pictured above is the same circuit with an additional IF stage added for
+greater sensitivity. Overall gain can be adjusted with the 1K resistors
+in the emitter leg of the 2N3904 transistors. The circuit board was assembled
+using multiturn 10K pots in place of the 1K resistors and then adjusted for
+best performance. The pots are the 2 little blue items just to the left of
+the tuning cap. I think I ended up with about 750 ohms. The emitter bypass
+caps are not needed since there is plenty of gain available without them.
+The caps (two yellow items near the pots) are still in the board but not
+connected. I didn't know if they were needed or not, so I put them in there
+anyway and later disconnected them. Removing the bypass caps also increases
+the input impedance so that both IF stages can use the black IF coils which
+have higher secondary impedances (and thus more voltage) than the yellow or
+white coils. You might be able to replace the yellow coil with a black one
+for greater signal transfer since the input to the first transistor is much
+higher without the bypass cap, but I didn't try it. You may notice one of the
+black coils is actually white in the picture but it was rewound for a higher
+secondary impedance. Actually, it was removed from a junk radio purchased for
+a dollar and didn't have any secondary, so I added a 27 turn secondary which
+is close to what the black coils use. Overall, the performance is very good
+except for the AGC circuit, which has limited range and may not be able
+to compensate for very strong stations which may overload the circuit.
+The AGC voltage is derived from the IF amplitude at the cathode of the
+detector diode (output of T4). As the IF amplitude increases, the DC
+voltage at the gate of the JFET will move negative, below ground.
+The audio signal is present on both the gate and source terminals of the
+JFET, but the audio DC offset voltage will change as the IF amplitude
+changes. This DC voltage (about 2 volts) is fed back through a 15K resistor
+and the two IF coil secondaries to control the transistor bias points.
+The audio signal is filtered out by the 47uF cap leaving a stable DC
+voltage at the base of the transistors. As the base voltage drops, the
+emitter voltages also drop resulting in less operating current and lower
+gain for two IF stages. But the range is limited to maybe only 6-12dB
+which isn't enough to compensate for very strong signals. One solution
+to the problem is a manual gain control consisting of a switch and
+a few turns of wire around the antenna coil which can be seen in the
+picture (3 turns of solid insulated white wire on left side of loopstick).
+Closing the switch loads the antenna coil and reduces the signal level.
+
+Notes:
+
+IF transformer data and Mouser part numbers can be found at:
+
+http://www.electronics-tutorials.com/filters/if-amplifier-transformers.htm
+
+There are a couple different versions of the yellow and black transformers.
+The total turns used and position of the tap varies with the version.
+I'm not sure which is better, or which ones I used since they were recovered
+from old radios. However, either version should be driven using the
+shortest section of the primary. This means connecting the transistor
+collector to either the tap or the end closest to the tap and the power
+connection to the other point. Leave the transformer end farthest from the
+tap unconnected. You can use a DMM to measure the resistance from the tap to
+each end of the primary to determine which end is closest to the tap.
+Resistance will probably be a couple ohms or less.
+
+A couple sources for ferrite rods for antenna loopsticks can be found at the
+links below but the longer rods are expensive ($25 for a 5.6 inch rod).
+The second source has 7.5 inch rods for $20. You may also find them on ebay.
+
+http://www.stormwise.com/page26.htm
+http://www.universal-radio.com/catalog/misc/amidon.html
+
+A source for a miniture variable tuning capacitor was found at
+"Ocean State Electronics" http://www.oselectronics.com/ose_p98.htm
+
+Near the bottom of the page is the listing:
+
+Miniature 2 Gang Poly-film Variable Tuning Capacitor For Broadcast Band
+
+" Tunes AM band from 540Khz to 1600Khz. Ideal variable tuning capacitor
+for miniature circuitry and use as exact-duplicate replacement in current
+transistor receivers. Rotates through a full 180 degrees
+Maximum capacity: Antenna section. 15-140PF, Oscillator section, 10-60PF.
+Trimmer capacity: variable to over 12PF. Trimmer adjustment on rear of case.
+Completely enclosed to clear polyethylene plastic case to protect plates.
+Includes calibrated dial, screw, and knob.
+Small size, 3/4" Square x 1/2" Deep.
+
+BC-540...........$3.95 "
+
+If you use this cap or similar from an old miniture radio, the antenna
+loopstick inductance will need to be about 600uH to tune 550KHz with the
+capacitance at maximum (140pF). This amounts to about 80 turns on a 4 inch,
+3/8 diameter ferrite rod. Shorter rods will need more turns.
+
+</pre>
+
+<a name="loop.jpg"></a>
+<center><h3>Loop Antenna for AM Radio</h3>
+<br><img  src="loop.jpg"></center><br>
+<img src="loop.gif"><br>
+<pre>
+A loop antenna can greatly improve medium wave reception. Loop antennas
+are directional and receive signals along the plane of the windings. The
+directional quality improves signal to noise ratio of the desired signal
+while rejecting signals perpendular to the plane of the windings. Larger
+loops are better than smaller ones but good results can be obtained
+from moderate sizes of one or two feet on a side. The shape doesn't
+make much difference so the loop can be circular, rectangular or
+a triangle shape. The main idea is to cover as much area as possible,
+so I would imagine a circular loop would be the best. The loop pictured
+here measures 15 inches on a side and is about 1.5 inches wide. It was
+wound with 16 turns of #35 copper wire, and has a Q of about 100 at
+600 KHz. Larger guage wire might have been better (less resistance)
+and therefore higher Q and selectivity, but the arrangment here works
+pretty well with a bandwidth of about 6Khz at 600Khz. The loop is tuned
+with a 30-365 pF capacitor and covers the standard broadcast band of
+550-1700 KHz. The antenna signal is inductively coupled to the radio's
+internal ferrite rod antenna so no wire connections are needed.
+Simply place the radio near the loop antenna and adjust the position(s)
+for best results. You may have to adjust the tuning of both the radio
+and antenna several times for optimum results.
+<br>
+More detailed information on loop antennas can be found at:
+<a href="http://www.mindspring.com/~loop_antenna/"> AM Loop Antennas</a>
+
+A calculator for figuring the number of turns needed for various
+rectangular loops can be found here:
+<a href="http://www.mindspring.com/~loop_antenna/amloop_calc4.htm">
+Loop Loop Antenna Calculator - By Bruce Carter </a>
+
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='radio.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

@@ -1,0 +1,247 @@
+<html>
+<head>
+<title>LED flashers, Line powered LEDs, LED Traffic lights
+</title>
+</head>
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="tone.gif"></a>
+<center><h3>555 Tone Generator (8 ohm speaker)</h3></center>
+<br>This is a basic 555 squarewave oscillator used to produce a 1 Khz
+tone from an 8 ohm speaker. In the circuit on the left, the speaker is
+isolated from the oscillator by the NPN medium power transistor which also
+provides more current than can be obtained directly from the 555
+(limit = 200 mA). A small capacitor is used at the transistor base to slow
+the switching times which reduces the inductive voltage produced by the
+speaker. Frequency is about 1.44/(R1 + 2*R2)C where R1 (1K) is much smaller
+than R2 (6.2K) to produce a near squarewave. Lower frequencies can be
+obtained by increasing the 6.2K value, higher frequencies will probably
+require a smaller capacitor as R1 cannot be reduced much below 1K. Lower
+volume levels can be obtained by adding a small resistor in series with
+the speaker (10-100 ohms). In the circuit on the right, the speaker
+is directly driven from the 555 timer output. The series capacitor (100 uF)
+increases the output by supplying an AC current to the speaker and driving
+it in both directions rather than just a pulsating DC current which would
+be the case without the capacitor. The 51 ohm resistor limits the current
+to less than 200 mA to prevent overloading the timer output at 9 volts.
+At 4.5 volts, a smaller resistor can be used.
+
+<br><img  src="tone.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="5volts.gif"></a>
+<center><h3>Generating -5 Volts From a 9 Volt Battery</h3></center>
+<br>A 555 timer can be used to generate a squarewave to produce
+a negative voltage relative to the negative battery terminal. When the timer
+output at pin 3 goes positive, the series 22 uF capacitor charges through
+the diode (D1) to about 8 volts. When the output switches to ground, the
+22 uF cap discharges through the second diode (D2) and charges the 100 uF
+capacitor to a negative voltage. The negative voltage can rise over
+several cycles to about -7 volts but is limited by the 5.1 volt zener
+diode which serves as a regulator. Circuit draws about 6 milliamps
+from the battery without the zener diode connected and about 18 milliamps
+connected. Output current available for the load is about 12 milliamps.
+An additional 5.1 volt zener and 330 ohm resistor could be used to
+regulate the +9 down to +5 at 12 mA if a symmetrical +/- 5 volt supply
+is needed. The battery drain would then be around 30 mA.
+
+<br><img  src="5volts.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="outline.gif"></a>
+<center><h3>Transistor / Diode / IC (DIP) Outlines</h3></center>
+<br>
+<img  src="outline.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="15flash.gif"></a>
+<center><h3>1.5 Volt LED Flashers</h3></center>
+<br>The LED flasher circuits below operate on a single 1.5 volt battery.
+The circuit on the upper right uses the popular LM3909 LED flasher IC and
+requires only a timing capacitor and LED.
+<p>
+The top left circuit, designed by Andre De-Guerin illustrates using a
+100uF capacitor to double the battery voltage to obtain 3 volts for the LED.
+Two sections of a 74HC04 hex inverter are used as a squarewave oscillator
+that establishes the flash rate while a third section is used as a buffer
+that charges the capacitor in series with a 470 ohm resistor while the
+buffer output is at +1.5 volts. When the buffer output switches to ground
+(zero volts) the charged capacitor is placed in series with the LED and
+the battery which supplies enough voltage to illuminate the LED. The LED
+current is approximately 3 mA, so a high brightness LED is recommended.
+<p>
+In the other two circuits, the same voltage doubling principle is used
+with the addition of a transistor to allow the capacitor to discharge
+faster and supply a greater current (about 40 mA peak). A larger capacitor
+(1000uF) in series with a 33 ohm resistor would increase the flash duration
+to about 50mS. The discrete 3 transistor circuit at the lower right would
+need a resistor (about 5K) in series with the 1uF capacitor to widen the pulse
+width.
+
+<p><img  src="15flash.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="lineled.gif"></a>
+<center><h3>AC Line powered LEDs</h3></center>
+<br>
+
+The circuit below illustrates powering a LED (or two) from the
+120 volt AC line using a capacitor to drop the voltage and a small
+resistor to limit the inrush current. Since the capacitor must
+pass current in both directions, a small diode is connected
+in parallel with the LED to provide a path for the negative
+half cycle and also to limit the reverse voltage across the
+LED. A second LED with the polarity reversed may be subsituted
+for the diode, or a tri-color LED could be used which would appear
+orange with alternating current. The circuit is fairly efficient
+and draws only about a half watt from the line. The resistor value
+(1K / half watt) was chosen to limit the worst case inrush current to about
+150 mA which will drop to less than 30 mA in a millisecond as the capacitor
+charges. This appears to be a safe value, I have switched the circuit
+on and off many times without damage to the LED. The 0.47 uF capacitor
+has a reactance of 5600 ohms at 60 cycles so the LED current is about
+20 mA half wave, or 10 mA average. A larger capacitor will increase the
+current and a smaller one will reduce it. The capacitor must be a
+non-polarized type with a voltage rating of 200 volts or more.
+<p>
+The lower circuit is an example of obtaining a low regulated voltage
+from the AC line. The zener diode serves as a regulator and also provides
+a path for the negative half cycle current when it conducts in the forward
+direction. In this example the output voltage is about 5 volts and will
+provide over 30 milliamps with about 300 millivolts of ripple. Use caution
+when operating any circuits connected directly to the AC line.
+
+<p><img  src="lineled.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="ledlamp.gif"></a>
+<center><h3>Line Powered White LEDs</h3></center>
+<br>
+
+The LED circuit below is an example of using 25 white LEDs in series
+connected to the 120VAC line. It can be modified for more or less
+LEDs by adjusting the resistor value. The exact resistance will depend
+on the particular LEDs used. But working out the resistor value is a bit
+complicated since current will not continously flow through
+the resistor.
+<p>
+In operation, the output of the bridge rectifier will be about
+120 DC RMS or 170 volts peak. If we use 25 white LEDs with a
+forward voltage of 3 volts each, the total LED voltage will be
+75 volts. The peak resistor voltage will be 170- 75 or 95 volts
+but the resistor voltage will not be continous since the input
+must rise above 75 before any current flows. This (dead time)
+represents about 26 degrees of the 90 degree half wave rectified
+cycle, (asin) 75/170 = (asin) .44 = 26 degrees. This means the
+resistor will conduct during 90-26 = 64 degrees, or about
+71 percent of the time.
+<p>
+Next we can work out the peak LED current to
+determine the resistor value. If the LED current is 20mA RMS,
+the peak current will be 20*1.414 or 28mA. But since the
+duty cycle is only 71 percent, we need to adjust this figure
+up to 28/0.71 = 39mA. So, the resistor value should be
+95/.039 = 2436 ohms (2.4K) and the power rating will be
+.02^2 *2400= .96 watts. A two watt size is recommended.
+
+<p>
+Now this circuit can also be built using 2 diodes
+and resistor as shown in the lower drawing. The
+second diode in parallel with the LEDs is used to avoid
+a reverse voltage on the LEDs in case the other diode
+leaks a little bit. It may not be necessary but I thought
+it was a good idea.
+<p>
+Working out the resistor value is similar to the other
+example and comes out to about half the value of the
+full wave version, or about 1.2K at 1 watt in this case.
+But the peak LED current will be twice as much or about 78mA.
+This is probably not too much, but you may want to look
+up the maximum current for short duty cycles for the LEDs
+used and insure 79mA doesn't exceed the spec.
+<p>
+<p><img src="ledlamp.gif">
+<p><img src="ledlamp2.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="traffic.gif"></a>
+<center><h3>LED Traffic Lights</h3></center>
+<br>
+<p>
+The LED traffic Light circuit controls 6 LEDs (red, yellow and green)
+for both north/south directions and east/west directions. The timing
+sequence is generated using a CMOS 4017 decade counter and a 555 timer.
+Counter outputs 1 through 4 are wire ORed using 4 diodes so that the
+(Red - North/South) and (Green - East/West) LEDs will be on during the
+first four counts. The fifth count (pin 10) illuminates
+(Yellow - East/West) and (Red - North/South). Counts 6 through 9 are
+also wire ORed using diodes to control (Red - East/West) and
+(Green - North/South). Count 10 (pin 11) controls (Red - East/West) and
+(Yellow - North/South). The time period for the red and green lamps will
+be 4 times longer than for the yellow and the complete cycle time
+can be adjusted with the 47K resistor. The eight 1N914 diodes could be
+subsituted with a dual 4 input OR gate (CD4072).
+
+<p><img  src="traffic.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="sunset.gif"></a>
+<center><h3>Photo Electric Street Light</h3></center>
+<br>
+<p>
+ This is basically a Schmitt Trigger circuit which receives input from
+ a cadmium sulfide photo cell and controls a relay that can be used to
+ switch off and on a street lamp at dawn and dusk. I have built the
+ circuit with a 120 ohm/12 volt relay and monitored performance using a
+ lamp dimmer, but did not connect the relay to an outside light.
+ <p>
+ The photo cell should be shielded from the lamp to prevent feedback
+ and is usually mounted above the light on top of a reflector and
+ pointed upward at the sky so the lamp light does not strike the
+ photo cell and switch off the lamp.
+ <p>
+ The photo cell is wired in series with a potentiometer so the voltage
+ at the junction (and base of transistor) can be adjusted to about half
+ the supply, at the desired ambient light level. The two PNP transistors
+ are connected with a common emitter resistor for positive feedback so as
+ one transistor turns on, the other will turn off, and visa versa.
+ Under dark conditions, the photo cell resistance will be higher than
+ the potentiometer producing a voltage at Q1 that is higher than the
+ base voltage at Q2 which causes Q2 to conduct and activate the relay.
+ <p>
+ The switching points are about 8 volts and 4 volts using the resistor
+ values shown but could be brought closer together by using a lower
+ value for the 7.5K resistor. 3.3K would move the levels to about
+ 3.5 and 5.5 for a range of 2 volts instead of 4 so the relay turns
+ on and off closer to the same ambient light level. The potentiometer
+ would need to be readjusted so that the voltage is around 4.5 at the
+ desired ambient condition.
+
+<p><img  src="sunset.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page10.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

@@ -1,0 +1,45 @@
+.description-default {
+    width: 100%;
+    height: 0;
+    background: #333;
+    float: left;
+    display: none;
+    transition: height 0.33s;
+}
+
+.description-show {
+    display: block;
+    animation: slide-down .3s ease-out;
+    height: 250px;
+}
+
+.description-text {
+    height: 100%;
+    width: 60%;
+    float: right;
+    background: rgb(49, 49, 49);
+    color: white;
+    text-align: center;
+    line-height: 100%;
+    font-size: 32px;
+    display: table;
+    border-left: 1px solid rgb(30, 30, 30);
+    box-shadow: inset 0 0 18px rgb(30, 30, 30);
+}
+.description-text>span {
+    display: table-cell;
+    vertical-align: middle;
+}
+.description-hide {
+    display: none;
+}
+
+@keyframes slide-down {
+    0% {
+        height: 0;
+    }
+
+    100% {
+        height: 250px;
+    }
+}

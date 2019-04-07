@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>Solar Cell Boost Converter.</title>
+<META name="description" content="Solar Cell Voltage Booster">
+<META name="keywords" content="Solar, Cell, Panel, Boost, Converter,
+ schematic, DIY, battery, charger">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="boost.jpg"></a>
+<center><h1>Solar Cell Boost Converter</h1>
+<br><img src="panel_4.jpg"></center><br>
+<img src="solar.gif"><br>
+<pre>
+
+  The boost converter is used to charge batteries from low voltage solar
+  arrays. Results were obtained using 3X3 cells that deliver about 400
+  millivolts at 1 amp. The pictured panel array contains 20 cells in series
+  and generates about 8 watts at 8 volts in bright sunlight and was assembled
+  on a 12 X 16 picture frame. Efficiency of the converter measured 87% and
+  delivers almost 600 milliamps into a 12 volt SLA battery. Efficiency drops
+  to about 72% using 4 single cells in series (pictured above) charging the
+  same 12 volt battery at around 70mA. The current was a little low due
+  to a couple broken corners. A third test was made using a single cell at
+  0.4 volt charging a 6 volt battery, but efficiency was only about 55%.
+  The cells were purchased from solarcells101.com in slightly damaged
+  condition with chipped edges and a few tiny cracks, but still perform well
+  and sell at discount. There are also many good deals on ebay.
+
+  The 10Khz oscillator and drive circuit obtain power from the battery under
+  charge which should be grater than 4 volts. The output stage (mosfet and
+  inductor) obtain power from the solar array and produce a charging current
+  through the schotty diode (VSK 330). Efficiency is improved with 220uF
+  capacitors added across the input and output. A 12 volt zener diode and
+  120 ohm resistor were added to protect the circuit from excessive voltage
+  in the event the battery is disconnected during operation. Additional
+  protection is obtained with the TL431 voltage reference diode which limits
+  the output voltage to 18 volts. If the output exceeds 18 volts, the cathode
+  of the TL431 falls, stopping the oscillator until the output falls below
+  16 volts.
+
+  In operation, the duty cycle of the switching waveform is adjusted with
+  the 100K pot for maximum current into the battery. This adjustment can be
+  made by monitoring the voltage across the 1.5 ohm resistor and adjusting
+  for maximum voltage. This should be the optium setting where efficiency
+  is highest and maximum power is extracted from the solar array. Regulation
+  is not used so the optimum setting may need adjustment as conditions change,
+  lighting conditions, temperature, battery voltage, etc. Some loss occurs in
+  the 1.5 ohm resistor, maybe 5% which could be reduced with a smaller value
+  resistor, or a milliamp meter with low resistance.
+
+  Most parts are fairly common except maybe the 5mH inductor. I used a ferrite
+  torroid core from a scrap PC switching PS. The core measures 1.5 inch
+  outside diameter by 5/8 thick. The windings were removed and replaced with
+  25 turns of the same 18 gauge wire. The resistance measures 25 milliohms.
+  The inductor value is fairly tolerant and can be most anything from 1mH
+  or greater if the resistance is low and the core doesn't saturate with the
+  peak current. Larger inductors will have lower peak currents but higher
+  resistance for the same size.
+
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='boost.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

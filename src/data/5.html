@@ -1,0 +1,305 @@
+<HTML>
+<head>
+<title>Telephone In-Use Relay, LM317 Regulators, Lithium Charger
+</title>
+<BODY>
+<blockquote>
+<a name="317.gif"></a>
+<center><H3>LM317T Variable Voltage Regulator</H3></center>
+<br>The LM317T is a adjustable 3 terminal positive voltage regulator
+capable of supplying in excess of 1.5 amps over an output range of
+1.25 to 37 volts. The device also has built in current limiting and
+thermal shutdown which makes it essentially blow-out proof.
+<p>
+Output voltage is set by two resistors R1 and R2 connected as shown below.
+The voltage across R1 is a constant 1.25 volts and the adjustment terminal
+current is less than 100uA. The output voltage can be closely approximated
+from Vout=1.25 * (1+(R2/R1)) which ignores the adjustment terminal
+current ``but will be close if the current through R1 and R2 is many times
+greater. A minimum load of about 10mA is required, so the value for R1 can
+be selected to drop 1.25 volts at 10mA or 120 ohms. Something less than
+120 ohms can be used to insure the minimum current is greater than 10mA.
+The example below shows a LM317 used as 13.6 volt regulator. The 988
+ohm resistor for R2 can be obtained with a standard 910 and 75 ohm in series.
+<p>
+When power is shut off to the regulator the output voltage should fall
+faster than the input. In case it doesn't, a diode can be connected across
+the input/output terminals to protect the regulator from possible reverse
+voltages. A 1uF tantalum or 25uF electrolytic capacitor across the output
+improves transient response and a small 0.1uF tantalum capacitor is
+recommended across the input if the regulator is located an appreciable
+distance from the power supply filter. The power transformer should be
+large enough so that the regulator input voltage remains 3 volts
+above the output at full load, or 16.6 volts for a 13.6 volt output.
+<p>
+<center><a href="http://www.national.com/pf/LM/LM317.html">LM317 Data Sheet</a></center>
+<p>
+<IMG src="317.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="317pass.gif"></a>
+<center><H3>LM317T Voltage Regulator with Pass Transistor</H3></center>
+
+<br>
+The LM317T output current can be increased by using an additional power
+transistor to share a portion of the total current. The amount of current
+sharing is established with a resistor placed in series with the 317 input
+and a resistor placed in series with the emitter of the pass transistor.
+In the figure below, the pass transistor will start conducting when the
+LM317 current reaches about 1 amp, due to the voltage drop across the 0.7
+ohm resistor. Current limiting occurs at about 2 amps for the LM317 which
+will drop about 1.4 volts across the 0.7 ohm resistor and produce a 700
+millivolt drop across the 0.3 ohm emitter resistor. Thus the total current
+is limited to about 2+ (.7/.3) = 4.3 amps. The input voltage will need to
+be about 5.5 volts greater than the output at full load and heat dissipation
+at full load would be about 23 watts, so a fairly large heat sink may be
+needed for both the regulator and pass transistor. The filter capacitor size
+can be approximated from C=IT/E where I is the current, T is the half cycle
+time (8.33 mS at 60 Hertz), and E is the fall in voltage that will occur
+during one half cycle. To keep the ripple voltage below 1 volt at 4.3
+amps, a 36,000 uF or greater filter capacitor is needed. The power
+transformer should be large enough so that the peak input voltage to the
+regulator remains 5.5 volts above the output at full load, or 17.5 volts
+for a 12 volt output. This allows for a 3 volt drop across the regulator,
+plus a 1.5 volt drop across the series resistor (0.7 ohm), and 1 volt
+of ripple produced by the filter capacitor. A larger filter capacitor will
+reduce the input requirements, but not much.
+<br>
+
+<IMG src="317pass.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="5reg.gif"></a>
+<center><H3>High Current Regulated Supply</H3></center>
+
+The high current regulator below uses an additional winding or a
+separate transformer to supply power for the LM317 regulator so that the
+pass transistors can operate closer to saturation and improve efficiency.
+For good efficiency the voltage at the collectors of the two parallel 2N3055
+pass transistors should be close to the output voltage. The LM317 requires a
+couple extra volts on the input side, plus the emitter/base drop of the 3055s,
+plus whatever is lost across the (0.1 ohm) equalizing resistors
+(1volt at 10 amps), so a separate transformer and rectifier/filter circuit
+is used that is a few volts higher than the output voltage. The LM317 will
+provide over 1 amp of current to drive the bases of the pass transistors and
+assumming a gain of 10 the combination should deliver 15 amps or more. The
+LM317 always operates with a voltage difference of 1.2 between the output
+terminal and adjustment terminal and requires a minimum load of 10mA, so
+a 75 ohm resistor was chosen which will draw (1.2/75 = 16mA). This same
+current flows through the emitter resistor of the 2N3904 which produces
+about a 1 volt drop across the 62 ohm resistor and 1.7 volts at the base.
+The output voltage is set with the voltage divider (1K/560) so that 1.7
+volts is applied to the 3904 base when the output is 5 volts. For 13 volt
+operation, the 1K resistor could be adjusted to around 3.6K. The regulator
+has no output short circuit protection so the output probably should be fused.
+
+<br>
+<IMG src="5reg.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="dimmer2.gif"></a>
+<center><H3>Simple Adjustable Voltage Source</H3></center>
+
+<br>A simple but less efficient methode of controlling a DC voltage
+is to use a voltage divider and transistor emitter follower configuration.
+The figure below illustrates using a 1K pot to set the base voltage of a
+medium power NPN transistor. The collector of the NPN feeds the base of a
+larger PNP power transistor which supplies most of the current to the load.
+The output voltage will be about 0.7 volts below the voltage of the wiper
+of the 1K pot so the output can be adjusted from 0 to the full supply
+voltage minus 0.7 volts. Using two transistors provides a current gain of
+around 1000 or more so that only a couple milliamps of current is drawn
+from the voltage divider to supply a couple amps of current at the output.
+Note that this circuit is much less efficient than the 555 timer dimmer
+circuit using a variabe duty cycle switching approach. In the figure below,
+the 25 watt/ 12 volt lamp draws about 2 amps at 12 volts and 1 amp at 3
+volts so that the power lost when the lamp is dim is around
+(12-3 volts * 1 amp) = 9 watts. A fairly large heat sink is required to
+prevent the PNP power transistor from overheating. The power consumed by
+the lamp will be only (3 volts * 1 amp) = 3 watts which gives us
+an efficiency factor of only 25% when the lamp is dimmed. The advantage
+of the circuit is simplicity, and also that it doesn't generate any RF
+interference as a switching regulator does. The circuit can be used
+as a voltage regulator if the input voltage remains constant, but it
+will not compensate for changes at the input as the LM317 does.
+
+<br>
+<IMG src="dimmer2.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="lithium.gif"></a>
+<center><H3>2 Cell Lithium Ion Charger </H3></center>
+
+This circuit was build to charge a couple series Lithium cells (3.6 volts each,
+1 Amp Hour capacity) installed in a portable transistor radio.
+<p>
+The charger operates by supplying a short current pulse through a series
+resistor and then monitoring the battery voltage to determine if another
+pulse is required. The current can be adjusted by changing the series resistor
+or adjusting the input voltage. When the battery is low, the current
+pulses are spaced close together so that a somewhat constant current is
+present. As the batteries reach full charge, the pulses are spaced
+farther apart and the full charge condition is indicated by the LED
+blinking at a slower rate.
+<p>
+A TL431, band gap voltage reference (2.5 volts) is used on pin 6 of the comparator
+so the comparator output will switch low, triggering the 555 timer when
+the voltage at pin 7 is less than 2.5 volts. The 555 output turns on
+the 2 transistors and the batteries charge for about 30 milliseconds.
+When the charge pulse ends, the battery voltage is measured and divided
+down by the combination 20K, 8.2K and 620 ohm resistors so when the
+battery voltage reaches 8.2 volts, the input at pin 7 of the comparator
+will rise slightly above 2.5 volts and the circuit will stop charging.
+<p>
+The circuit could be used to charge other types of batteries such
+as Ni-Cad, NiMh or lead acid, but the shut-off voltage will need to
+be adjusted by changing the 8.2K and 620 ohm resistors so that
+the input to the comparator remains at 2.5 volts when the terminal battery
+voltage is reached.
+<p>
+For example, to charge a 6 volt lead acid battery to a limit of 7 volts,
+the current through the 20K resistor will be (7-2.5)/ 20K = 225 microamps.
+This means the combination of the other 2 resistors (8.2K and 620)
+must be R=E/I = 2.5/ 225 uA = 11,111 ohms. But this is not a standard value,
+so you could use a 10K in series with a 1.1K, or some other values that
+total 11.11K
+<P>
+Be careful not to overcharge the batteries. I would recommend using
+a large capacitor in place of the battery to test the circuit and
+verify it shuts off at the correct voltage.
+
+<br>
+<IMG src="lithium.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="lithium2.gif"></a>
+
+<center><H3>One or Two Cell Li-Ion Battery Charger </H3></center>
+
+Another charger idea is to use a regulated power supply set
+for the full charge battery voltage and a resistor to limit current.
+It doesn't supply constant current and requires about 30% more charge
+time, or around 4 hours. A constant current charger might reduce
+that to 3 hours but would require more parts.
+
+<p>
+A charge current indicator LED could be added as shown in the lower left
+of the drawing. The LED turns off when the charge current is less than
+about 35mA and the voltage drop on the 18 ohm resistor is around 600mV
+or less. A test run required 260 minutes for the LED to go out which
+should indicate about 85% full capacity, but not sure. More
+information can be found at:
+<p>
+
+<a href="http://batteryuniversity.com/learn/article/charging_lithium_ion_batteries/">
+Lithium Ion Article at Battery University.com</a>
+
+<p>
+<pre>
+Voltage    Capacity    Charge time       Capacity with
+                                        full saturation
+---------------------------------------------------------
+3.8         60%        120 Min           65%
+3.9         70%        135 Min           76%
+4.0         75%        150 Min           82%
+4.1         80%        165 Min           87%
+4.2         85%        180 Min           100%
+---------------------------------------------------------
+</pre>
+<p>
+
+Circuit Details:
+<p>
+
+When the battery is low, the voltage at the reference pin of the TL431
+will be less than 2.5 volts, causing the TL431 to switch off, increasing
+the transistor base voltage and charge current. Current is
+limited to around 300 mA by the 18 ohm resistor (2 cell setup).
+As the battery approaches full charge, the TL431 reference pin
+approaches 2.5 volts, increasing the TL431 current and reducing the
+transistor base voltage and charge current. Using 2 cells
+(8.2 volts, 1000 mAH), the current drops from 300mA to about 100mA as
+the charge reaches 75% of capacity in 200 minutes. Another hour is
+needed to bring the charge to 85%  Note, the value of 4.1 rather than
+4.2 was chosen for a little more margin, and less stress on the battery
+at full charge. From the data above, it looks like only 5% of capacity
+is lost.
+
+The diode prevents a reverse voltage across
+the e/b transistor junction in the event the power supply connections
+are shorted while the battery is still connected. The 220 ohm resistor
+was selected for about 20mA base current. The minimum transistor gain is 30,
+so 20mA should produce at least 600mA. The open circuit output voltage is
+set with a voltage divider for either 4.1 or 8.2 volts. Two jumpers
+are used to select the desired voltage and current limit.
+<p>
+For example, to charge a single Li-ion cell to 4.1 volts, the current through
+the 10K resistor will be <br> (4.1-2.5)/ 10K = 160 microamps. The series
+combination of the other 2 resistors should total 2.5 / 160 uA = 15625 ohms.
+A 15K in series with 620 might be used, and the 620 adjusted to compensate
+for the 15K being slightly more or less. I ended up 15K and 750 since the
+15K was a little low.
+<p>
+In the 2-cell (8.2 volt) case, two additional resistors are added in parallel
+with the 15625 (using the jumper) to increase the output voltage from 4.1 to
+8.2. I ended up with 5.6K in series with 430 ohms. The 430 can be adjusted
+to get it just right.
+<p>
+A second jumper is used (across the 12 ohm resistor) to maintain
+approximately the same charge current with either single or double cell
+operation. Both jumpers are installed for 8.2 volt operation and removed
+for 4.1 volt operation. Note: The circuit board picture shows two 5 watt
+12 ohm resistors. One of the resistors is out of tolerance and is
+actually 17 ohms.
+<p>
+
+Caution: Be careful not to set the jumpers for 8.2 volt operation while
+connected to a single cell (4.1 volt) battery. Use a DMM to verify the
+open circuit voltage is what you want before connecting the battery.
+
+<p>
+<center><IMG src="2cell.gif">
+<p>
+<IMG src="2cells.jpg"> </center>
+<HR>
+<p>
+<a name="inuse.gif"></a>
+<center><H3>Telephone In-Use Indicator</H3></center>
+<IMG src="inuse.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="relayuse.gif"></a>
+<center><H3>Telephone In-Use Relay Controller</H3></center>
+<IMG src="relayuse.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="flipflop.gif"></a>
+<center><H3>Astable Multivibrator</H3></center>
+<IMG src="flipflop.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page12.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+
+

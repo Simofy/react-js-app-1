@@ -1,0 +1,145 @@
+<HTML>
+<BODY>
+<blockquote>
+
+<a name="therm1.gif">
+<center><H3>Solid State Relay Space Heater Controller
+</H3></a>
+<p>
+<IMG src="358therm.gif">
+<IMG src="358holes.jpg">
+<IMG src="358board.jpg">
+</center>
+<p>
+The space heater controller pictured above uses a 25 amp Solid State
+relay, a dual op-amp and a few other parts. The circuit board was laid out
+on graph paper to work out locations for the holes. The hole positions
+were then copied to a bread board to be used as a template for drilling
+the holes. The bread board was then clamped on the top of the blank copper
+board as shown in the top picture and the marked holes were drilled using
+the bread board as a guide for the drill (no walking). The drilled board
+was then sectioned into isolated islands using a dremel tool and router bit
+as shown in the picture just below the breadboard. Be sure to wear a mask if
+doing this to avoid breathing fiber glass dust. The components were then
+soldered in place as shown in the upper right photo. The lower left photo
+shows the relay mounted to the heat sink, and the finished assembly is shown
+in the lower right photo. The assembly was then mounted on the inside bottom
+surface of the heater box. The LED power indicator, temperature adjustment
+pot and manual toggle switch are mounted on the top surface of the heater.
+The thermistor was mounted outside the heater box on the left side.
+
+<p>
+Operation:
+<p>
+In operation, the desired temperature is set with the 10K pot on the
+left side of the schematic. The reference at pin 3 is about 4.5 volts
+so that when the temperature is above the setting, the voltage across the
+thermistor will be less than 4.5 volts which causes the output at pin 1
+to move high to about 8 volts. The reference voltage at pin 5 is about
+2.5 volts. The input voltage at pin 6 is half the voltage at pin 1 or about
+4 volts which is higher than pin 5 and so the output at pin 7 is low,
+very close to zero and the heater is off. The 300K resistor from pin 1 to 3
+provides a little positive feedback so the temperature must change a couple
+degrees before the heater will change state. This prevents the circuit from
+switching on and off too frequently when the temperature is very close to
+the setting.
+<p>
+When the temperature is below the setting, the reverse condition will
+occur with the voltage at pin 1 and 6 close to zero and the output at
+pin 7 will be about 8 volts which activates the SS relay and illuminates
+the LED. The thermistor used measured about 10K at 74 deg F and the pot
+setting came out to about 55 degrees with the pot adjusted in the center.
+The thermistor resistance changes about 350 ohms per degree so
+the temp range is about 15 degrees above and below the center of 55,
+or 40 - 70 degrees F. Higher resistance thermistors could be used with a
+larger value pot.
+
+<p>
+
+The heater can be activated manually with the momentary SPDT switch shown
+near the center of the schematic. The 1000uF cap at pin 5 is charged or
+discharged through the 300 resistor connected to the switch. When the cap
+is charged, the heater will remain on for about 10 minutes until the
+cap voltage falls below the 4 volt value at pin 6. Or, the heater can be
+switched off using the momentary switch to discharge the cap through the
+300 ohm resistor.
+<p>
+The 9 volt power supply was made using a small AC line transformer, four
+1N4001 rectifier diodes in a bridge configuration and a 2200uF filter
+cap. The transformer is the type found in portable radios. No regulator
+was needed since the load is very small and doesn't effect the supply
+voltage much.
+<HR>
+<p>
+
+
+<center><H3>Thermostat for 1KW Space Heater using SCRs</H3></a></center>
+<BR>
+Below is a SCR controlled space heater circuit built in 2001 which recently
+became intermittent so I decided to replace it with the simpler solid
+state relay circuit above. Also, SCRs are much cheaper than solid state
+relays which run about $40 for the 25 amp units.
+<p>
+The heater element (not shown) is connected in series with two back to back 16 amp
+SCRs (not shown) which are controlled with a small pulse transformer. The pulse
+transformer has 3 identical windings, two of which are used to supply trigger
+pulses to the SCRs, and the third winding is connected to a PNP transistor pair
+that alternately supply pulses to the transformer at the beginning of each AC
+half cycle. The trigger pulses are applied to both SCRs near the beginning of
+each AC half cycle but only one conducts depending on the AC polarity.
+<p>
+DC power for the circuit is shown in the lower left section of the drawing
+and uses a 1.25uF, 400 volt non-polarized capacitor to obtain about 50mA
+of current from the AC line. The current is rectified by 2 diodes and used to
+charge a couple larger low voltage capacitors (3300uF) which provide about
+6 volts DC for the circuit. The DC voltage is regulated by the 6.2 volt zener
+and the 150 ohm resistor in series with the line limits the surge current when
+power is first applied.
+<p>
+The lower comparator (output at pin 13) serves as a zero crossing detector
+and produces a 60 Hz square wave in phase with the AC line. The phase is
+shifted slightly by the 0.33 uF, 220K and 1K network so that the SCR
+trigger pulse arrives when the line voltage is a few volts above or below
+zero. The SCRs will not trigger at exactly zero since there will be no
+voltage to maintain conduction.
+<p>
+The upper two comparators operate in same manner as described in the
+"Electronic thermostat and relay" circuit. A low level at pin 2 is
+produced when the temperature is above the desired level and inhibits
+the square wave at pin 13 and prevents triggering of the SCRs. When
+the temperature drops below the desired level, pin 2 will move to an
+open circuit condition allowing the square wave at pin 13 to trigger
+the SCRs.
+<p>
+The comparator near the center of the drawing (pins 8,9,14) is used
+to allow the heater to be manually run for a few minutes and automatically
+shut off. A momentary toggle switch (shown connected to a 51 ohm resistor)
+is used to discharge the 1000uF capacitor so that pin 2 of the upper
+comparator moves to a open circuit state allowing the 60 Hz square wave
+to trigger the SCRs and power the heater. When the capacitor reaches
+about 4 volts the circuit returns to normal operation where the
+thermistor controls the operation. The momentary switch can also be
+toggled so that the capacitor charges above 4 volts and shuts off the
+heater if the temperature is above the setting of the pot.
+<p>
+<IMG src="therm1.gif">
+<center><a href="index.html#menu">Menu</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='358heat.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

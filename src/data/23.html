@@ -1,0 +1,226 @@
+<html>
+<head><title>Misc</title></head>
+<body bgcolor="#ffffff">
+<blockquote>
+<a name="ps3.gif"></a>
+<center><h3>Variable 3 - 24 Volt / 3 Amp Power Supply </h3></center>
+
+     This regulated power supply can be adjusted from 3 to 25 volts and is current limited
+     to 2 amps as shown, but may be increased to 3 amps or more by selecting a smaller
+     current sense resistor (0.3 ohm). The 2N3055 and 2N3053 transistors should be
+     mounted on suitable heat sinks and the current sense resistor should be rated at
+     3 watts or more. Voltage regulation is controlled by 1/2 of a 1558 or 1458 op-amp.
+     The 1458 may be substituted in the circuit below, but it is recommended the supply
+     voltage to pin 8 be limited to 30 VDC, which can be accomplished by adding a 6.2 volt
+     zener or 5.1 K resistor in series with pin 8. The maximum DC supply voltage for the
+     1458 and 1558 is 36 and 44 respectively. The power transformer should be capable
+     of the desired current while maintaining an input voltage at least 4 volts higher than
+     the desired output, but not exceeding the maximum supply voltage  of the op-amp
+     under minimal load conditions. The power transformer shown is a center tapped
+     25.2 volt  AC / 2 amp unit that will provide regulated outputs of 24 volts at 0.7 amps,
+     15 volts at  2 amps, or 6 volts at 3 amps. The 3 amp output is obtained using the
+     center tap of the transformer with the switch in the 18 volt position. All components
+     should be available at Radio Shack with the exception of the 1558 op-amp.
+<br>
+<img  src="ps3.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="ps6.gif"></a>
+<center><h3>Variable Voltage and Current Power Supply </h3></center>
+
+     Another method of using opamps to regulate a power supply is shown
+     below. The power transformer requires an additional winding to
+     supply the op-amps with a bipolar voltage (+/- 8 volts), and the negative
+     voltage is also used to generate a reference voltage below ground so
+     that the output voltage can be adjusted all the way down to 0.
+     Current limiting is accomplished by sensing the voltage drop across
+     a small resistor placed in series with the negative supply line.
+     As the current increases, the voltage at the wiper of the 500 ohm
+     pot rises until it becomes equal or slightly more positive than the
+     voltage at the (+) input of the opamp. The opamp output then moves
+     negative and reduces the voltage at the base of the 2N3053 transistor
+     which in turn reduces the current to the 2N3055 pass transistor so that
+     the current stays at a constant level even if the supply is shorted.
+     Current limiting range is about 0 - 3 amps with components shown. The
+     TIP32 and 2N3055 pass transistors should be mounted on suitable heat
+     sinks and the 0.2 ohm current sensing resistor should be rated at 2 watts
+     or more. The heat produced by the pass transistor will be the product of the
+     difference in voltage between the input and output, and the load current.
+     So, for example if the input voltage (at the collector of the pass
+     transistor) is 25 and the output is adjusted for 6 volts and the load is
+     drawing 1 amp, the heat dissipated by the pass transistor would be
+     (25-6) * 1 = 19 watts. In the circuit below, the switch could be set
+     to the 18 volt position to reduce the heat generated to about 12 watts.
+
+<br>
+<img  src="ps6.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="ps5.gif"></a>
+<center><h3>2 Watt Switching Power Supply</h3></center>
+
+In this small switching power supply, a Schmitt trigger oscillator is used to drive a
+switching transistor that supplies current to a small inductor. Energy is stored in
+the inductor while the transistor is on, and released into the load circuit when the
+transistor switches off. The output voltage is dependent on the load resistance
+and is limited by a zener diode that stops the oscillator when the voltage reaches
+about 14 volts. Higher or lower voltages can be obtained by adjusting the voltage
+divider that feeds the zener diode. The efficiency is about 80% using a high Q inductor.
+
+<br>
+<img  src="ps5.gif" >
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="whistle.gif"></a>
+<center><h3>Whistle On - Whistle Off</h3></center>
+<br>This is an extension of the CMOS toggle flip flop circuit shown in the
+"Circuits controlling relays" section with the addition
+of two bandpass filters and condenser microphone so the relay can be toggled
+by whistling at it. The condender mic used is a PC board mount Radio Shack
+#270-090C. The filters are tuned to about 1700 Hz, or the third Ab
+above middle C on a piano keyboard which is a fairly easy note for me to
+whistle. Resistor values for the filter can be computed using the three
+formulas below but we need to assume a gain and Q factor for the filter
+and the Q of the circuit must be greater than the square root of (Gain/2).
+The microphone produces only a couple millivolts so the overall gain needs
+to be around 4000 or around 65 for each filter. The Q or quality factor
+is the ratio of the center frequency to the bandwidth (-3dB points) and
+was chosen to be 8 which is greater than 5.7 which is the minimum value
+for a gain of 65. Both capacitor values need to be the same for easy
+computation of the resistor values and were chosen to be 0.01uF which is
+a common value and usable at audio frequencies. From those assumptions,
+the resistor values can be worked out from the following formulas.
+<p>
+R1 = Q/(G*C*2*Pi*F) =  8/(65*.01^-6*6.28*1700) = 1152 or 1.1K
+<br>
+R2 = Q / ((2*Q^2)-G)*C*2*Pi*F) = 8/((128-65)*.01^-6*6.28*1700)= 1189 or 1.2K
+<br>
+R3 = (2*Q)/(C*2*Pi*F) = 16/(.01^6*6.28*1700) = 150K
+<p>
+
+The op-amps are biased using a voltage divider of two 10K resistors
+so the output will be centered around half the supply voltage or 6 volts.
+The output of the second filter charges a 1uF cap at the base of a NPN
+transistor (2N3904 or similar). The emitter voltage is biased at 6.6 volts
+using the 3.3K and 2.7K resistors so that the transistor will conduct and
+trigger the flip flop when the peak signal from the filter reaches 8 volts.
+The 8 volt figure is the emitter voltage (6.6) plus the emitter base voltage
+drop (0.7) plus the diode drop (0.7). The sensitivity can be adjusted by
+changing the value of either the 2.7K or 3.3K resistors so that more or
+less signal amplitude is needed to trigger the flop flop.
+
+
+<p><img  src="whistle.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="triple.gif"></a>
+<center><h3>DC to DC Converter</h3></center>
+<br>The circuit below is a DC to DC converter using a standard 12 VAC
+center tapped power transformer wired as a blocking oscillator.
+The circuit is not very efficient but will produce a high voltage
+usable for low power applications. The input battery voltage is raised
+by a factor of 10 across the transformer and further raised by a voltage
+tripler consisting of three capacitors and diodes connected to the high
+voltage side of the transformer. The circuit draws about 40 milliamps
+and should operate for about 200 hours on a couple of 'D' alkaline
+batteries. Higher voltages can be obtained by reducing the 4.7K
+bias resistor.
+
+More information on blocking oscillators can be found here:
+<a href="http://www.du.edu/~etuttle/electron/elect37.htm">Blocking Oscillators
+</a>
+
+<br><img  src="triple.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="acdimmer.gif"></a>
+<center><h3>120 VAC Lamp Dimmer</h3></center>
+
+The full wave phase control circuit below was found in a RCA power circuits
+book from 1969. The load is placed in series with the AC line and the four
+diodes provide a full wave rectified voltage to the anode of a SCR. Two small
+signal transistors are connected in a switch configuration so that when the
+voltage on the 2.2uF capacitor reaches about 8 volts, the transistors will
+switch on and discharge the capacitor through the SCR gate causing it to begin
+conducting. The time delay from the beginning of each half cycle to the point
+where the SCR switches on is controlled by the 50K resistor which adjusts the
+time required for the 2uF capacitor to charge to 8 volts. As the resistance
+is reduced, the time is reduced and the SCR will conduct earlier during
+each half cycle which applies a greater average voltage across the load.
+With the resistance set to minimum the SCR will trigger when the voltage
+rises to about 40 volts or 15 degrees into the cycle. To compensate for
+component tollerances, the 15K resistor can be adjusted slightly so that
+the output voltage is near zero when the 50K pot is set to maximum. Increasing
+the 15K resistor will reduce the setting of the 50K pot for minimum output
+and visa versa. Be careful not to touch the circuit while it is connected to
+the AC line.
+
+<br><img  src="acdimmer.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+
+<a name="pumpkin.gif"></a>
+<center><h3>Varying brightness AC lamp</h3></center>
+
+In this circuit, an SCR is used to slowly vary the intensity of a 120 volt
+light bulb by controlling the time that the AC line voltage is applied to
+the lamp during each half cycle.
+<br><br>
+Caution:
+<br><br>
+The circuit is directly connected to the AC power line and should be placed
+inside an enclosure that will prevent direct contact with any of the
+components. To avoid electrical shock, do not touch any part of the
+circuit while it is connected to the AC power line. A 2K, 10 watt power
+resistor is used to drop the line voltage down to 9 volts DC. This
+resistor will dissipate about 7 watts and needs some ventilation.
+<br><br>
+Operation:
+<br><br>
+A couple NPN transistors are used to detect the beginning of each half cycle
+and  trigger a delay timer which in turn triggers the SCR at the end of the
+delay time. The delay time is established by a current source which is
+controlled by a 4017 decade counter. The first count (pin 3) sets the
+current to a minimum which corresponds to about 7 milliseconds of delay,
+or most of the half cycle time so that the lamp is almost off. Full
+brightness is obtained on the sixth count (pin 1) which is not connected
+so that the current will be maximum and provide a minimum delay and trigger
+the SCR near the beginning of the cycle. The remaining 8 counts increment
+the brightness 4 steps up and 4 steps down between maximum and minimum.
+Each step up or down provides about twice or half the power, so that the
+intensity appears to change linearly. The brightness of each step can be
+adjusted with the 4 resistors (4.3K, 4.7K, 5.6K, 7.5K) connected to the
+counter outputs.
+<p>
+
+The circuit has been built by Don Warkentien (WODEW) who suggsted adding
+a small 47uF capacitor from ground to the junction of the current source
+transistor (PNP) to reduce the digital stepping effect so the lamp will
+brighten and fade in a smoother fashion. The value of this capacitor will
+depend on the 4017 counting rate, a faster rate would require a smaller
+capacitor.
+
+<p><img  src="pumpkin.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page4.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

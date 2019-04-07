@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>Neodymium Magnet Motor
+</title>
+<META name="description" content="Neodymium Magnet Motor">
+<META name="keywords" content="motor, circuit, schematic, magnet, neodymium,
+novelty, hobby, electronics">
+</head>
+
+<body bgcolor="#ffffff">
+<blockquote>
+<center><h2> Neodymium Magnet Motor </h2>
+<br><img  src="motor2.jpg"><p>
+<br><img  src="motor.jpg"><p>
+</center><h4>
+
+<pre>
+<a href="motor.htm#new">Click Here For New Version</a>
+
+Since writing this article, I found the magnet coil length should be short
+relative to the diameter for better performance. A shorter coil with about
+the same wire length will provide a stronger field to drive the motor and
+also provides a greater signal voltage to trigger the circuit. The updated
+circuit located in the lower section of this page, uses fewer parts
+(3 transistors) and also draws less battery power. The original version
+follows here:
+<br>
+
+**************************** Original Version ********************************
+
+This project is similar to the swinging pendulum idea using a single magnet
+on a string. This version uses 2 magnets on a rotating armature to illustrate
+a single pole motor spinning at about 4 RPS, powered with 3 AA batteries.
+The motor was built on a 6.5" by 3.5" base with 4.5" 3/8 wooden dowel supports
+for the armature. The armature is a 5.5 inch 1/4 wooden dowel with 12mm
+neodymium magnets mounted on each end. The armature bearings were made using
+a brass washer mounted to the side of the supports. The coil was wound with
+1200 turns of #34 wire. Actually I used 800 turns (20 ohms) and then discovered
+I could increase the force and reduce battery drain by adding 400 more turns
+of a larger #30 wire (5 ohms more or total of 25 ohms). The exact shape and
+size for best performance is still a mystery without experimenting,
+(email if you know how to work that out).
+
+In operation, as the magnet approaches the coil, a positive going voltage
+is seen by the transistor Q1 which drives the collector negative and has
+no effect. As the magnet passes the center of the coil and begins to move
+away, the input voltage reverses and moves negative which causes the collector
+to move positive above the reference at the base of transistor Q3. The two
+transistors Q2,Q3 form a comparator so as one switches on, the other switches
+off. The rising voltage at the collector of Q1 causes the comparator to change
+state which turns on Q4 and in turn drives the output transistor Q5 which
+supplies the full battery voltage to the coil. This results in the coil pushing
+the magnet away for about 10 milliseconds. The 10 millisecond pulse width is
+set with the 12nF cap, 120K resistor, and the input resistance of Q1. Note the
+polarity of the magnets make a difference and may need to be flipped, or the
+coil connections reversed.
+
+The idle voltage at the collector of Q1 is about 2.5 when the battery voltage
+is 4.5. The signal gain of the first stage is about 3 and the input signal from
+the coil is about 300 millivolts, so the output of the first stage moves about
+1 volt positive from 2.5 to 3.5 or more. The reference voltage for the
+comparator (base of Q3) is set to 3 volts which is in the center of the range
+allowing the switching action to take place when Q1 collector voltage moves
+about 0.5 volts positive or more. The 4 diodes help regulate the voltage
+difference (about 500 mV) between the collector of Q1 and the comparator
+reference as the battery voltage falls. The circuit should operate until the
+supply voltage falls below 2.5 which would be fairly dead batteries. Battery
+life is about 100 hours using three 2000maH AA batteries.
+<p>
+
+<a name="new">
+
+*********************** New Version using improved coil ***********************
+<p>
+<br><center>
+<img src="motor11.jpg">
+<img src="motor8.gif">
+
+</center>
+
+
+The new version (shown above) only requires 3 transistors, 6 resistors,
+one cap and the coil and LED. After doing some research, I found the
+optimum shape for the coil should be similar to a pancake with a wide
+diameter and very short height (see picture). The coil measures 9/8 inch
+diameter, 5/16 inch height and was wound with 1700 turns of #31 enameled
+copper wire. The coil measures 67 ohms of resistance and 20mH of inductance.
+The inner core of the coil is a 5/16 by 3/16 inch aluminum dowel. Smaller
+neodymium magnets were used that measure 1/4 diameter by 1/8 thickness and
+only cost 25 cents. The signal from the coil when the magnet passes is about
+300mV at low speed. It might get up to a volt or more when the motor is running
+faster.
+
+The resistor values were chosen by assuming a nominal transistor gain (hFE)
+of 60 for Q1 and Q2. Since Q2 drives the 67 ohm coil from a 4.5 volt battery,
+the collector current will be E/R = 4.5/67 = 67 milliamps. If Q2 has a gain
+of 60 or more, the base current for Q2 will be 67/60 = 1.1 milliamp which is
+set by the collector resistor of Q1 which would be 4.5 / .0011 = 4.1K
+rounded off to 4.3K which is a standard value. The bias resistor for Q1 will
+be 60 times greater, or about 220K. The 10K resistor in series with the cap
+is used to reduce the gain somewhat and supress oscillations. I found if this
+resistor is much less than 1K, the circuit will oscillate. So I chose
+10K to be on the safe side. The capacitor was chosen to have a reactance
+about 10 times less than the 220K bias resistor, or 22K which equates to
+about 0.47uF. The third transistor Q3 and 3 resistors were added to allow
+adjustment of the output pulse width for optimum battery life. When the output
+pulse begins, Q3 will switch on and charge the cap through the 100K pot
+ending the pulse about 15 milliseconds later. The time can be adjusted with
+the 100K pot.
+
+Notes:
+
+When the circuit is energized and the motor stopped, the voltage at the
+base of Q1 measured 0.66 and the collector measured 0.12 using a 2N3904
+transistor. Using a 2N2222A transistor, the base voltage was 0.63 and
+the collector was 0.102 volts. I imagine most any small signal silicon
+transistors can be used.
+
+When the coil is connected directly across the battery, the magnetic push
+can be felt at a distance of about 1 inch across the coil. The magnets should
+be orientated so they push away from the coil and are not attracted to it.
+I found the armature will move about 90 degrees when the coil is manually
+energized and the magnet is sitting close to the center of the coil.
+
+<center><a href="index.html#menu">Menu</a></center>
+<hr  size=1>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='motor.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</body>
+</html>
+

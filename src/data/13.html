@@ -1,0 +1,328 @@
+<HTML>
+<BODY>
+<blockquote>
+<a name="tuner.gif">
+<center><H3>Long Loopstick Antenna</H3></a></center>
+
+<br>Wound on a 3 foot length of PVC pipe, the long loopstick antenna was an
+experiment to try to improve AM radio reception without using a long wire
+or ground. It works fairly well and greatly improved reception of a weak
+station 130 miles away. A longer rod antenna will probably work better if
+space allows. The number of turns of wire needed for the loopstick can be
+worked out from the single layer, air core inductance formula:
+<br><br>
+Inductance = (radius^2 * turns^2) / ((9*radius)+(10*length))
+<br><br>
+where dimensions are in inches and inductance is in microhenrys. The inductance
+should be about 230 microhenrys to operate with a standard AM radio tuning
+capacitor (33-330 pF). The 3 foot PVC pipe is wound with approximately 500
+evenly spaced turns of #24 copper wire which forms an inductor of about 170
+microhenrys, but I ended up with a little more (213uH) because the winding
+spacing wasn't exactly even. A secondary coil of about 50 turns is wound along the length of
+the pipe on top of the primary and then connected to 4 turns of wire wound
+directly around the radio. The windings around the radio are orientated so that
+the radio's internal antenna rod passes through the external windings. A better
+method of coupling would be to wind a few turns directly around the internal
+rod antenna inside the radio itself, but you would have to open the radio to do
+that. In operation, the antenna should be horizontal to the ground and at right
+angles to the direction of the radio station of interest. Tune the radio to a
+weak station so you can hear a definite amount of noise, and then tune the
+antenna capacitor and rotate the antenna for the best response. The antenna
+should also be located away from lamp dimmers, computer monitors and other
+devices that cause electrical interference.
+<br>
+<IMG src="tuner.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="cdi.gif">
+<center><H3>Capacitor Discharge Ignition Circuit (CDI)</H3></a></center>
+<br>
+The CDI ignition circuit produces a spark from an ignition coil by
+discharging a capacitor across the primary of the coil. A 2uF capacitor is
+charged to about 340 volts and the discharge is controlled by an SCR.
+A Schmitt trigger oscillator (74C14) and MOSFET (IRF510) are used to drive
+the low voltage side of a small (120/12 volt) power transformer and a voltage
+doubler arrangement is used on the high voltage side to increase the capacitor
+voltage to about 340 volts. A similar Schmitt trigger oscillator is used to
+trigger the SCR about 4 times per second. The power supply is gated off during
+the discharge time so that the SCR will stop conducting and return to it's
+blocking state. The diode connected from the 3904 to pin 9 of the 74C14 causes
+the power supply oscillator to stop during discharge time. The circuit draws
+only about 200 milliamps from a 12 volt source and delivers almost twice the
+normal energy of a conventional ignition circuit. High voltage from the coil is
+about 10KV using a 3/8 inch spark gap at normal air temperature and pressure.
+Spark rate can be increased to possibly 10 Hertz without losing much spark
+intensity, but is limited by the low frequency power transformer and duty cycle
+of the oscillator. For faster spark rates, a higher frequency and lower
+impedance supply would be required. Note that the ignition coil is not grounded
+and presents a shock hazard on all of it's terminals. Use CAUTION when
+operating the circuit. An alternate method of connecting the coil is to ground
+the (-) terminal and relocate the capacitor between the cathode of the
+rectifier diode and the positive coil terminal. The SCR is then placed
+between ground and the +340 volt side of the capacitor. This reduces the
+shock hazard and is the usual configuration in automotive applications.
+<p>
+
+<IMG src="cdi.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="igniter.gif">
+<center><H3>Low Voltage, High Current Time Delay Circuit</H3></a></center>
+<p>
+In this circuit a LM339 quad voltage comparator is used to generate a
+time delay and control a high current output at low voltage. Approximatey
+5 amps of current can be obtained using a couple fresh alkaline D batteries.
+Three of the comparators are wired in parallel to drive a medium power PNP
+transistor (2N2905 or similar) which in turn drives a high current NPN
+transistor (TIP35 or similar). The 4th comparator is used to generate a time
+delay after the normally closed switch is opened. Two resistors (36K and 62K)
+are used as a voltage divider which applies about two-thirds of the battery
+voltage to the (+) comparator input, or about 2 volts. The delay time after
+the switch is opened will be around one time constant using a 50uF capacitor
+and 100K variable resistor, or about (50u * 100K) = 5 seconds. The time can
+be reduced by adjusting the resistor to a lower value or using a smaller
+capacitor. Longer times can be obtained with a larger resistor or capacitor.
+To operate the circuit on higher voltages, the 10 ohm resistor should be
+increased proportionally, (4.5 volts = 15 ohms).
+
+<p>
+<IMG src="igniter.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="delay.gif">
+<center><H3>Power-On Time Delay Relay</H3></a></center>
+
+<br>Here's a power-on time delay relay circuit that takes advantage of the
+emitter/base breakdown voltage of an ordinary bi-polar transistor. The
+reverse connected emitter/base junction of a 2N3904 transistor is used
+as an 8 volt zener diode which creates a higher turn-on voltage for the
+Darlington connected transistor pair. Most any bi-polar transistor may be
+used, but the zener voltage will vary from about 6 to 9 volts depending on
+the particular transistor used. Time delay is roughly 7 seconds using a
+47K resistor and 100uF capacitor and can be reduced by reducing the R or
+C values. Longer delays can be obtained with a larger capacitor, the
+timing resistor probably shouldn't be increased past 47K. The circuit
+should work with most any 12 volt DC relay that has a coil resistance of
+
+75 ohms or more. The 10K resistor connected across the supply provides a
+discharge path for the capacitor when power is turned off and is not
+needed if the power supply already has a bleeder resistor.
+<BR>
+<IMG src="delay.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="relay_i.gif">
+<center><H3>Power-Off Time Delay Relay</H3></a></center>
+
+The two circuits below illustrate opening a relay contact a short
+time after the ignition or ligh switch is turned off. The capacitor
+is charged and the relay is closed when the voltage at the diode anode
+rises to +12 volts. The circuit on the left is a common collector or
+emitter follower and has the advantage of one less part since a
+resistor is not needed in series with the transistor base. However the
+voltage across the relay coil will be two diode drops less than the supply
+voltage, or about 11 volts for a 12.5 volt input. The common emitter
+configuration on the right offers the advantage of the full supply voltage
+across the load for most of the delay time, which makes the relay pull-in
+and drop-out voltages less of a concern but requires an extra resistor in
+series with transistor base. The common emitter (circuit on the right) is
+the better circuit since the series base resistor can be selected
+to obtain the desired delay time whereas the capacitor must be selected
+for the common collector (or an additional resistor used in parallel with
+the capacitor). The time delay for the common emitter will be approximately
+3 time constants or 3*R*C. The capacitor/resistor values can be worked out
+from the relay coil current and transistor gain. For example a 120 ohm
+relay coil will draw 100 mA at 12 volts and assumming a transistor gain of
+30, the base current will be 100/30 = 3 mA. The voltage across the resistor
+will be the supply voltage minus two diode drops or 12-1.4 = 10.6. The resistor
+value will be the voltage/current = 10.6/0.003 = 3533 or about 3.6K. The
+capacitor value for a 15 second delay will be 15/3R = 1327 uF. We can
+use a standard 1000 uF capacitor and increase the resistor proportionally
+to get 15 seconds.
+
+<p>
+
+<IMG src="relay_i.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="delay10.gif">
+<center><H3>9 Second LED Timer and Relay Circuit</H3></a></center>
+<BR>
+
+This circuit provides a visual 9 second delay using 10 LEDs before
+closing a 12 volt relay. When the reset switch is closed, the 4017
+decade counter will be reset to the 0 count which illuminates the
+LED driven from pin 3. The 555 timer output at pin 3 will be high and
+the voltage at pins 6 and 2 of the timer will be a little less than
+the lower trigger point, or about 3 volts. When the switch is
+opened, the transistor in parallel with the timing capacitor (22uF)
+is shut off allowing the capacitor to begin charging and the 555
+timer circuit to produce an approximate 1 second clock signal to the decade
+counter. The counter advances on each positive going change at pin 14 and
+is enabled with pin 13 terminated low. When the 9th count is reached, pin
+11 and 13 will be high, stopping the counter and energizing the relay.
+Longer delay times can be obtained with a larger capacitor or larger
+resistor at pins 2 and 6 of the 555 timer.
+
+<BR>
+<IMG src="delay10.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="cnt_down.gif">
+<center><H3>9 Second Digital Readout Countdown Timer</H3></a></center>
+<BR>
+
+This circuit provides a visual 9 second delay using a 7 segment digital
+readout LED. When the switch is closed, the CD4010 up/down counter is
+preset to 9 and the 555 timer is disabled with the output held high.
+When the switch is opened, the timer produces an approximate 1 second
+clock signal, decrementing the counter until the 0 count is reached.
+When the zero count is reached, the 'carry out' signal at pin 7 of the
+counter moves low, energizing the 12 volt relay and stopping the clock
+with a low signal on the reset line (pin 4). The relay will remain energized
+until the switch is again closed, resetting the counter to 9. The 1 second
+clock signal from the 555 timer can be adjusted slightly longer or shorter
+by increasing or decreasing the resistor value at pin 3 of the timer.
+<p>
+
+The CD4510 is a CMOS Presettable BCD Up/Down counter which can
+be preset to any number between 0 and 9 with a high level on the
+PRESET ENABLE line, (pin 1) or reset to 0 with a high level on the
+RESET line (pin 9). Inputs for presetting the counter (P1, P2, P3, P4)
+are on pins (4, 12, 13, 3) respectively. The counter advances up
+or down on each positive-going clock transition (pin 15) and the
+counting direction (up or down) is controlled by the logic level
+on the UP/DOWN input (pin 10, high=up, low=down). The CARRY-IN signal
+(pin 5) disables the counter with a high logic level.
+<p>
+The CD4511 is a CMOS BCD to 7 segment latch decoder capable of sourcing
+up to 25 mA which allows it to drive LEDs and other displays directly.
+A LATCH-ENABLE line (pin 5, active low) stores data from the BCD input
+lines. A LAMP-TEST input (pin 3, active low) can be used to illuminate
+all 7 segments, and a BLANKING input (pin 4, active low) can be used to
+turn all segments off. The LED display must be a common cathode type so
+that the segments are illuminated with a positive voltage on their
+respective connections.
+
+Complete data sheets for the CD4510 and CD4511 can be obtained by
+answer fax from <br>
+
+<a href="http://www.semi.harris.com/search.htm">Harris Semiconductors (search)</a>
+<br>
+
+
+<p>
+<IMG src="cnt_down.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="therm.gif">
+<center><H3>Electronic Thermostat and Relay Circuit</H3></a></center>
+<BR>
+Here is a simple thermostat circuit that can be used to control a
+relay and supply power to a small space heater through the
+relay contacts. The relay contacts should be rated above the
+current requirements for the heater.
+<BR><BR>
+Temperature changes are detected by a (1.7K @ 70F) thermistor placed
+in series with a 5K potentiometer which produces about 50 millivolts
+per degree F at the input of the LM339 voltage comparator. The two 1K
+resistors connected to pin 7 set the reference voltage at half the
+supply voltage and the hysteresis range to about 3 degrees or 150
+millivolts. The hysteresis range (temperature range where the relay
+engages and disengages) can be adjusted with the 10K resistor between
+pins 1 and 7. A higher value will narrow the range.
+
+<BR><BR>
+In operation, the series resistor is adjusted so that the relay just
+toggles off at the desired temperature. A three degree drop in
+temperature should cause the relay to toggle back on and remain
+on until the temperature again rises to the preset level.
+The relay action can be reversed so it toggles off at the lower end
+of the range by reversing the locations of the 5K potentiometer and thermistor.
+The 5.1 volt zener diode regulates the circuit voltage so that small
+changes in the 12 volt supply will not effect operation. The voltage across
+the thermistor should be half the supply or about 2.6 volts when the
+temperature is within the 3 degree range set by the potentiometer.
+Most any thermistor can be used, but the resistance should be above
+1K ohm at the temperature of interest. The series resistor selected
+should be about twice the resistance of the thermistor so the adjustment
+ends up near the center of the control.
+
+<BR>
+<IMG src="therm.gif">
+<center><a href="index.html#menu">Menu</a></center>
+
+<a name="therm1.gif">
+<center><H3>Thermostat for 1KW Space Heater (SCR controlled)</H3></a></center>
+<BR>
+Below is a thermostat circuit I recently built to control a 1300 watt space heater.
+The heater element (not shown) is connected in series with two back to back 16 amp
+SCRs (not shown) which are controlled with a small pulse transformer. The pulse
+transformer has 3 identical windings, two of which are used to supply trigger
+pulses to the SCRs, and the third winding is connected to a PNP transistor pair
+that alternately supply pulses to the transformer at the beginning of each AC
+half cycle. The trigger pulses are applied to both SCRs near the beginning of
+each AC half cycle but only one conducts depending on the AC polarity.
+<p>
+DC power for the circuit is shown in the lower left section of the drawing
+and uses a 1.25uF, 400 volt non-polarized capacitor to obtain about 50mA
+of current from the AC line. The current is rectified by 2 diodes and used to
+charge a couple larger low voltage capacitors (3300uF) which provide about
+6 volts DC for the circuit. The DC voltage is regulated by the 6.2 volt zener
+and the 150 ohm resistor in series with the line limits the surge current when
+power is first applied.
+<p>
+The lower comparator (output at pin 13) serves as a zero crossing detector
+and produces a 60 Hz square wave in phase with the AC line. The phase is
+shifted slightly by the 0.33 uF, 220K and 1K network so that the SCR
+trigger pulse arrives when the line voltage is a few volts above or below
+zero. The SCRs will not trigger at exactly zero since there will be no
+voltage to maintain conduction.
+<p>
+The upper two comparators operate in same manner as described in the
+"Electronic thermostat and relay" circuit. A low level at pin 2 is
+produced when the temperature is above the desired level and inhibits
+the square wave at pin 13 and prevents triggering of the SCRs. When
+the temperature drops below the desired level, pin 2 will move to an
+open circuit condition allowing the square wave at pin 13 to trigger
+the SCRs.
+<p>
+The comparator near the center of the drawing (pins 8,9,14) is used
+to allow the heater to be manually run for a few minutes and automatically
+shut off. A momentary toggle switch (shown connected to a 51 ohm resistor)
+is used to discharge the 1000uF capacitor so that pin 2 of the upper
+comparator moves to a open circuit state allowing the 60 Hz square wave
+to trigger the SCRs and power the heater. When the capacitor reaches
+about 4 volts the circuit returns to normal operation where the
+thermistor controls the operation. The momentary switch can also be
+toggled so that the capacitor charges above 4 volts and shuts off the
+heater if the temperature is above the setting of the pot.
+<p>
+<IMG src="therm1.gif">
+<center><a href="index.html#menu">Menu</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page2.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

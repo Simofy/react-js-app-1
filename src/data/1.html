@@ -1,0 +1,329 @@
+<HTML>
+<BODY>
+<title> Parallel Port, Lamp Faders, RF Transmitters </title>
+
+<blockquote>
+<a name="PPRIC"></a>
+<center><H3>Parallel Port Relay Interface</H3></center>
+<p>
+
+Below are three examples of controlling a relay from the PC's parallel printer
+port (LPT1 or LPT2). Figure A shows a solid state relay controlled by one of
+the parallel port data lines (D0-D7) using a 300 ohm resistor and 5 volt power source.
+The solid state relay will energize when a "0" is written to the data line.
+Figure B and C show mechanical relays controlled by two transistors. The
+relay in figure B is energized when a "1" is written to the data line and
+the relay in figure C is energized by writing a "0" to the line. In each
+of the three circuits, a common connection is made from the negative side
+of the power supply to one of the port ground pins (18-25).
+<p>
+There are three possible base addresses for the parallel port You may need
+to try all three base addresses to determine the correct address for the port
+you are using but LPT1 is usually at Hex 0378. The QBasic "OUT" command can
+be used to send data to the port. OUT, &H0378,0 sets D0-D7 low and OUT,
+&H378,255 sets D0-D7 high. The parallel port also provides four control lines
+(C0,C1,C2,C3) that can be set high or low by writing data to the base
+address+2 so if the base address is Hex 0378 then the address of the control
+latch would be Hex 037A. Note that three of the control bits are inverted so
+writing a "0" to the control latch will set C0,C1,C3 high and C2 low.
+<p>
+
+<IMG src="printer2.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<p>
+
+<a name="p_input"></a>
+<center><H3>Reading Data From The Parallel Port</H3></center>
+<p>
+
+The diagram below shows 5 switches connected to the 5 input lines
+of the parallel port. An external 5 volt power supply is used to
+provide high logic levels to the input pins when the switches are open.
+Three 1.5 volt batteries in series can be used to obtain 4.5 volts
+which is close enough. The 330 ohm resistors in series with the port
+connections provide some protection in case a connection is made to the
+wrong pin. If you are sure of the connections, the 330 ohm resistors
+can be left out and the switches connected directly to the input pins.
+The negative side of the power supply should be connected to the ground
+point, or any pin from 18 to 25.
+<p>
+The following short QBasic program can be used to read the state of the
+switches. QBASIC.EXE can be found in the "OLDMSDOS" directory of the
+Windows 95/98 CD Rom. Note that there are three possible printer port
+address that correspond to LPT1, LPT2 and LPT3 and LPT1 is usually the
+one to use which is at address decimal 889. The program waits for the
+user to press the enter key before reading the state of the 5 input lines.
+The state of the 5 lines is received as a single 8 bit number between 0-255
+which is stored as the value of (V). Each switch input represents a decimal
+value of 8,16,32,64 and 128  which correspond to pins 15,13,12,10 and 11.
+The last 3 bits (1,2 and 4) are not used and should return a high level,
+so the value received with all switches open should be 1+2+4+8+16+32+64=127.
+If a switch is closed and the input is at ground, the value will be 0 except
+for pin 11 which is inverted and yields a value of 128 and 0 when high,
+so the value received when all switches are closed should be 1+2+4+128=135.
+
+<br>
+-----------------------------------------------------------------------
+<p>
+CLS
+<br>DEFINT A-Z
+<br>Address = 889: REM  889 = port address, other addresses could be 633 or 957
+<br>PRINT "Press the enter key to read printer port pins (15,13,12,10,11)"
+<br>PRINT "A (0) reading indicates the pin is at ground level, (1) indicates"
+<br>PRINT "the pin is at a high level or unterminated."
+<br>INPUT A$
+<br>V = INP(Address)
+<br>PRINT V
+<br>P11 = 1
+<br>IF V > 127 THEN P11 = 0: V = V - 128
+<br>IF V > 63 THEN P10 = 1: V = V - 64
+<br>IF V > 31 THEN P12 = 1: V = V - 32
+<br>IF V > 15 THEN P13 = 1: V = V - 16
+<br>IF V > 7 THEN P15 = 1
+<br>PRINT
+<br>PRINT "Pin 15 ="; P15
+<br>PRINT "Pin 13 ="; P13
+<br>PRINT "Pin 12 ="; P12
+<br>PRINT "Pin 10 ="; P10
+<br>PRINT "Pin 11 ="; P11
+<br>END
+
+<p>
+<IMG src="p_input.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="amtrans.gif"></a>
+<center><H3>Micro Power AM Broadcast Transmitter</H3></center>
+<p>
+In this circuit, a 74HC14 hex Schmitt trigger inverter is used as a
+square wave oscillator to drive a small signal transistor in a class C
+amplifier configuration. The oscillator frequency can be either fixed by
+a crystal or made adjustable (VFO) with a capacitor/resistor combination.
+A 100pF capacitor is used in place of the crystal for VFO operation.
+Amplitude modulation is accomplished with a second transistor that controls
+the DC voltage to the output stage. The modulator stage is biased so that
+half the supply voltage or 6 volts is applied to the output stage with no
+modulation. The output stage is tuned and matched to the antenna with a
+standard variable 30-365 pF capacitor. Approximately 20 milliamps of
+current will flow in the antenna lead (at frequencies near the top of the
+band) when the output stage is optimally tuned to the oscillator frequency.
+A small 'grain of wheat' lamp is used to indicate antenna current and
+optimum settings. The 140 uH inductor was made using a 2 inch length of
+7/8 inch (OD) PVC pipe wound with 120 turns of #28 copper wire. Best
+performance is obtained near the high end of the broadcast band (1.6 MHz)
+since the antenna length is only a very small fraction of a wavelength.
+Input power to the amplifier is less than 100 milliwatts and antenna length
+is 3 meters or less which complies with FCC rules. Output power is somewhere
+in the 40 microwatt range and the signal can be heard approximately 80 feet.
+Radiated power output can be approximated by working out the antenna
+radiation resistance and multiplying by the antenna current squared. The
+radiation resistance for a dipole antenna less than 1/4 wavelength is
+<p>
+R = 80*[(pi)^2]*[(Length/wavelength)^2]*(a factor depending on the form of the current
+distribution)
+The factor depending on the current distribution turns out to be
+[(average current along the rod)/(feed current)]^2 for short rods, which
+is 1/4 for a linearly-tapered current distribution falling to zero at
+the ends. Even if the rods are capped with plates, this factor cannot
+be larger than 1. Substituting values for a 9.8 foot dipole at a frequency
+of 1.6 MHz we get R= 790*.000354*.25 = .07 Ohms. And the resistance will be
+only half as much for a monopole or 0.035 Ohms. Radiated power at 20 milliamps
+works out to about I^2 * R = 14 microwatts.
+<p>
+Reference: <a href="http://www.ee.surrey.ac.uk/Personal/D.Jefferies/radimp.html">
+Radiation impedances of wire and rod antennas. </a>
+<p>
+<IMG src="amtrans.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="fm.gif"></a>
+<center><H3>FM Beacon Broadcast Transmitter (88-108 MHz)</H3></center>
+<p>
+This circuit will transmit a continuous audio tone on the FM broadcast
+band (88-108 MHz) which could used for remote control or security
+purposes. Circuit draws about 30 mA from a 6-9 volt battery and can
+be received to about 100 yards. A 555 timer is used to produce the
+tone (about 600 Hz) which frequency modulates a Hartley oscillator.
+A second JFET transistor buffer stage is used to isolate the oscillator
+from the antenna so that the antenna position and length has less effect
+on the frequency. Fine frequency adjustment can be made by adjusting the
+200 ohm resistor in series with the battery. Oscillator frequency is
+set by a 5 turn tapped inductor and 13 pF capacitor. The inductor was
+wound around a #8 X 32 bolt (about 3/16 diameter) and then removed by
+unscrewing the bolt. The inductor was then streached to about a 3/8 inch
+length and tapped near the center. The oscillator frequency should come out
+somewhere near the center of the band (98 MHz) and can be shifted
+higher or lower by slightly expanding or compressing the inductor.
+A small signal diode (1N914 or 1N4148) is used as a varactor diode so
+that the total capacity in parallel with the inductor varies slightly
+at the audio rate thus causing the oscillator frequency to change at
+the audio rate (600 Hz). The ramping waveform at pins 2 and 6 of the
+timer is applied to the reversed biased diode through a large (1 Meg)
+resistor so that the capacitance of the diode changes as the ramping
+voltage changes thus altering the frequency of the tank circuit.
+Alternately, an audio signal could be applied to the 1 Meg resistor to
+modulate the oscillator but it may require an additional pullup resistor
+to reverse bias the diode. The N channel JFET transistors used should be
+high frequency VHF or UHF types (Radio Shack #276-2062  MPF102) or similar.
+<p>
+
+<IMG src="fm.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+
+<a name="dimmer.gif"></a>
+<center><H3>12 Volt Lamp Dimmer</H3></center>
+<p>
+Here is a 12 volt / 2 amp lamp dimmer that can be used to dim a
+standard 25 watt automobile brake or backup bulb by controlling the duty
+cycle of a astable 555 timer oscillator. When the wiper of the potentiometer
+is at the uppermost position, the capacitor will charge quickly through both
+1K resistors and the diode, producing a short positive interval and long
+negative interval which dims the lamp to near darkness. When the
+potentiometer wiper is at the lowermost position, the capacitor will charge
+through both 1K resistors and the 50K potentiometer and discharge through
+the lower 1K resistor, producing a long positive interval and short negative
+interval which brightens the lamp to near full intensity. The duty cycle of
+the 200 Hz square wave can be varied from approximately 5% to 95%.
+The two circuits below illustrate connecting the lamp to either the positive
+or negative side of the supply.
+<p>
+<IMG src="dimmer.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="eyes2.gif"></a>
+<center><H3>Automatic 12 Volt Lamp Fader</H3></center>
+<p>
+This circuit is similar to the "Fading Red Eyes" circuit (in the LED section)
+used to fade a pair of red LEDs. In this version, the lamps are faded by
+varying the duty cycle so that higher power incandescent lamps can be used
+without much power loss. The switching waveform is generated by comparing
+two linear ramps of different frequencies. The higher frequency ramp waveform
+(about 75 Hz.) is produced from one section of the LM324 quad op-amp wired
+as a Schmitt trigger oscillator. The lower frequency ramp controls the
+fading rate and is generated from the upper two op-amps similar to the
+"fading eyes" circuit. The two ramp waveforms at pins 9 and 1 are compared
+by the 4th op-amp which generates a varying duty cycle rectangular waveform
+to drive the output transistor. A second transistor is used to invert
+the waveform so that one group of lamps will fade as the other group
+brightens. The 2N3053 will handle up to 500 milliamps so you could
+connect 12 strings of 4 LEDs each (48 LEDs) with a 220 ohm resistor in
+series with each group of 4 LEDs. This would total about 250 milliamps.
+Or you can use three 4 volt, 200 mA Xmas tree bulbs in series. For higher
+power 12 volt automobile lamps, the transistor will need to be replaced
+with a MOSFET that can handle several amps of current. See the drawing
+below the schematic for possible hookups.
+<p>
+
+<IMG src="eyes5.gif">
+<center><h3>Other possible hookups </h3></center>
+<IMG src="eyes3.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="eyes6.gif"></a>
+<center><H3>1.5 Hour Lamp Fader (Sunset Lamp)</H3></center>
+<p>
+    Similar to the one above, the sunset lamp comes on at full brightness
+    and then slowly fades out over 1.5 hours time and stays off until
+    power is recycled.
+
+<p>
+
+<IMG src="eyes6.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="eyes8.gif"></a>
+<center><H3>Sunrise Lamp </H3></center>
+<p>
+    In this circuit, a 120VAC lamp is slowly illuminated over a approximate
+    20 minute period. The bridge rectifier supplies 120 DC to the MOSFET
+    and 60 watt lamp. A 6.2K, 5 watt resistor and zener diode is used to
+    drop the voltage to 12 volts DC for the circuit power. The bridge
+    rectifier should be rated at 200 volts and 5 amps or more. In operation,
+    a 700 Hz triangle waveform is generated at pin 1 of the LM324 and a
+    slow rising voltage is obtained at pin 8. These two signals are compared
+    at pins 12 and 13 to produce a varying duty cycle rectangular waveform
+    at pin 14, which controls the MOSFET and brightness of the 60 watt lamp.
+    When power is applied, the lamp will start to illuminate within a minute
+    or so, and will slowly brighten to full intensity in about 20 minutes.
+    You can make that longer or shorter with adjustments to the 270K resistor
+    at pin 9. The 2.2 ohm resistor and .015uF cap connected to the lamp serve
+    to supress RFI. The diode at pin 9 and 10K resistor on pin 8 are used to
+    discharge the 3300uF cap when power is removed. Power should be off
+    for a few minutes before re-starting.
+
+    <p>
+    Caution:
+
+    This circuit is connected directly to the AC line and presents a hazard
+    if any part is touched while connected to the line. Use caution and do
+    not touch any parts while the circuit is connected to the AC line.
+    You may want to use a 9 volt battery connected across the 12 volt
+    zener to check the basic operation. The DC voltage at pins 1,2,3,5,6,7
+    will all be around 4.3 volts if the circuit is working correctly.
+    If the DC voltages are all correct, you can use a variac to slowly
+    apply the full line voltage and check for proper operation.
+
+<p>
+
+<IMG src="eyes8.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+
+<a name="crystal.gif"></a>
+<center><H3>Simple Op-Amp Radio</H3></center>
+<p>
+This is basically a crystal radio with an audio amplifier which is fairly
+sensitive and receives several strong stations in the Los Angeles area with
+a minimal 15 foot antenna. Longer antennas will provide a stronger signal
+but the selectivity will be worse and strong stations may be heard in the
+background of weaker ones. Using a long wire antenna, the selectivity
+can be improved by connecting it to one of the taps on the coil instead of
+the junction of the capacitor and coil. Some connection to ground is required
+but I found that standing outside on a concrete slab and just allowing the
+long headphone leads to lay on the concrete was sufficient to listen to the
+local news station (KNX 1070). The inductor was wound with 200 turns of #28
+enameled copper wire on a 7/8 diameter, 4 inch length of PVC pipe, which
+yields about 220 uH. The inductor was wound with taps every 20 turns so the
+diode and antenna connections could be selected for best results which turned
+out to be 60 turns from the antenna end for the diode. The diode should be a
+germanium (1N34A type) for best results, but silicon diodes will also work if
+the signal is strong enough. The carrier frequency is removed from the
+rectified signal at the cathode of the diode by the 300 pF cap and the audio
+frequency is passed by the 0.1uF capacitor to the non-inverting input of the
+first op-amp which functions as a high impedance buffer stage. The second
+op-amp stage increases the voltage level about 50 times and is DC coupled to
+the first through the 10K resistor. If the pairs of 100K and 1 Meg resistors
+are not close in value (1%) you may need to either use closer matched values
+or add a capacitor in series with the 10K resistor to keep the DC voltage at
+the transistor emitter between 3 and 6 volts. Another approach would be to
+reduce the overall gain with a smaller feedback resistor (470K). High
+impedance headphones will probably work best, but walkman stereo type
+headphones will also work. Circuit draws about 10 mA from a 9 volt source.
+Germanium diodes (1N34A) types are available from Radio Shack, #276-1123.
+<p>
+<IMG src="crystal.gif">
+<center><a href="index.html#menu">Menu</a></center>
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='page6.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+

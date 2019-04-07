@@ -1,0 +1,263 @@
+<HTML>
+<HEAD>
+ <TITLE>Binary Clock</TITLE>
+ <!- author - Bill Bowden - 04/11/02 ->
+ <meta name="keywords" content="Binary clock, LED clock, clock schematic">
+  <SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
+
+
+binary = new Array(0,0,0,0, 1,0,0,0, 0,1,0,0, 1,1,0,0, 0,0,1,0, 1,0,1,0,
+                   0,1,1,0, 1,1,1,0, 0,0,0,1, 1,0,0,1);
+
+leds = new Array(1);
+leds[0] = new Image();
+leds[0].src = "000.gif";
+leds[1] = new Image();
+leds[1].src = "100.gif";
+
+var i;
+var j;
+
+function digits(n){
+
+   j=0;
+   for (i=n; i>9; i=i-10)
+       j++;
+       i=n-(j*10);
+}
+
+function setTime() {
+
+ if (document.images) {
+   D = new Date();
+   H = D.getHours();
+   M = D.getMinutes();
+   S = D.getSeconds();
+   if(H>12) H=H-12;
+
+   digits(H);
+   document.clock.hh.value=j;
+   document.clock.h.value=i;
+   j=j*4;
+   document.h2.src=leds[binary[j]].src;
+   i =i*4;
+   document.h6.src=leds[binary[i]].src;
+   document.h5.src=leds[binary[i+1]].src;
+   document.h4.src=leds[binary[i+2]].src;
+   document.h3.src=leds[binary[i+3]].src;
+
+   digits(M)
+   document.clock.mm.value=j;
+   document.clock.m.value=i;
+   j=j*4;
+   document.m2.src=leds[binary[j]].src;
+   document.m1.src=leds[binary[j+1]].src;
+   document.m0.src=leds[binary[j+2]].src;
+   i =i*4;
+   document.m6.src=leds[binary[i]].src;
+   document.m5.src=leds[binary[i+1]].src;
+   document.m4.src=leds[binary[i+2]].src;
+   document.m3.src=leds[binary[i+3]].src;
+
+   digits(S);
+   document.clock.ss.value=j;
+   document.clock.s.value=i;
+   j=j*4;
+   document.s2.src=leds[binary[j]].src;
+   document.s1.src=leds[binary[j+1]].src;
+   document.s0.src=leds[binary[j+2]].src;
+   i=i*4;
+   document.s6.src=leds[binary[i]].src;
+   document.s5.src=leds[binary[i+1]].src;
+   document.s4.src=leds[binary[i+2]].src;
+   document.s3.src=leds[binary[i+3]].src;
+
+   status=D;
+   S1=S;
+   while (S==S1) {
+     D= new Date();
+     S= D.getSeconds();
+     }
+   setTimeout("setTime()", 900);
+
+   }
+}
+// End hiding script from old browsers -->
+</SCRIPT>
+</HEAD>
+
+<BODY BGCOLOR=white onLoad="setTime()">
+<H2><center>Binary Coded Decimal (BCD) Clock </H2>
+<IMG SRC="bclock.gif">
+<p>
+<FORM name="clock">
+<center>
+<table cellpadding=0 cellspacing=0 border=0 bgcolor="yellow">
+<tr>
+<td>
+<td>
+<td>
+<td><IMG NAME="h2"> </a>
+<td><h3>Tens of Hours
+<td><INPUT TYPE=TEXT NAME="hh" size=2>
+<tr>
+<td><IMG  NAME="h3"> </a>
+<td><IMG  NAME="h4"> </a>
+<td><IMG  NAME="h5"> </a>
+<td><IMG  NAME="h6"> </a>
+<td> <h3> Hours
+<td><INPUT TYPE=TEXT NAME="h" size=2>
+<tr>
+<td>
+<td><IMG  NAME="m0"> </a>
+<td><IMG  NAME="m1"> </a>
+<td><IMG  NAME="m2"> </a>
+<td><h3>Tens of Minutes
+<td><INPUT TYPE=TEXT NAME="mm" size=2>
+<tr>
+<td><IMG  NAME="m3"> </a>
+<td><IMG  NAME="m4"> </a>
+<td><IMG  NAME="m5"> </a>
+<td><IMG  NAME="m6"> </a>
+<td><h3> Minutes
+<td> <INPUT TYPE=TEXT NAME="m" size=2>
+<tr>
+<td>
+<td><IMG  NAME="s0"> </a>
+<td><IMG  NAME="s1"> </a>
+<td><IMG  NAME="s2"> </a>
+<td><h3><center>Tens of Seconds
+<td><INPUT TYPE=TEXT NAME="ss" size=2>
+<tr>
+<td><IMG  NAME="s3"> </a>
+<td><IMG  NAME="s4"> </a>
+<td><IMG  NAME="s5"> </a>
+<td><IMG  NAME="s6"> </a>
+<td><h3> Seconds
+<td><INPUT TYPE=TEXT NAME="s" size=2>
+<tr>
+<td><h3><center>8 <td><h3><center>4 <td><h3><center>2
+<td><h3><center>1
+</center>
+</table>
+</FORM>
+
+<table>
+<td><blockquote>
+The clock circuit above uses seven ICs and 19 LEDs to indicate binary coded
+decimal time. The LEDs can be arranged (as shown in example above) so that
+each horizontal group of 3 or 4 LEDs represents a decimal digit between 0 and
+9 and each individual LED represents a single bit or (binary digit) of the
+value. Binary digits have only two values (0 and 1) so a number written in
+binary would be something like 1001 or 0011, which represents decimal numbers
+9 and 3 respectively. From right to left, each binary (1) represents increasing
+powers of 2, so that a 1 in the right hand place represents 2^0=1 and the
+next place to the left is 2^1=2 and then 2^2=4, and so forth. This makes
+binary counting fairly easy since each digit has a value of twice the one
+before or 1,2,4,8,16,32,64,etc. Thus the decimal value can be
+found by simply adding the values of each illuminated LED in the same row,
+(the total is shown in the box to the right). For example, the binary number
+1001 would have a decimal value of 8+0+0+1 = 9. But this is actually a
+binary coded decimal 9 since only values from 0 to 9 are used 0000 to 1001.
+A true binary clock indicating minutes of the hour would display values from
+0 to 59, or 000000 to 111011. But this would be more difficult to
+read since adding values 32 + 16 + 8 + 2 + 1 = 59 is not as easy as
+8 + 0 + 0 + 1 = 9.
+<p>
+The circuit is powered by a small 12.6 VAC transformer which also provides
+a low voltage 60 Hz signal for a very accurate time base. The transformer
+is connected with the secondary center tap at ground which produces about 8
+volts DC across the 3300uF filter capacitor. DC power for the circuit is
+regulated at about 5.5 using a NPN transistor (2N3053) and 6.2 volt zener
+diode. The 2N3053 gets a little warm when several LEDs are on, and may
+require a little (top hat type) heat sink.
+<p>
+A one second clock pulse is obtained by counting 60 cycles of the AC line
+signal. This is accomplished using a CMOS CD4040 12 stage binary counter
+(shown in light blue). The 60th count is detected by the two NAND gates
+connected to pins 2,3,5,and 6 of the counter. When all four of these
+lines are high, the count will be 60 resulting in a high level at
+pin 4 of the 74HC14 which resets the counter to zero and advances the
+seconds counter (74HC390 shown in purple) when pin 4 returns to a low
+state. The same process is used to detect 60 seconds and 60 minutes
+to reset the counters and advance the minutes and hours counters respectively.
+In both of these cases the 2 and 4 bit lines of the tens counter section
+will be high (20+40=60). In all three cases (seconds, minutes and hours) a
+combination 10K resistor and 0.1uF capacitor is used at the input to the
+74HC14 inverter to extend the pulse width to about 300uS so the counters will
+reliably reset. Without the RC parts, the reset pulse may not be long enough
+to reset all stages of the counter since as soon as the first bit resets, the
+inputs to the NAND gate will no longer all be high and the reset pulse
+will end. Adding the RC parts eliminates that possibility. The reset
+process for the hours is a little different since for a 12 hour clock we
+need to reset the hours counter on the 13th count and then advance the counter
+one count so the display will indicate one ("1"). The 74HC00 quad NAND gate
+only has 4 sections with two inputs each so I used 3 diodes to detect the 13th
+hour (10 +1 +2 =13) which drives an inverter and also a transistor inverter
+(2N3904 or similar). The last 74HC14 inverter stage (pin 12 and 13) supplies
+a falling edge to the hours counter which advances the hours to "1" a short
+time after the reset pulse from the transistor inverter ends. The pulse
+width from pin 12 of the inverter is a little shorter than from pin 10
+which ensures that the hours clock line (pin 1 of yellow box) will move
+high before the end of the reset pulse form pin 10. If it were the other
+way around, the reset pulse may end before pin 12 of the inverter had a
+chance to reach a high level which would prevent the counter from advancing
+to "1". So it is important to use a shorter RC time at pin 13 than for the
+other Schmitt Trigger inputs. I used a 10K resistor and a 0.01uF cap to obtain
+the shorter time, but other values will work just as well. Only 2 sections
+of the 4071 OR gate are used, so the remaining 4 inputs (pins 8,9,12,13)
+should be terminated to ground if not used.
+<br><br>
+Copied Files Notice: This circuit diagram and text description has been copied
+and reposted without permission at: http://www.csgnetwork.com/binclockschnpl.html.
+The copied file has also been altered to remove the author's name and date of
+creation which is a clear violation of copyright law. They have also copied and
+modified three Java Script Calculators from this website. I have e-mailed a
+request to have the calculators removed and received no answer. I have also
+contacted the web host at Verio.net and received an autoresponse that the
+matter will be investigated but I doubt any action will occur. Please feel
+free to e-mail your opinions of plagiarism to webmaster@csgnetworks.com
+
+<p>
+
+Parts List:
+<p>
+3     - 74HC390           - Dual BCD counters
+<br>1     - CD4040            - 12 Stage Binary Counter
+<br>1     - 74HC14            - Hex Schmitt Trigger Inverter
+<br>1     - 74HC00            - Quad NAND gate
+<br>1     - CD4071            - Quad OR gate
+<br>1     - 2N3053            - NPN transistor (may need heat sink)
+<br>1     - 2N3904            - NPN transistor
+<br>3     - 1N914             - Signal diode (1N400X will also work)
+<br>2     - 1N400X            - Rectifier diodes
+<br>1     - 6.2 volt          - Zener diode
+<br>1     - 3300uF            - Filter Capacitor - 16 volt
+<br>1     - Power Transformer - Radio Shack 273-1365A or similar
+<br>1     - 220K 1/4 or 1/8 watt resistor
+<br>1     - 150 ohm 1/4 watt resistor
+<br>19    - 220 ohm 1/4 or 1/8 watt resistors
+<br>11    - 10K 1/4 or 1/8 watt resistors
+<br>2     - 0.01uF capacitors
+<br>4     - 0.1uF capacitors
+<br>19    - Red LEDs (15 mA)
+<br>2     - Momentary push button switches (to set the time)
+<br>1     - Toggle switch (to start the clock at a precise time)
+<p>
+
+<center><a href="index.html#menu">Return to Main Page</a>
+<hr  size=1>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'>
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='clock.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>

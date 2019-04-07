@@ -1,0 +1,139 @@
+
+<HTML>
+<HEAD>
+<title>Descrete Low Dropout Regulator</title>
+<META name="description" content="Descrete low dropout voltage regulator">
+<meta name="keywords" content="regulator, voltage, dropout, descrete, battery,
+charger, circuit, transistor">
+<meta name "author" content ="Bill Bowden">
+</HEAD>
+<BODY>
+<blockquote>
+
+<center><H3>Low Dropout Voltage Regulator Using 5 Transistors</H3>
+<br>
+<img src="lowdrop.gif"><p></center>
+<p>
+
+Circuit Description:
+<p>
+
+The low dropout regulator is used to obtain maximum current from a solar
+panel while charging a typical lead acid 12 volt battery. It provides about
+the same current as if the panel was connected directly to the battery. The
+circuit is a discrete version of the LM1084 which is a 5 amp adjustable,
+3 terminal, low dropout regulator available for about $2.50. The regulator
+voltage for the battery is set to 13.6 which is near full charge. The
+voltage could be a little higher at 14.1 but this would require temperature
+compensation so the voltage falls somewhat as the temperature rises. Using
+13.6 without compensation doesn't present a temperature problem.
+
+<p>
+Operation:
+<p>
+Transistors Q1,Q2 form a differencial pair where Q1 monitors the battery
+voltage and Q2 sits at a reference voltage set by the white LED. Resistors
+R3,R4 form a voltage divider so that the input to Q1 will be the same as Q2
+when the battery is at 13.6 and the regulator will shut down to some minimum
+current to maintain 13.6 volts on the battery. The white LED voltage is
+about 2.7 volts.
+<p>
+
+Resistor R5 (330 ohm) sets the current for the transistor pair (Q1,Q2) to about
+6 milliamps since the voltage across R5 will be the reference 2.7 minus
+the e/b drop of 0.6. This gives us I=E/R = (2.7-0.6)/330 = 6.4 milliamps.
+When the battery is significantly lower than 13.6, Q1 will be off and
+6.4 milliamps will flow through Q2 and R6 producing a voltage across
+R6 (750) of E=IR = .0064 * 750 = 4.8 volts.
+<p>
+
+Q3 is used as a buffer for the voltage across R6 and also provides current
+to the pass transistors Q4,Q5. The emitter/base junction of Q3 will drop
+about 0.6 volts so the voltage on the emitter will be 4.8 minus 0.6 = 4.2
+and the current through R8 (330) will be I=E/R = 4.2 / 330 = 12.7 milliamps.
+This should be sufficient to drive Q4,Q5 at 5 amps or more assuming a minimum
+gain of at least 20 for Q4 and Q5. Resistor R9 (750) is used to insure some
+minimum current is required to turn on Q4. This works out to about 1 milliamp.
+Resistor R10 (750) serves as a pullup to get the circuit started when a
+battery is not connected. The regulator could be used as a 13.6 volt power
+supply without the battery connected.
+
+<p>
+
+Notes:
+<p>
+Dropout voltage measured 0.82 when the input was 13.86 and output was 13.04
+and charge current was 1.92 amps.
+<p>
+The gain (hFE) of Q5 (2N3442) measured about 45 at 2 amps with less than 1 volt
+between emitter and collector. It should work at 5 amps with a gain of
+maybe 20, but I didn't try it. The published spec is hFE=20 minimum at 3 amps
+with VCE = 4 volts. The value of R8 could be lower or R6 higher to increase
+the drive current to Q4 if required.
+<p>
+
+R1 and R2 represent the internal resistance of the battery and the panel.
+If the panel (no load) voltage is 19 and the charge current is 2 amps,
+and the battery voltage is 13, and the dropout voltage is 0.82, then
+the panel's internal resistance (R2) would be
+R=E/I = 19 - (13 + 0.82) / 2 = 2.6 ohms.
+<p>
+When the battery is near full charge and the current is say 200 milliamps,
+the panel voltage will be around E = 19 - IR = 19 - (0.2 * 2.6) = 18.48 and
+the drop across Q5 will be about 18.48 - 13.6 = 4.88 volts.
+<p>
+But these values are approximate since the panel impedance is not constant.
+
+<p>
+
+Parts List:
+<br>
+
+Q1,Q2   ---  2N3906 or most any small signal PNP.
+<br>
+Q3      ---  2N3904 or most any small signal NPN.
+<br>
+Q4      ---  2N2905A or similar medium power (500mA) PNP
+<br>
+Q5      ---  2N3442 or 2N3055, high power NPN
+<br>
+One White LED (2.7 volt)
+<br>
+D1      ---  1N4148 or any small silicon diode
+<br>
+R3      ---  Approximately 560 ohms. Adjust this resistor for the desired
+             battery voltage.
+<br>
+R5, R8  ---  330 ohms
+<br>
+R6, R9, R10 ---  750 ohms
+<br>
+R4, R7  ---  2.2K
+
+<p>
+
+<center>18 watt, 12 volt, 1.5 amp Solar Panel purchased used in 1994.<p>
+
+<img src="spanel.jpg"><p>
+
+
+<a href="index.html#menu">Back to home page</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='lowdrop.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+

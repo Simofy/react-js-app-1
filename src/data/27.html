@@ -1,0 +1,138 @@
+
+<HTML>
+<HEAD>
+<title>BJT Transistor hFE Test Fixture</title>
+<META name="description" content="BJT Transistor hFE test fixture">
+<meta name="keywords" content="hFE, BJT, test, transistor, electronics, hobby, circuit, beta">
+<meta name "author" content ="Bill Bowden">
+</HEAD>
+<BODY>
+<blockquote>
+
+<center><H3>BJT Transistor hFE Test Fixture</H3>
+<br>
+<img src="hfe.gif"><p>
+<img src="hfe.jpg">
+<p>
+
+Circuit Description:
+</center>
+<p>
+
+The text fixture above measures the ratio of collector current (Ic) to base
+current (Ib) of bipolar transistors. A 3 position switch selects one of 3
+base current conditions, 1mA, 0.5mA and 0.025mA. Collector current is
+measured with a DMM connected across points A and B, and the hFE or gain
+factor is determined by multiplying the DMM current reading by a factor of
+1, 2, or 4 depending on the switch setting. For example, when the switch is
+in the X1 position, the base current will be about 1mA and so the hFE value
+will be the DMM reading directly. When the switch is in the X2 position, the
+base current will be half a much, so the DMM reading is multiplied by 2,
+or 4 if the switch in the 4X position. The supply voltage should be close
+to 9 volts for fairly accurate measurements. Also, the transistor should be
+removed from the fixture after each test to avoid excessive battery drain.
+<p>
+Base current is established with a series resistor which drops the supply
+voltage minus the emitter to base voltage or about 9 - 0.6 = 8.4 volts.
+The resistor value is worked out by dividing the resistor voltage (8.4) by
+the desired base current. If the desired base current is 0.25 mA, the resistor
+value will be 8.4/.00025 = about 33K which corresponds to the center open
+switch position and labeled X4. When the switch is in the X2 position a
+second 33K resistor is added in parallel for twice as much current. In the
+X1 position a 11K resistor is added in parallel with one of the 33K resistors
+for a total resistance of 8.25K which yields a base current of about
+8.4/8.25K = 1.02mA.
+
+The 51 ohm resistor is used to avoid blowing the DMM fuse (as I did)
+in case the DMM is accidently connected across the supply while measuring
+current. The 2 diodes are used so that either NPN or PNP transistors can
+be tested and the collector voltage adjusted with the pot without the need
+of a second switch. The supply connections need to be reversed for testing
+PNP transistors.
+
+The 1K pot in series with the collector allows adjustment of the collector
+voltage so that readings can be made using various values. For example,
+the data sheet of the 2N3904 shows a hFE of 100 minimum at 10mA collector
+current and 1 volt collector voltage. If the transistor is used in a switching
+application, the collector voltage will be lower at around 200 millivolts and
+the hFE was measured to be 52 at 13mA. The collector voltage was adjusted to
+200 millivolts using the 1K pot with the DMM measuring voltage across
+points C and D. A few measurements made are listed below.
+
+<pre>
+
+Transistor   Multiplier     Collector     Collector      hFE
+                             Voltage     Current (mA)
+
+2N2219A        X1            2            125            125
+NPN            X1            0.2          84              84
+               X2            5.5          65             130
+               X2            0.2          46              92
+               X4            6.6          30             120
+               X4            0.2          26             104
+
+2N2222A        X1            1.1          153            153
+NPN            X1            0.2          98              98
+               X2            3            113            226
+               X2            0.2          64             128
+               X4            5.4          67             268
+               X4            0.2          41             164
+
+2N3906         X1            2.9          101            101
+PNP            X1            0.2           43             43
+               X2            5             65            130
+               X2            0.2           28             56
+               X4            6.6           34            136
+               X4            0.2           18             72
+
+2N3904         X1            3.4           94             94
+NPN            X1            0.2           34             34
+               X2            4.8           65            130
+               X2            0.2           21             42
+               X4            6.2           39            156
+               X4            0.2           13             52
+
+2N3053         X1            1.5          130            130
+NPN            X1            0.2           71             71
+               X2            4.5           69            138
+               X2            0.2           38             76
+               X4            6.4           34            136
+               X4            0.2           19             76
+
+2SA1015        X1            2.2           119           119
+PNP            X1            0.2            50            50
+               X2            4              80           160
+               X2            0.2            35            70
+               X4            5.6            49           196
+               X4            0.2            26           104
+
+2N4123         X1            3.9            82            82
+NPN            X1            0.2            46            46
+               X2            5.1            59           118
+               X2            0.2            30            60
+               X4            6.4            34           136
+               X4            0.2            18            72
+
+</pre>
+<p>
+<center>
+<a href="index.html#menu">Back to home page</a></center>
+
+<HR>
+</blockquote>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type='text/javascript' src='https://count.carrierzone.com/app/count_server/count.js'></script>
+<script type='text/javascript'><!--
+wm_custnum='4b5dc18b1765aace';
+wm_page_name='hfe.htm';
+wm_group_name='/services/webpages/b/o/bowdenshobbycircuits.info/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+</BODY>
+</HTML>
+
+
